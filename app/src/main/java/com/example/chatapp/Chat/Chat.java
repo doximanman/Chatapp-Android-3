@@ -49,7 +49,12 @@ public class Chat extends AppCompatActivity {
             adapter.setChatList(newChats);
         });
 
-        generateChats();
+        Thread tr=new Thread(){
+            public void run(){
+                generateChats();
+            }
+        };
+        tr.start();
 
     }
 
@@ -68,7 +73,17 @@ public class Chat extends AppCompatActivity {
                 new Message(0, "2023-06-11T19:42:27.5871162", "world!!"));
         ArrayList<ChatDetails> newList=new ArrayList<>();
         newList.add(chat1);
-        chatListView.getChatList().setValue(newList);
+        chatListView.getChatList().postValue(newList);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        ChatDetails chat2 = new ChatDetails(0,
+                new User("world", "hello world2", base64pfp),
+                new Message(0, "2024-06-11T19:42:27.5871162", "worlddd!!"));
+        newList.add(chat2);
+        chatListView.getChatList().postValue(newList);
     }
 
 }
