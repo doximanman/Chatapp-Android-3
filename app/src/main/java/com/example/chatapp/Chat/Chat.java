@@ -69,6 +69,17 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
             dialog.show(getSupportFragmentManager(),"AddChat");
         });
 
+        // long press removes the chat
+        binding.lvChats.setOnItemLongClickListener(((parent, view, position, id) ->{
+            Thread tr = new Thread() {
+                public void run() {
+                    remove(chatListView.getChatList().getValue().get(position));
+                }
+            };
+            tr.start();
+            return true;
+        }));
+
         // get chat list from room
         Thread tr = new Thread() {
             public void run() {
@@ -122,7 +133,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         chatList.remove(cd);
         chatListView.getChatList().postValue(chatList);
         chatDao.delete(cd);
-
     }
 
     @Override
