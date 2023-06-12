@@ -127,6 +127,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
     @Override
     public void onAddClick(DialogFragment dialog, String name) {
+        if(name==null || name.equals(""))
+            return;
         Thread tr=new Thread(){
             @Override
             public void run() {
