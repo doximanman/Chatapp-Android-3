@@ -45,6 +45,10 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        User currentUser=new User("bond","james bondddddddd",imageToString(R.drawable.doubt));
+
+        setUser(currentUser);
+
         // Room
         db = Room.databaseBuilder(getApplicationContext(), AppDB.class, "ChatsDB").build();
         chatDao = db.chatDao();
@@ -94,21 +98,13 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         return chatDao.index();
     }
 
-    private void generateChats() {
-        /*Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.mmmm);
-        ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
-        byte[] imageInByArray = byteArrayStream.toByteArray();
-        String base64pfp = Base64.encodeToString(imageInByArray, Base64.DEFAULT);
-        ChatDetails chat1 = new ChatDetails(0,
-                new User("hello", "hello world", base64pfp),
-                new Message(0, "2023-06-11T19:42:27.5871162", "world!!"));
-        insert(chat1);
+    private void setUser(User user){
 
-        ChatDetails chat2=new ChatDetails(0,
-                new User("hello2","hello world",base64pfp),
-                new Message(0,"2024-06-11T19:42:27.5871162","world!!"));
-        insert(chat2);*/
+        // decodes pfp from base64 to bitmap
+        byte[] pfpToBytes=Base64.decode(user.getProfilePic(), Base64.DEFAULT);
+        binding.userPFP.setImageBitmap(BitmapFactory.decodeByteArray(pfpToBytes,0,pfpToBytes.length));
+
+        binding.userName.setText(user.getDisplayName());
     }
 
     private void insert(ChatDetails cd) {
@@ -135,6 +131,14 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         chatDao.delete(cd);
     }
 
+    private String imageToString(int source){
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), source);
+        ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
+        byte[] imageInByArray = byteArrayStream.toByteArray();
+        return Base64.encodeToString(imageInByArray, Base64.DEFAULT);
+    }
+
     @Override
     public void onAddClick(DialogFragment dialog, String name) {
         if(name==null || name.equals(""))
@@ -142,11 +146,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         Thread tr=new Thread(){
             @Override
             public void run() {
-                Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.mmmm);
-                ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
-                byte[] imageInByArray = byteArrayStream.toByteArray();
-                String base64pfp = Base64.encodeToString(imageInByArray, Base64.DEFAULT);
+                String base64pfp = imageToString(R.drawable.mmmm);
                 ChatDetails chat1 = new ChatDetails(0,
                         new User(name, name, base64pfp),
                         null);

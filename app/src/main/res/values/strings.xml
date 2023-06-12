@@ -50,4 +50,6 @@
     <string name="namePlaceholder">Name</string>
     <string name="addNewUser">ADD</string>
     <string name="closeDialog">CLOSE</string>
+    <string name="logout">Logout</string>
+    <string name="username">USERNAME</string>
 </resources>

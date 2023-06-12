@@ -17,5 +17,7 @@ public class ChatBody extends AppCompatActivity {
 
         binding=ActivityChatBodyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
     }
 }
