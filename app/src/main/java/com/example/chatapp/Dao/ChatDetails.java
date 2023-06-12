@@ -1,13 +1,19 @@
 package com.example.chatapp.Dao;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 
 @Entity
 public class ChatDetails {
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @Embedded(prefix="usr_")
     private User user;
+
+    @Embedded(prefix="msg_")
     private Message lastMessage;
 
     public ChatDetails(int id, User user, Message lastMessage){

@@ -1,6 +1,9 @@
 package com.example.chatapp.Dao;
 
+import androidx.room.PrimaryKey;
+
 public class Message {
+
     private int id;
     private String created;
     private String content;

@@ -2,6 +2,7 @@ package com.example.chatapp.Chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.widget.ListView;
 
+import com.example.chatapp.Dao.AppDB;
+import com.example.chatapp.Dao.ChatDao;
 import com.example.chatapp.Dao.ChatDetails;
 import com.example.chatapp.Dao.Message;
 import com.example.chatapp.Dao.User;
@@ -21,6 +24,8 @@ import java.util.List;
 
 public class Chat extends AppCompatActivity {
 
+    private AppDB db;
+    private ChatDao chatDao;
     private ChatListView chatListView;
     private ActivityChatBinding binding;
 
@@ -33,13 +38,15 @@ public class Chat extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // mutable list of chats
+        // Room
+        db = Room.databaseBuilder(getApplicationContext(), AppDB.class, "ChatsDB").build();
+        chatDao = db.chatDao();
+
+        // empty list of chats
         chatListView = new ViewModelProvider(this).get(ChatListView.class);
 
-        List<ChatDetails> initialList=getChats();
-
         // adapter between chats and the proper view
-        adapter = new ChatListAdapter(initialList);
+        adapter = new ChatListAdapter(new ArrayList<>());
         ListView lvChats = binding.lvChats;
         lvChats.setAdapter(adapter);
 
@@ -49,21 +56,23 @@ public class Chat extends AppCompatActivity {
             adapter.setChatList(newChats);
         });
 
-        Thread tr=new Thread(){
-            public void run(){
+        Thread tr = new Thread() {
+            public void run() {
+                chatListView.getChatList().postValue(getChats());
                 generateChats();
+                chatListView.getChatList().postValue(getChats());
             }
         };
         tr.start();
 
     }
 
-    private List<ChatDetails> getChats(){
-        return new ArrayList<>();
+    private List<ChatDetails> getChats() {
+        return chatDao.index();
     }
 
     private void generateChats() {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.mmmm);
+        /*Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.mmmm);
         ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
         byte[] imageInByArray = byteArrayStream.toByteArray();
@@ -71,19 +80,36 @@ public class Chat extends AppCompatActivity {
         ChatDetails chat1 = new ChatDetails(0,
                 new User("hello", "hello world", base64pfp),
                 new Message(0, "2023-06-11T19:42:27.5871162", "world!!"));
-        ArrayList<ChatDetails> newList=new ArrayList<>();
-        newList.add(chat1);
-        chatListView.getChatList().postValue(newList);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        ChatDetails chat2 = new ChatDetails(0,
-                new User("world", "hello world2", base64pfp),
-                new Message(0, "2024-06-11T19:42:27.5871162", "worlddd!!"));
-        newList.add(chat2);
-        chatListView.getChatList().postValue(newList);
+        insert(chat1);
+
+        ChatDetails chat2=new ChatDetails(0,
+                new User("hello2","hello world",base64pfp),
+                new Message(0,"2024-06-11T19:42:27.5871162","world!!"));
+        insert(chat2);*/
     }
 
+    private void insert(ChatDetails cd) {
+        List<ChatDetails> chatList = chatListView.getChatList().getValue();
+        if (chatList == null) {
+            List<ChatDetails> newList = new ArrayList<>();
+            newList.add(cd);
+            chatListView.getChatList().postValue(newList);
+            return;
+        }
+        chatList.add(cd);
+        chatListView.getChatList().postValue(chatList);
+        chatDao.insert(cd);
+    }
+
+    private void remove(ChatDetails cd) {
+        List<ChatDetails> chatList = chatListView.getChatList().getValue();
+        if (chatList == null) {
+            return;
+        }
+
+        chatList.remove(cd);
+        chatListView.getChatList().postValue(chatList);
+        chatDao.delete(cd);
+
+    }
 }
