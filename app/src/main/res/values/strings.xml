@@ -46,4 +46,8 @@
     <string name="lastMessagePlaceholder">last messageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</string>
     <string name="lastMessageDatePlaceholder">12/5/2023 11:50.75</string>
     <string name="displayNamePlaceholder">John Wick</string>
+    <string name="newChatTitle">Add a new chat!</string>
+    <string name="namePlaceholder">Name</string>
+    <string name="addNewUser">ADD</string>
+    <string name="closeDialog">CLOSE</string>
 </resources>
