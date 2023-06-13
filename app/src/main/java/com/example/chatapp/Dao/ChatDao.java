@@ -6,27 +6,23 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.chatapp.Chat.Chat;
-
 import java.util.List;
 
 @Dao
 public interface ChatDao {
-    @Query("SELECT * FROM chatdetails")
-    List<ChatDetails> index();
 
-    @Query("SELECT * FROM chatdetails WHERE id = :id")
-    ChatDetails get(int id);
+    @Query("SELECT * FROM chat WHERE id = :id")
+    Chat get(int id);
 
-    @Query("DELETE FROM chatdetails")
+    @Query("DELETE FROM chat")
     void deleteAll();
 
     @Insert
-    void insert(ChatDetails... Chats);
+    void insert(Chat... Chats);
 
     @Update
-    void update(ChatDetails... Chats);
+    void update(Chat... Chats);
 
     @Delete
-    void delete(ChatDetails... Chats);
+    void delete(Chat... Chats);
 }

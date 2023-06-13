@@ -1,6 +1,11 @@
 package com.example.chatapp.Dao;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class User implements Parcelable {
     private String username;
     private String displayName;
     private String profilePic;
@@ -33,5 +38,31 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{username,displayName,profilePic});
+    }
+
+    public static final Parcelable.Creator<User> CREATOR=new Parcelable.Creator<User>(){
+        public User createFromParcel(Parcel in){
+            return new User(in);
+        }
+        public User[] newArray(int size){
+            return new User[size];
+        }
+    };
+
+    private User(Parcel in){
+        String[] props=in.createStringArray();
+        this.username=props[0];
+        this.displayName=props[1];
+        this.profilePic=props[2];
     }
 }

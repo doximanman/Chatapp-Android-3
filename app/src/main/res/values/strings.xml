@@ -52,4 +52,5 @@
     <string name="closeDialog">CLOSE</string>
     <string name="logout">Logout</string>
     <string name="username">USERNAME</string>
+    <string name="messageSenderHint">Type your message here...</string>
 </resources>

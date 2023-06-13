@@ -46,6 +46,8 @@ public class ChatListAdapter extends BaseAdapter {
         return chatList.get(position).getId();
     }
 
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {

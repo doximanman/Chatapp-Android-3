@@ -5,23 +5,17 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 
-import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.chatapp.Dao.AppDB;
-import com.example.chatapp.Dao.ChatDao;
+import com.example.chatapp.Dao.ChatListDB;
+import com.example.chatapp.Dao.ChatListDao;
 import com.example.chatapp.Dao.ChatDetails;
-import com.example.chatapp.Dao.Message;
 import com.example.chatapp.Dao.User;
-import com.example.chatapp.MainActivity;
 import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivityChatBinding;
 
@@ -31,8 +25,8 @@ import java.util.List;
 
 public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
-    private AppDB db;
-    private ChatDao chatDao;
+    private ChatListDB db;
+    private ChatListDao chatListDao;
     private ChatListView chatListView;
     private ActivityChatBinding binding;
 
@@ -45,13 +39,15 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+        // hard-coded for now, until login is implemented.
         User currentUser=new User("bond","james bondddddddd",imageToString(R.drawable.doubt));
 
         setUser(currentUser);
 
         // Room
-        db = Room.databaseBuilder(getApplicationContext(), AppDB.class, "ChatsDB").build();
-        chatDao = db.chatDao();
+        db = Room.databaseBuilder(getApplicationContext(), ChatListDB.class, "ChatsDB").build();
+        chatListDao = db.chatListDao();
 
         // empty list of chats (for now)
         chatListView = new ViewModelProvider(this).get(ChatListView.class);
@@ -71,6 +67,13 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         binding.addChat.setOnClickListener(view->{
             DialogFragment dialog=new AddChat();
             dialog.show(getSupportFragmentManager(),"AddChat");
+        });
+
+        // open chat on click
+        binding.lvChats.setOnItemClickListener((parent, view, position, id) -> {
+            Intent chat=new Intent(this, ChatBody.class);
+            chat.putExtra("id",id);
+            startActivity(chat);
         });
 
         // long press removes the chat
@@ -95,7 +98,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
     }
 
     private List<ChatDetails> getChats() {
-        return chatDao.index();
+        return chatListDao.index();
     }
 
     private void setUser(User user){
@@ -117,7 +120,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         }
         chatList.add(cd);
         chatListView.getChatList().postValue(chatList);
-        chatDao.insert(cd);
+        chatListDao.insert(cd);
     }
 
     private void remove(ChatDetails cd) {
@@ -128,7 +131,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
         chatList.remove(cd);
         chatListView.getChatList().postValue(chatList);
-        chatDao.delete(cd);
+        chatListDao.delete(cd);
     }
 
     private String imageToString(int source){
