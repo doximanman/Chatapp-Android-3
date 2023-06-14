@@ -3,11 +3,13 @@ package com.example.chatapp.Chat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 
 import com.example.chatapp.Chat.adapters.MessageListAdapter;
@@ -83,20 +85,34 @@ public class ChatBody extends AppCompatActivity {
         // send message
         binding.sendButton.setOnClickListener(view->{
             if(!binding.messageInput.getText().toString().matches("/\\A\\s*\\z/")){
+
+                // content
                 String message=binding.messageInput.getText().toString();
+
+                // created
                 StringBuilder dateFormat=new StringBuilder();
                 SimpleDateFormat date=new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 dateFormat.append(date.format(new Date()));
                 dateFormat.append("T");
                 SimpleDateFormat time=new SimpleDateFormat("HH:mm:ss.SSSSSSS",Locale.getDefault());
                 dateFormat.append(time.format(new Date()));
-                User currentUser=new User("bond","james bondddddddd","");
+                String created=dateFormat.toString();
+
+                // sender
+                User currentUser=new User("hello","james bondddddddd","");
                 Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.doubt);
                 ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
                 bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
                 byte[] imageInByArray = byteArrayStream.toByteArray();
                 currentUser.setProfilePic(Base64.encodeToString(imageInByArray, Base64.DEFAULT));
                 Message newMessage=new Message("test",dateFormat.toString(),currentUser,message);
+
+                // clear text
+                binding.messageInput.setText("");
+                // close keyboard
+                InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
                 chatView.add(newMessage);
             }
         });

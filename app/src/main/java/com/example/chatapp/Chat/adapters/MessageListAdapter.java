@@ -45,8 +45,7 @@ public class MessageListAdapter extends BaseAdapter {
         return position;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View RealGetView(int position, View convertView, ViewGroup parent){
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_layout, parent, false);
             ViewHolder viewHolder = new ViewHolder();
@@ -79,6 +78,12 @@ public class MessageListAdapter extends BaseAdapter {
         viewHolder.time.setText(time.toString());
 
         return convertView;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // flip order
+        return RealGetView(msgList.size()-1-position,convertView,parent);
     }
 
     public void setMsgList(List<Message> msgList) {

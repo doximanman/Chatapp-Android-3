@@ -33,6 +33,7 @@ public class ChatRepo {
         chatData=new ChatData();
         this.username=username;
         api=new ChatAPI(chatData,dao,application,username);
+        reload();
     }
 
     private class ChatData extends MutableLiveData<Chat>{
@@ -61,7 +62,13 @@ public class ChatRepo {
         new Thread(()->{
             Chat chat=chatData.getValue();
             assert chat != null;
-            chat.getMessages().add(msg);
+
+            // add new message to the start
+            List<Message> msgList=chat.getMessages();
+            ArrayList<Message> newList = new ArrayList<>(msgList);
+            newList.add(0,msg);
+            chat.setMessages(newList);
+
             chatData.postValue(chat);
             dao.update(chat);
         }).start();

@@ -14,8 +14,9 @@ import java.util.List;
 @Entity
 public class Chat {
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    private long identifier;
+
     private String id;
 
 
@@ -36,6 +37,10 @@ public class Chat {
         this.messages=new ArrayList<>();
     }
 
+    public long getIdentifier() {
+        return identifier;
+    }
+
     public String getId() {
         return id;
     }
@@ -46,6 +51,10 @@ public class Chat {
 
     public List<User> getUsers() {
         return users;
+    }
+
+    public void setIdentifier(long identifier) {
+        this.identifier = identifier;
     }
 
     public void setMessages(List<Message> messages) {

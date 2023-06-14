@@ -53,27 +53,27 @@ public class ChatAPI {
         call.enqueue(new Callback<Chat>() {
             @Override
             public void onResponse(@NonNull Call<Chat> call, @NonNull Response<Chat> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful()){new Thread(()-> {
 
                     // updates the new chat in the dao
-                    Chat newChat=response.body();
+                    Chat newChat = response.body();
                     chatDao.update(newChat);
 
                     // get the other user
                     assert newChat != null;
-                    List<User> users= newChat.getUsers();
-                    User otherUser=users.get(0);
-                    if(otherUser.getUsername().equals(username))
-                        otherUser=users.get(1);
+                    List<User> users = newChat.getUsers();
+                    User otherUser = users.get(0);
+                    if (otherUser.getUsername().equals(username))
+                        otherUser = users.get(1);
 
 
                     // updates the chat preview in the dao
-                    ChatDetails cd=new ChatDetails(newChat.getId(),otherUser,
-                            newChat.getMessages().size()>0 ? newChat.getMessages().get(0) : null);
+                    ChatDetails cd = new ChatDetails(newChat.getId(), otherUser,
+                            newChat.getMessages().size() > 0 ? newChat.getMessages().get(0) : null);
                     chatDao.update(cd);
 
                     chatData.postValue(newChat);
-
+                }).start();
                 }
             }
 

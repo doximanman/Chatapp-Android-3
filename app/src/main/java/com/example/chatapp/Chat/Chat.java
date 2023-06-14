@@ -42,7 +42,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
         // todo: implement login and provide the real user here,
         //  with the username and JWT in shared storage.
-        currentUser=new User("bond","james bondddddddd",imageToString(R.drawable.doubt));
+        currentUser=new User("hello","james bondddddddd",imageToString(R.drawable.doubt));
 
         setUser(currentUser);
 
