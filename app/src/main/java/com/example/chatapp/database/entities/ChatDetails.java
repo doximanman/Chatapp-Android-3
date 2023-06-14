@@ -9,7 +9,7 @@ import com.example.chatapp.database.subentities.User;
 
 @Entity
 public class ChatDetails {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int id;
 
     @Embedded(prefix="usr_")

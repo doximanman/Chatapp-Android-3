@@ -21,7 +21,10 @@ public interface ChatDao {
     Chat getChat(int id);
 
     @Query("DELETE FROM chatdetails")
-    void deleteAll();
+    void deletePreviews();
+
+    @Query("DELETE FROM chat")
+    void deleteChats();
 
     @Insert
     void insert(Chat... Chats);

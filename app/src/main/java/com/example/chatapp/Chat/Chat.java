@@ -27,6 +27,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
     private ActivityChatBinding binding;
 
     private ChatListAdapter adapter;
+    static int counter=0;
     User currentUser;
 
     @Override
@@ -66,7 +67,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         binding.lvChats.setOnItemClickListener((parent, view, position, id) -> {
             Intent chat=new Intent(this, ChatBody.class);
             chat.putExtra("Username",currentUser.getUsername());
-            chat.putExtra("id",id);
+            chat.putExtra("id",(int)id);
             startActivity(chat);
         });
 
@@ -110,10 +111,11 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
     @Override
     public void onAddClick(DialogFragment dialog, String name) {
+
         if(name==null || name.equals(""))
             return;
         String base64pfp = imageToString(R.drawable.mmmm);
-        ChatDetails chat1 = new ChatDetails(0,
+        ChatDetails chat1 = new ChatDetails(counter++,
                 new User(name, name, base64pfp),
                 null);
         chatListView.add(currentUser,chat1);
