@@ -1,9 +1,10 @@
-package com.example.chatapp.Dao;
+package com.example.chatapp.database.entities;
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
+
+import com.example.chatapp.database.subentities.Message;
+import com.example.chatapp.database.subentities.User;
 
 import java.util.List;
 
@@ -38,6 +39,14 @@ public class Chat {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public void addMessage(Message msg){
+        messages.add(msg);
+    }
+
+    public void removeMessage(Message msg){
+        messages.remove(msg);
     }
 
     public void setId(int id) {

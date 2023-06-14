@@ -1,4 +1,4 @@
-package com.example.chatapp.Chat;
+package com.example.chatapp.Chat.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,17 +10,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.chatapp.Dao.ChatDetails;
-import com.example.chatapp.Dao.Message;
+import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.R;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ChatListAdapter extends BaseAdapter {
     List<ChatDetails> chatList;
 
-    private class ViewHolder {
+    private static class ViewHolder {
         TextView name;
         TextView lastMessage;
         TextView lastMessageDate;

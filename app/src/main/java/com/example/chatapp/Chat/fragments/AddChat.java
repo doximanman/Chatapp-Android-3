@@ -1,4 +1,4 @@
-package com.example.chatapp.Chat;
+package com.example.chatapp.Chat.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -1,9 +1,11 @@
-package com.example.chatapp.Dao;
+package com.example.chatapp.database.entities;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
+
+import com.example.chatapp.database.subentities.Message;
+import com.example.chatapp.database.subentities.User;
 
 @Entity
 public class ChatDetails {

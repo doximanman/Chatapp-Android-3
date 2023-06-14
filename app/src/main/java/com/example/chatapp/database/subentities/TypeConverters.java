@@ -1,4 +1,4 @@
-package com.example.chatapp.Dao;
+package com.example.chatapp.database.subentities;
 
 import androidx.room.TypeConverter;
 
