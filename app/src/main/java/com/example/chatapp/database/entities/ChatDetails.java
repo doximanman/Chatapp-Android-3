@@ -1,7 +1,9 @@
 package com.example.chatapp.database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.chatapp.database.subentities.Message;
@@ -10,7 +12,8 @@ import com.example.chatapp.database.subentities.User;
 @Entity
 public class ChatDetails {
     @PrimaryKey
-    private int id;
+    @NonNull
+    private String id;
 
     @Embedded(prefix="usr_")
     private User user;
@@ -18,13 +21,20 @@ public class ChatDetails {
     @Embedded(prefix="msg_")
     private Message lastMessage;
 
-    public ChatDetails(int id, User user, Message lastMessage){
+    public ChatDetails(@NonNull String id, User user, Message lastMessage){
         this.id=id;
         this.user=user;
         this.lastMessage = lastMessage;
     }
 
-    public int getId() {
+    @Ignore
+    public ChatDetails(@NonNull String id, User user){
+        this.id=id;
+        this.user=user;
+        this.lastMessage = null;
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -36,7 +46,7 @@ public class ChatDetails {
         return user;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

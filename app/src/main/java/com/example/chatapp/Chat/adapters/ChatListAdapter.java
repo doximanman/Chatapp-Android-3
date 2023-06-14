@@ -41,7 +41,7 @@ public class ChatListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return chatList.get(position).getId();
+        return position;
     }
 
 

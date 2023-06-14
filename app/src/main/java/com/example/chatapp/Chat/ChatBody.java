@@ -76,7 +76,7 @@ public class ChatBody extends AppCompatActivity {
                 bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
                 byte[] imageInByArray = byteArrayStream.toByteArray();
                 currentUser.setProfilePic(Base64.encodeToString(imageInByArray, Base64.DEFAULT));
-                Message newMessage=new Message(0,dateFormat.toString(),currentUser,message);
+                Message newMessage=new Message("test",dateFormat.toString(),currentUser,message);
                 messageListView.add(newMessage);
             }
         });

@@ -4,14 +4,14 @@ import androidx.room.Embedded;
 
 public class Message {
 
-    private int id;
+    private String id;
     private String created;
 
     @Embedded
     private User sender;
     private String content;
 
-    public Message(int id, String created,User sender, String content){
+    public Message(String id, String created, User sender, String content){
         this.id=id;
         this.created=created;
         this.content=content;
@@ -22,7 +22,7 @@ public class Message {
         return content;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -34,7 +34,7 @@ public class Message {
         return sender;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

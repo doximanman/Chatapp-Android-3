@@ -38,7 +38,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         setContentView(binding.getRoot());
 
 
-        // hard-coded for now, until login is implemented.
+        // todo: implement login and provide the real user here,
+        //  with the username and JWT in shared storage.
         currentUser=new User("bond","james bondddddddd",imageToString(R.drawable.doubt));
 
         setUser(currentUser);
@@ -70,17 +71,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
             chat.putExtra("id",(int)id);
             startActivity(chat);
         });
-
-        // long press removes the chat
-        binding.lvChats.setOnItemLongClickListener(((parent, view, position, id) ->{
-            Thread tr = new Thread() {
-                public void run() {
-                    chatListView.delete(position);
-                }
-            };
-            tr.start();
-            return true;
-        }));
 
         // get chat list from room
         Thread tr = new Thread() {
@@ -114,11 +104,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
         if(name==null || name.equals(""))
             return;
-        String base64pfp = imageToString(R.drawable.mmmm);
-        ChatDetails chat1 = new ChatDetails(counter++,
-                new User(name, name, base64pfp),
-                null);
-        chatListView.add(currentUser,chat1);
+        chatListView.add(name);
     }
 
     @Override

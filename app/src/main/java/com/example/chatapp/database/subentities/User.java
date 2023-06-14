@@ -13,7 +13,10 @@ public class User implements Parcelable {
     public User(String username,String displayName,String profilePic){
         this.username=username;
         this.displayName=displayName;
-        this.profilePic=profilePic;
+
+
+            this.profilePic = profilePic;
+
     }
 
     public String getDisplayName() {
@@ -21,6 +24,9 @@ public class User implements Parcelable {
     }
 
     public String getProfilePic() {
+        // sometimes the format starts with "data:image...."
+        if(profilePic.startsWith("data"))
+            return profilePic.split(";base64,")[1];
         return profilePic;
     }
 
@@ -33,7 +39,9 @@ public class User implements Parcelable {
     }
 
     public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+
+            this.profilePic = profilePic;
+
     }
 
     public void setUsername(String username) {

@@ -1,31 +1,42 @@
 package com.example.chatapp.database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Chat {
 
     @PrimaryKey
-    private int id;
+    @NonNull
+    private String id;
 
 
     private List<User> users;
 
     private List<Message> messages;
 
-    public Chat(int id,List<User> users,List<Message> messages){
+    public Chat(@NonNull String id, List<User> users, List<Message> messages){
         this.id=id;
         this.users=users;
         this.messages=messages;
     }
 
-    public int getId() {
+    @Ignore
+    public Chat(@NonNull String id, List<User> users){
+        this.id=id;
+        this.users=users;
+        this.messages=new ArrayList<>();
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -49,7 +60,7 @@ public class Chat {
         messages.remove(msg);
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

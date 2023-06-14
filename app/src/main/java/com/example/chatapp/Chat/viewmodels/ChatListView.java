@@ -22,23 +22,15 @@ public class ChatListView extends AndroidViewModel {
 
     public ChatListView(Application application){
         super(application);
-        repository=new ChatListRepo(application.getApplicationContext());
+        repository=new ChatListRepo(application);
         chatList=repository.getAll();
     }
 
     public LiveData<List<ChatDetails>> get(){
         return chatList;
     }
-    public void add(User sender, ChatDetails cd){
-        repository.add(sender,cd);
-    }
-
-    public void delete(ChatDetails cd){
-        repository.delete(cd);
-    }
-    public void delete(int position){
-        ChatDetails cd= chatList.getValue().get(position);
-        repository.delete(cd);
+    public void add(String username){
+        repository.add(username);
     }
 
     public void reload(){
