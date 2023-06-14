@@ -25,24 +25,36 @@ public interface WebServiceAPI {
             this.password=password;
         }
     }
+    class Username{
+        String username;
+        public Username(String username){
+            this.username=username;
+        }
+    }
+    class Message{
+        String msg;
+        public Message(String msg){
+            this.msg=msg;
+        }
+    }
 
     @GET("Chats")
     Call<List<ChatDetails>> getChats(@Header("Authorization") String JWT);
 
     @POST("Chats")
-    Call<ChatDetails> newChat(@Header("Authorization") String JWT, @Body String username);
+    Call<ChatDetails> newChat(@Header("Authorization") String JWT, @Body Username username);
 
     @GET("Chats/{id}")
-    Call<Chat> getChat(@Header("Authorization") String JWT, @Path("id") int chatId);
+    Call<Chat> getChat(@Header("Authorization") String JWT, @Path("id") String chatId);
 
     @DELETE("Chats/{id}")
-    Call<Void> deleteChat(@Header("Authorization") String JWT, @Path("id") int chatId);
+    Call<Void> deleteChat(@Header("Authorization") String JWT, @Path("id") String chatId);
 
     @GET("Chats/{id}/Messages")
-    Call<List<Message>> getMessages(@Header("Authorization") String JWT, @Path("id") int chatId);
+    Call<List<Message>> getMessages(@Header("Authorization") String JWT, @Path("id") String chatId);
 
     @POST("Chats/{id}/Messages")
-    Call<Message> postMessage(@Header("Authorization") String JWT, @Body String msg);
+    Call<Message> postMessage(@Header("Authorization") String JWT, @Body Message msg);
 
     @POST("Tokens")
     Call<String> verify(@Body UsernamePassword usernamePassword);

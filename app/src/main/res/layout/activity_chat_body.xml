@@ -22,7 +22,7 @@
             android:backgroundTint="#00FFFFFF"
             android:foreground="@drawable/ic_goback" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/chatPFP"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -31,6 +31,7 @@
             android:layout_marginBottom="5dp"
             app:srcCompat="@drawable/doubt_background"
             android:layout_toEndOf="@+id/backBTN"
+            app:shapeAppearanceOverlay="@style/roundCornersImage"
             />
 
         <TextView

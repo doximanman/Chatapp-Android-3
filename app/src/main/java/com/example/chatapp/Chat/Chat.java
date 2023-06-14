@@ -20,6 +20,9 @@ import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivityChatBinding;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
@@ -27,7 +30,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
     private ActivityChatBinding binding;
 
     private ChatListAdapter adapter;
-    static int counter=0;
     User currentUser;
 
     @Override
@@ -67,8 +69,18 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         // open chat on click
         binding.lvChats.setOnItemClickListener((parent, view, position, id) -> {
             Intent chat=new Intent(this, ChatBody.class);
+            ChatDetails clickedChat=chatListView.get().getValue().get(position);
+
+            // pass profile pic in a file (too large to pass in intent)
+            File file=new File(getCacheDir(),"profilePic.txt");
+            try(FileWriter writer=new FileWriter(file)) {
+                writer.write(clickedChat.getUser().getProfilePic());
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            chat.putExtra("chatName",clickedChat.getUser().getDisplayName());
             chat.putExtra("Username",currentUser.getUsername());
-            chat.putExtra("id",(int)id);
+            chat.putExtra("id",chatListView.get().getValue().get(position).getId());
             startActivity(chat);
         });
 

@@ -6,19 +6,22 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Base64;
 import android.widget.ListView;
 
 import com.example.chatapp.Chat.adapters.MessageListAdapter;
-import com.example.chatapp.Chat.viewmodels.MessageListView;
+import com.example.chatapp.Chat.viewmodels.ChatView;
 import com.example.chatapp.R;
 import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.databinding.ActivityChatBodyBinding;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +30,7 @@ import java.util.Locale;
 
 public class ChatBody extends AppCompatActivity {
 
-    MessageListView messageListView;
+    ChatView chatView;
 
     private ActivityChatBodyBinding binding;
 
@@ -42,10 +45,27 @@ public class ChatBody extends AppCompatActivity {
         // gets intent extras (username of user and chatid)
         Intent chat=getIntent();
         String username=chat.getStringExtra("Username");
-        int id=chat.getIntExtra("id",0);
+        String chatName=chat.getStringExtra("chatName");
+        binding.chatName.setText(chatName);
+        String id=chat.getStringExtra("id");
 
-        messageListView=new ViewModelProvider(this).get(MessageListView.class);
-        messageListView.setChatID(id);
+        // chat pic
+        // get from file
+        File file=new File(getCacheDir(),"profilePic.txt");
+        String profilePic=null;
+        try(BufferedReader reader=new BufferedReader(new FileReader(file))){
+            profilePic=reader.readLine();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        assert profilePic!=null;
+        // decode base64 to bitmap
+        byte[] decodedString=Base64.decode(profilePic,Base64.DEFAULT);
+        Bitmap decoded=BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+        binding.chatPFP.setImageBitmap(decoded);
+
+        chatView =new ViewModelProvider(this).get(ChatView.class);
+        chatView.finishConstruction(id,username);
 
         // adapter to display messages properly
         adapter=new MessageListAdapter(new ArrayList<>(),username);
@@ -53,8 +73,8 @@ public class ChatBody extends AppCompatActivity {
         lvMessages.setAdapter(adapter);
 
         // whenever messages change - notify the adapter.
-        messageListView.get().observe(this,newMessages->{
-            adapter.setMsgList(newMessages);
+        chatView.get().observe(this, newChat->{
+            adapter.setMsgList(newChat.getMessages());
         });
 
         // go back button
@@ -77,9 +97,11 @@ public class ChatBody extends AppCompatActivity {
                 byte[] imageInByArray = byteArrayStream.toByteArray();
                 currentUser.setProfilePic(Base64.encodeToString(imageInByArray, Base64.DEFAULT));
                 Message newMessage=new Message("test",dateFormat.toString(),currentUser,message);
-                messageListView.add(newMessage);
+                chatView.add(newMessage);
             }
         });
 
     }
+
+
 }

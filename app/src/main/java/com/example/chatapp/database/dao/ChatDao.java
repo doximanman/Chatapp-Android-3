@@ -20,7 +20,7 @@ public interface ChatDao {
     List<ChatDetails> getChats();
 
     @Query("SELECT * FROM chat WHERE id = :id")
-    Chat getChat(int id);
+    Chat getChat(String id);
 
     @Query("SELECT * FROM chatdetails WHERE id=:id")
     ChatDetails getChatDetails(int id);
