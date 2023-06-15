@@ -12,9 +12,8 @@ import com.example.chatapp.database.subentities.User;
 @Entity
 public class ChatDetails {
 
-    @PrimaryKey(autoGenerate = true)
-    private long identifier;
-
+    @PrimaryKey
+    @NonNull
     private String id;
 
     @Embedded(prefix="usr_")
@@ -36,10 +35,7 @@ public class ChatDetails {
         this.lastMessage = null;
     }
 
-    public long getIdentifier() {
-        return identifier;
-    }
-
+    @NonNull
     public String getId() {
         return id;
     }
@@ -50,10 +46,6 @@ public class ChatDetails {
 
     public User getUser() {
         return user;
-    }
-
-    public void setIdentifier(long identifier) {
-        this.identifier = identifier;
     }
 
     public void setId(String id) {

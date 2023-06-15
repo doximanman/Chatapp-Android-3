@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+import androidx.room.Upsert;
 
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
@@ -23,7 +24,7 @@ public interface ChatDao {
     Chat getChat(String id);
 
     @Query("SELECT * FROM chatdetails WHERE id=:id")
-    ChatDetails getChatDetails(int id);
+    ChatDetails getChatDetails(String id);
 
     @Query("DELETE FROM chatdetails")
     void deletePreviews();
@@ -31,17 +32,11 @@ public interface ChatDao {
     @Query("DELETE FROM chat")
     void deleteChats();
 
-    @Insert
-    void insert(Chat... Chats);
+    @Upsert
+    void upsert(Chat... Chats);
 
-    @Insert
-    void insert(ChatDetails...chatDetails);
-
-    @Update
-    void update(Chat... Chats);
-
-    @Update
-    void update(ChatDetails... chatDetails);
+    @Upsert
+    void upsert(ChatDetails...chatDetails);
 
     @Delete
     void delete(Chat... Chats);

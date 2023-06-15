@@ -15,6 +15,7 @@ import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ChatRepo {
@@ -33,12 +34,12 @@ public class ChatRepo {
         chatData=new ChatData();
         this.username=username;
         api=new ChatAPI(chatData,dao,application,username);
-        reload();
     }
 
     private class ChatData extends MutableLiveData<Chat>{
         public ChatData(){
             super();
+            // placeholder chat
             setValue(new Chat("0",new ArrayList<>(),new ArrayList<>()));
         }
 
@@ -48,6 +49,7 @@ public class ChatRepo {
 
             new Thread(()->{
                 chatData.postValue(dao.getChat(chatID));
+                reload();
             }).start();
         }
     }
@@ -56,22 +58,8 @@ public class ChatRepo {
         return chatData;
     }
 
-    public void addMessage(Message msg){
-        if(msg==null)
-            return;
-        new Thread(()->{
-            Chat chat=chatData.getValue();
-            assert chat != null;
-
-            // add new message to the start
-            List<Message> msgList=chat.getMessages();
-            ArrayList<Message> newList = new ArrayList<>(msgList);
-            newList.add(0,msg);
-            chat.setMessages(newList);
-
-            chatData.postValue(chat);
-            dao.update(chat);
-        }).start();
+    public void addMessage(String message){
+        api.postMessage(message,chatID);
     }
 
     public void reload(){

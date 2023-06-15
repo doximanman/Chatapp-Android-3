@@ -31,9 +31,9 @@ public interface WebServiceAPI {
             this.username=username;
         }
     }
-    class Message{
+    class MessageBody{
         String msg;
-        public Message(String msg){
+        public MessageBody(String msg){
             this.msg=msg;
         }
     }
@@ -54,7 +54,7 @@ public interface WebServiceAPI {
     Call<List<Message>> getMessages(@Header("Authorization") String JWT, @Path("id") String chatId);
 
     @POST("Chats/{id}/Messages")
-    Call<Message> postMessage(@Header("Authorization") String JWT, @Body Message msg);
+    Call<Message> postMessage(@Header("Authorization") String JWT, @Body MessageBody msg, @Path("id") String chatId);
 
     @POST("Tokens")
     Call<String> verify(@Body UsernamePassword usernamePassword);

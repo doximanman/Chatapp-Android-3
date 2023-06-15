@@ -76,17 +76,16 @@
             android:foregroundTint="#03A9F4" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lvMessages"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMessages"
         android:layout_width="match_parent"
         android:stackFromBottom="true"
-        android:transcriptMode="normal"
         android:layout_height="0dp"
         android:divider="#00000000"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="0.507" />
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

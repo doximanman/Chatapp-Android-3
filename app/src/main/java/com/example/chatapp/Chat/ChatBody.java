@@ -2,6 +2,8 @@ package com.example.chatapp.Chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ListView;
 
 import com.example.chatapp.Chat.adapters.MessageListAdapter;
 import com.example.chatapp.Chat.viewmodels.ChatView;
@@ -26,7 +28,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -70,13 +74,28 @@ public class ChatBody extends AppCompatActivity {
         chatView.finishConstruction(id,username);
 
         // adapter to display messages properly
-        adapter=new MessageListAdapter(new ArrayList<>(),username);
-        ListView lvMessages=binding.lvMessages;
-        lvMessages.setAdapter(adapter);
+        adapter=new MessageListAdapter(getApplicationContext(),username);
+        RecyclerView rvMessages=binding.rvMessages;
+        rvMessages.setAdapter(adapter);
+        LinearLayoutManager layout=new LinearLayoutManager(this);
+        layout.setReverseLayout(true);
+        layout.setStackFromEnd(true);
+        rvMessages.setLayoutManager(layout);
+
+        rvMessages.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if(bottom<oldBottom)
+                rvMessages.smoothScrollToPosition(0);
+        });
 
         // whenever messages change - notify the adapter.
         chatView.get().observe(this, newChat->{
+            // redo adapter - everything needs new view (all the messages were pushed up)
+            rvMessages.setAdapter(null);
+            rvMessages.setLayoutManager(null);
+            rvMessages.setAdapter(adapter);
+            rvMessages.setLayoutManager(layout);
             adapter.setMsgList(newChat.getMessages());
+            rvMessages.smoothScrollToPosition(0);
         });
 
         // go back button
@@ -86,7 +105,7 @@ public class ChatBody extends AppCompatActivity {
         binding.sendButton.setOnClickListener(view->{
             if(!binding.messageInput.getText().toString().matches("/\\A\\s*\\z/")){
 
-                // content
+                /*// content
                 String message=binding.messageInput.getText().toString();
 
                 // created
@@ -111,9 +130,15 @@ public class ChatBody extends AppCompatActivity {
                 binding.messageInput.setText("");
                 // close keyboard
                 InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);*/
 
-                chatView.add(newMessage);
+                chatView.add(binding.messageInput.getText().toString());
+
+                // clear text
+                binding.messageInput.setText("");
+                // close keyboard
+                InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
 

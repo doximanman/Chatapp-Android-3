@@ -31,8 +31,8 @@ public class ChatView extends AndroidViewModel {
 
     public LiveData<Chat> get(){return chat;}
 
-    public void add(Message msg){
-        repository.addMessage(msg);
+    public void add(String message){
+        repository.addMessage(message);
     }
 
     public void reload(){

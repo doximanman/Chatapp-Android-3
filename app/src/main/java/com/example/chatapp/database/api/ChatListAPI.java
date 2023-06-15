@@ -101,12 +101,11 @@ public class ChatListAPI {
                         ChatDetails[] chatArray = chatList.toArray(new ChatDetails[0]);
 
                         // inserts all chats (placeholder chat for the inner chats)
-                        chatDao.insert(chatArray);
-                        chatDao.insert(chatList.stream().map(cd -> {
+                        chatDao.upsert(chatArray);
+                        chatDao.upsert(chatList.stream().map(cd -> {
                             List<User> users = new ArrayList<>();
                             users.add(cd.getUser());
-                            Chat newChat = new Chat(cd.getId(), users, new ArrayList<>());
-                            return newChat;
+                            return new Chat(cd.getId(), users, new ArrayList<>());
                         }).toArray(Chat[]::new));
                         chatListData.postValue(chatDao.getChats());
                     }).start();
@@ -136,8 +135,8 @@ public class ChatListAPI {
                     assert details != null;
                     users.add(details.getUser());
                     Chat newChat = new Chat(details.getId(), users);
-                    chatDao.insert(newChat);
-                    chatDao.insert(details);
+                    chatDao.upsert(newChat);
+                    chatDao.upsert(details);
 
                     // updates UI
                     List<ChatDetails> chatList = chatListData.getValue();
