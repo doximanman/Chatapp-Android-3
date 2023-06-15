@@ -128,21 +128,23 @@ public class ChatListAPI {
             @Override
             public void onResponse(@NonNull Call<ChatDetails> call, @NonNull Response<ChatDetails> response) {
                 if (response.isSuccessful()) {
-                    // creates new chat in the local database
+                    new Thread(()->{
+                        // creates new chat in the local database
 
-                    ChatDetails details = response.body();
-                    List<User> users = new ArrayList<>();
-                    assert details != null;
-                    users.add(details.getUser());
-                    Chat newChat = new Chat(details.getId(), users);
-                    chatDao.upsert(newChat);
-                    chatDao.upsert(details);
+                        ChatDetails details = response.body();
+                        List<User> users = new ArrayList<>();
+                        assert details != null;
+                        users.add(details.getUser());
+                        Chat newChat = new Chat(details.getId(), users);
+                        chatDao.upsert(newChat);
+                        chatDao.upsert(details);
 
-                    // updates UI
-                    List<ChatDetails> chatList = chatListData.getValue();
-                    assert chatList != null;
-                    chatList.add(details);
-                    chatListData.postValue(chatList);
+                        // updates UI
+                        List<ChatDetails> chatList = chatListData.getValue();
+                        assert chatList != null;
+                        chatList.add(details);
+                        chatListData.postValue(chatList);
+                    }).start();
                 }
             }
 

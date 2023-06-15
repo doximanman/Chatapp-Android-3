@@ -85,13 +85,15 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         });
 
         // get chat list from room
-        Thread tr = new Thread() {
-            public void run() {
-                chatListView.reload();
-            }
-        };
-        tr.start();
+        new Thread(()->{chatListView.reload();}).start();
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Thread(()->{chatListView.reload();}).start();
     }
 
     private void setUser(User user){

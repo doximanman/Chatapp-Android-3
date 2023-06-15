@@ -105,6 +105,9 @@ public class ChatBody extends AppCompatActivity {
         binding.sendButton.setOnClickListener(view->{
             if(!binding.messageInput.getText().toString().matches("/\\A\\s*\\z/")){
 
+
+                // old implementation (before api)
+
                 /*// content
                 String message=binding.messageInput.getText().toString();
 
