@@ -17,10 +17,10 @@ function MessageSender({user,chat,JWT,setMessages,socket}){
         // only sends messages with non-whitespace characters.
         if (/\S/.test(input)) {
 
+
+
             // sends it
             const message=await SendMessage(input,chat.id,JWT)
-
-
             if(message===null){
                 // sent failed
                 return
@@ -28,9 +28,15 @@ function MessageSender({user,chat,JWT,setMessages,socket}){
 
             // adds the message locally and notifies the server to notify other users of the same chat to update their
             // last message on the left, and the message list if this chat is selected!
-            setMessages(messages=>[message,...messages]);
+
+            // message could have been received already by the socket!
+            await setMessages(messages=> {
+                if(messages[0].id===message.id)
+                    return messages;
+                return [message,...messages];
+            });
             const users = [user.username, chat.user.username]
-            socket.emit("newMessage", users, chat.id, message)
+            //socket.emit("newMessage", users, chat.id, message)
         }
         // resets message text box after send
         document.getElementById('message-input').value = '';

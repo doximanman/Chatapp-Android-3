@@ -10,7 +10,7 @@ import ChatBody from "./ChatBody";
 import {io} from "socket.io-client";
 import {serverAddress} from "../ServerQuery/ServerInfo";
 
-function Chat({user,setUser}) {
+function Chat({user, setUser}) {
 
     // used to navigate back to /login on logout
     const navigate = useNavigate();
@@ -39,12 +39,16 @@ function Chat({user,setUser}) {
 
         // chat created by another user updates this user's chat list
         const addChat = (chat) => {
+
+            if (!chat.classes)
+                chat.classes = ""
+
             // sets the chat list to be the old chats with the new chat, assuming that chat doesn't exist
             // (prevents the chat from being created twice on the user that created it)
             setChats(chats => {
-                if(chats.filter(CHAT=>CHAT.id===chat.id).length>0)
+                if (chats.filter(CHAT => CHAT.id === chat.id).length > 0)
                     return chats
-                return [...chats,chat]
+                return [...chats, chat]
             })
         }
 
@@ -60,7 +64,7 @@ function Chat({user,setUser}) {
         // connects the user to the socket.
 
         // if the user isn't defined (still loading...) don't connect.
-        if(!user)
+        if (!user)
             return
 
         if (!connected.current) {
@@ -71,15 +75,16 @@ function Chat({user,setUser}) {
             // updates chats on the left whenever a new message is received
             socket.on('newMessage', (chatID, msg) => {
                 setChats(chats => chats.map(chat => {
-                    // the new message belongs to the chat of id 'chatID'.
-                    // updates the last message of that chat ('setChats' causes a re-render)
-                    if (chat.id === chatID) {
-                        const newChat = {...chat}
-                        newChat.lastMessage = msg
-                        return newChat
-                    }
-                    return chat
-                }))
+                        // the new message belongs to the chat of id 'chatID'.
+                        // updates the last message of that chat ('setChats' causes a re-render)
+                        if (chat.id === chatID) {
+                            const newChat = {...chat}
+                            newChat.lastMessage = msg
+                            return newChat
+                        }
+                        return chat
+                    })
+                )
             })
         }
     }, [socket, setSelectedChat, connected, user])
@@ -96,11 +101,11 @@ function Chat({user,setUser}) {
 
 
         // JWT and user isn't defined - gets the user from the server.
-        const getUser=async(username,JWT)=>{
-            setUser(await GetUser(username,JWT))
+        const getUser = async (username, JWT) => {
+            setUser(await GetUser(username, JWT))
         }
-        if(sessionStorage.getItem('JWT')&&!user){
-            getUser(sessionStorage.getItem('username'),sessionStorage.getItem('JWT'))
+        if (sessionStorage.getItem('JWT') && !user) {
+            getUser(sessionStorage.getItem('username'), sessionStorage.getItem('JWT'))
         }
 
 
@@ -126,11 +131,13 @@ function Chat({user,setUser}) {
     return (
         <>
             <div id="main">
-                <Profile user={user} chats={chats} setChats={setChats} JWT={sessionStorage.getItem("JWT")} socket={socket}/>
+                <Profile user={user} chats={chats} setChats={setChats} JWT={sessionStorage.getItem("JWT")}
+                         socket={socket}/>
                 <ChatList chats={chats} setChats={setChats}/>
                 <div id="chat">
                     <ChatTitle chat={selectedChat}/>
-                    <ChatBody user={user} chat={selectedChat} JWT={sessionStorage.getItem("JWT")} setChats={setChats} socket={socket}/>
+                    <ChatBody user={user} chat={selectedChat} JWT={sessionStorage.getItem("JWT")} setChats={setChats}
+                              socket={socket}/>
                 </div>
             </div>
         </>

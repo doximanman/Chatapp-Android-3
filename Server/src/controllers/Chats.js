@@ -42,10 +42,12 @@ const createChat = async (req, res) => {
     const user = await UserService.getUserByUsername(req.body.username);
     const usernames=[res.locals.username,req.body.username];
 
-    // notify other user
-    Sockets.newChat(usernames,newChat);
+    const jsonChat={ id: newChat._id, user: { username: user.username, displayName: user.displayName, profilePic: user.profilePic } };
 
-    res.json({ id: newChat._id, user: { username: user.username, displayName: user.displayName, profilePic: user.profilePic } });
+    // notify other user
+    Sockets.newChat(usernames, jsonChat);
+
+    res.json(jsonChat);
 }
 
 // GET all the chats of the connected user

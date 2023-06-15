@@ -10,9 +10,8 @@ const createChat = async (sender, receiver) => {
     }
     // if he does - create new chat between the sender and receiver
     else {
-        const usernames=[sender,receiver];
-        const chat = new Chat({ usernames, messages: [] });
-        return chat.save();
+        const chat = new Chat({ users: [sender, receiver], messages: [] });
+        return await chat.save();
     }
 };
 
