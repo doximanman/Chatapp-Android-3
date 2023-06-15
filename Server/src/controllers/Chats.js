@@ -1,5 +1,6 @@
 const ChatService = require('../services/Chats');
 const UserService = require('../services/Users');
+const Sockets=require("./Sockets");
 // Use a library to perform the cryptographic operations
 const jwt = require("jsonwebtoken")
 const key = process.env.KEY;
@@ -39,6 +40,11 @@ const createChat = async (req, res) => {
         return res.status(404).send('No such user');
     }
     const user = await UserService.getUserByUsername(req.body.username);
+    const usernames=[res.locals.username,req.body.username];
+
+    // notify other user
+    Sockets.newChat(usernames,newChat);
+
     res.json({ id: newChat._id, user: { username: user.username, displayName: user.displayName, profilePic: user.profilePic } });
 }
 
@@ -84,6 +90,12 @@ const addMessageToChat = async (req, res) => {
     if (newMessage === 1) {
         return res.status(401).send("Unauthorized");
     }
+
+    // notify other user
+    const chat = await ChatService.getChatById(res.locals.username, req.params.id);
+    const usernames=chat.users.map(user=>user.username);
+    Sockets.newMessage(usernames,req.params.id,newMessage);
+
     res.json(newMessage);
 };
 

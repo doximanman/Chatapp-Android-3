@@ -6,6 +6,7 @@
 /build
 /Server/node_modules
 /captures
+/Client/node_modules
 .externalNativeBuild
 .cxx
 local.properties

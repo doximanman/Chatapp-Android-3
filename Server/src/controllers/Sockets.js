@@ -1,6 +1,5 @@
 
 // list of {name,socket} jsons for each user that logs in.
-const {getUserByUsername} = require("./Users");
 let socketUsers= [];
 
 // helper function to find user from username
@@ -43,9 +42,10 @@ const disconnect=(socket)=>{
     }
 }
 
-const newMessage=(socket,usernames,chatID,msg)=>{
+const newMessage=(usernames,chatID,msg)=>{
     // find all relevant users
     let users=[];
+    const senderUsername=msg.sender.username;
     socketUsers.forEach((item)=>{
         if(usernames.includes(item.user.username))
             users.push(item)
@@ -59,7 +59,7 @@ const newMessage=(socket,usernames,chatID,msg)=>{
     }
 }
 
-const newChat=(socket,usernames,chat)=>{
+const newChat=(usernames,chat)=>{
     // find relevant users
     let users=[];
     socketUsers.forEach((item)=>{
