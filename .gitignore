@@ -4,6 +4,7 @@
 /.idea/
 .DS_Store
 /build
+/Server/node_modules
 /captures
 .externalNativeBuild
 .cxx
