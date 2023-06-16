@@ -15,9 +15,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Intent chat=new Intent(this, Chat.class);
-        chat.putExtra("username","hello");
-        chat.putExtra("JWT","aabbcc");
+        Intent chat = new Intent(this, Chat.class);
+        chat.putExtra("username", "hello");
+        chat.putExtra("JWT", "aabbcc");
         startActivity(chat);
     }
 }
