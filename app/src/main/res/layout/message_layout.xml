@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messageRoot"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#CAE4EF"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1.5">
+
+        <RelativeLayout
+            android:layoutDirection="ltr"
+            android:id="@+id/mainMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#CAE4EF">
+
+            <TextView
+                android:id="@+id/messageTXT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="15dp"
+                android:text="@string/placeholderMessage"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/messageTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:text="@string/msgTimePlaceholder"
+                android:textSize="14sp"
+                android:layout_alignRight="@id/messageTXT"
+                android:layout_alignBottom="@+id/messageTXT"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textBubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainMessage"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="-15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="-5dp"
+            android:text="@string/triangle"
+            android:textColor="#C9E3EE"
+            android:textSize="25sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+</LinearLayout>
