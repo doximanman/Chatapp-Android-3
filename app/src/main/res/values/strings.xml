@@ -52,8 +52,11 @@
     <string name="closeDialog">CLOSE</string>
     <string name="logout">Logout</string>
     <string name="username">USERNAME</string>
-    <string name="messageSenderHint">Type your message here...</string>
+    <string name="messageSenderHint">Type your message here</string>
     <string name="placeholderMessage">hello</string>
     <string name="msgTimePlaceholder">00:00</string>
     <string name="triangle">▼</string>
+    <string name="password">Password</string>
+    <string name="login_btn_str">Login</string>
+    <string name="logo">Logo</string>
 </resources>
