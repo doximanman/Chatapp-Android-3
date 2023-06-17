@@ -11,11 +11,11 @@ public class Message {
     private User sender;
     private String content;
 
-    public Message(String id, String created, User sender, String content){
-        this.id=id;
-        this.created=created;
-        this.content=content;
-        this.sender=sender;
+    public Message(String id, String created, User sender, String content) {
+        this.id = id;
+        this.created = created;
+        this.content = content;
+        this.sender = sender;
     }
 
     public String getContent() {
@@ -51,11 +51,11 @@ public class Message {
         this.created = created;
     }
 
-    public boolean isSender(User user2){
+    public boolean isSender(User user2) {
         return sender.getUsername().equals(user2.getUsername());
     }
 
-    public boolean isSender(String username){
+    public boolean isSender(String username) {
         return sender.getUsername().equals(username);
     }
 }

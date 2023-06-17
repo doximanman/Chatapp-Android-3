@@ -59,4 +59,5 @@
     <string name="password">Password</string>
     <string name="login_btn_str">Login</string>
     <string name="logo">Logo</string>
+    <string name="username_hint">Username</string>
 </resources>

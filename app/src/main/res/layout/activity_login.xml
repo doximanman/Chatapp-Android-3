@@ -32,7 +32,9 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1dp">
+        tools:layout_editor_absoluteX="1dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp">
 
 
         <EditText
@@ -41,16 +43,17 @@
             android:layout_height="wrap_content"
             android:autofillHints="Username"
             android:ems="10"
-            android:hint="@string/username"
+            android:hint="@string/username_hint"
             android:inputType="text"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            />
 
 
         <EditText
             android:id="@+id/Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="Username"
+            android:autofillHints="Password"
             android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword"

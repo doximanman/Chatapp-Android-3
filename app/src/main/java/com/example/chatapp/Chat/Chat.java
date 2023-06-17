@@ -42,7 +42,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
         // todo: implement login and provide the real user here,
         //  with the username and JWT in shared storage.
-        currentUser=new User("hello","james bondddddddd",imageToString(R.drawable.doubt));
+        currentUser = new User("hello", "password", "james bondddddddd", imageToString(R.drawable.doubt));
 
         setUser(currentUser);
 
@@ -61,31 +61,33 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         });
 
         // open dialog for add button
-        binding.addChat.setOnClickListener(view->{
-            DialogFragment dialog=new AddChat();
-            dialog.show(getSupportFragmentManager(),"AddChat");
+        binding.addChat.setOnClickListener(view -> {
+            DialogFragment dialog = new AddChat();
+            dialog.show(getSupportFragmentManager(), "AddChat");
         });
 
         // open chat on click
         binding.lvChats.setOnItemClickListener((parent, view, position, id) -> {
-            Intent chat=new Intent(this, ChatBody.class);
-            ChatDetails clickedChat=chatListView.get().getValue().get(position);
+            Intent chat = new Intent(this, ChatBody.class);
+            ChatDetails clickedChat = chatListView.get().getValue().get(position);
 
             // pass profile pic in a file (too large to pass in intent)
-            File file=new File(getCacheDir(),"profilePic.txt");
-            try(FileWriter writer=new FileWriter(file)) {
+            File file = new File(getCacheDir(), "profilePic.txt");
+            try (FileWriter writer = new FileWriter(file)) {
                 writer.write(clickedChat.getUser().getProfilePic());
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            chat.putExtra("chatName",clickedChat.getUser().getDisplayName());
-            chat.putExtra("Username",currentUser.getUsername());
-            chat.putExtra("id",chatListView.get().getValue().get(position).getId());
+            chat.putExtra("chatName", clickedChat.getUser().getDisplayName());
+            chat.putExtra("Username", currentUser.getUsername());
+            chat.putExtra("id", chatListView.get().getValue().get(position).getId());
             startActivity(chat);
         });
 
         // get chat list from room
-        new Thread(()->{chatListView.reload();}).start();
+        new Thread(() -> {
+            chatListView.reload();
+        }).start();
 
     }
 
@@ -93,19 +95,21 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
     @Override
     protected void onResume() {
         super.onResume();
-        new Thread(()->{chatListView.reload();}).start();
+        new Thread(() -> {
+            chatListView.reload();
+        }).start();
     }
 
-    private void setUser(User user){
+    private void setUser(User user) {
 
         // decodes pfp from base64 to bitmap
-        byte[] pfpToBytes=Base64.decode(user.getProfilePic(), Base64.DEFAULT);
-        binding.userPFP.setImageBitmap(BitmapFactory.decodeByteArray(pfpToBytes,0,pfpToBytes.length));
+        byte[] pfpToBytes = Base64.decode(user.getProfilePic(), Base64.DEFAULT);
+        binding.userPFP.setImageBitmap(BitmapFactory.decodeByteArray(pfpToBytes, 0, pfpToBytes.length));
 
         binding.userName.setText(user.getDisplayName());
     }
 
-    private String imageToString(int source){
+    private String imageToString(int source) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), source);
         ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
@@ -116,7 +120,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
     @Override
     public void onAddClick(DialogFragment dialog, String name) {
 
-        if(name==null || name.equals(""))
+        if (name == null || name.equals(""))
             return;
         chatListView.add(name);
     }

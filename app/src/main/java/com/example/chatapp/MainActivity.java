@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent login=new Intent(this, Login.class);
+        Intent login = new Intent(this, Login.class);
         startActivity(login);
     }
 
