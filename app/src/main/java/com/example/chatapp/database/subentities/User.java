@@ -26,7 +26,7 @@ public class User implements Parcelable {
     private String profilePic;
 
 
-    public User(String username, String password, String displayName, String profilePic) {
+    public User(@NonNull String username, String password, String displayName, String profilePic) {
         this.username = username;
         this.password = password;
         this.displayName = displayName;
@@ -44,7 +44,7 @@ public class User implements Parcelable {
         return profilePic;
     }
 
-    public String getUsername() {
+    public @NonNull String getUsername() {
         return username;
     }
 
@@ -58,7 +58,7 @@ public class User implements Parcelable {
 
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NonNull String username) {
         this.username = username;
     }
 

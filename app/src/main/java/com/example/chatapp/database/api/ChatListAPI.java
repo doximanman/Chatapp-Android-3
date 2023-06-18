@@ -53,7 +53,7 @@ public class ChatListAPI {
 
         // todo: JWT should already be in shared preferences. After implementing login,
         //  remove this line.
-        getToken("hello", "Helloworld1!");
+//        getToken("hello", "Helloworld1!");
     }
 
     public void getToken(String username, String password) {

@@ -17,24 +17,29 @@ import retrofit2.http.Path;
 
 public interface WebServiceAPI {
 
-    class UsernamePassword{
+    class UsernamePassword {
         String username;
         String password;
-        public UsernamePassword(String username,String password){
-            this.username=username;
-            this.password=password;
+
+        public UsernamePassword(String username, String password) {
+            this.username = username;
+            this.password = password;
         }
     }
-    class Username{
+
+    class Username {
         String username;
-        public Username(String username){
-            this.username=username;
+
+        public Username(String username) {
+            this.username = username;
         }
     }
-    class MessageBody{
+
+    class MessageBody {
         String msg;
-        public MessageBody(String msg){
-            this.msg=msg;
+
+        public MessageBody(String msg) {
+            this.msg = msg;
         }
     }
 

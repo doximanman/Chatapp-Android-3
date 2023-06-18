@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase;
 import com.example.chatapp.database.dao.UserDao;
 import com.example.chatapp.database.subentities.User;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 2)
 public abstract class UserDB extends RoomDatabase {
     public abstract UserDao userDao();
 }
