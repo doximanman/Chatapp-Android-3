@@ -68,7 +68,7 @@ public class ChatListAPI {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("JWT", response.body());
                     editor.apply();
-                    getChats();
+//                    getChats();
                 } else {
                     // todo user not found
                 }
@@ -120,7 +120,7 @@ public class ChatListAPI {
     }
 
     public void newChat(String username) {
-        WebServiceAPI.Username userName=new WebServiceAPI.Username(username);
+        WebServiceAPI.Username userName = new WebServiceAPI.Username(username);
 
         String JWT = prefs.getString("JWT", "");
         Call<ChatDetails> call = webServiceAPI.newChat("Bearer " + JWT, userName);
@@ -128,7 +128,7 @@ public class ChatListAPI {
             @Override
             public void onResponse(@NonNull Call<ChatDetails> call, @NonNull Response<ChatDetails> response) {
                 if (response.isSuccessful()) {
-                    new Thread(()->{
+                    new Thread(() -> {
                         // creates new chat in the local database
 
                         ChatDetails details = response.body();
