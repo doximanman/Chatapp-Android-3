@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.chatapp.Chat.Chat;
 import com.example.chatapp.R;
+import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.api.WebServiceAPI;
 import com.example.chatapp.database.subentities.User;
 import com.google.gson.GsonBuilder;
@@ -28,8 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
-
-
+    private UserAPI userAPI;
 
 
     private String imageToString(int source) {
@@ -45,8 +45,23 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        userAPI = new UserAPI(getApplication());
+
+        EditText userNameEditText = findViewById(R.id.userName);
+        EditText passwordEditText = findViewById(R.id.Password);
         Button login_btn = findViewById(R.id.button);
-//        login_btn.setOnClickListener(view -> {
+
+        login_btn.setOnClickListener(view -> {
+            if (userAPI.ValidateUser(userNameEditText.getText().toString(), passwordEditText.getText().toString())) {
+                Intent chat = new Intent(this, Chat.class);
+                startActivity(chat);
+            }
+            else {
+                TextView wrongMsg = findViewById(R.id.textView2);
+                wrongMsg.setText("Wrong username or password, please try again.");
+            }
+        });
 //            db = Room.databaseBuilder(getApplicationContext(),
 //                            UserDB.class, "UserDB")
 //                    .allowMainThreadQueries()

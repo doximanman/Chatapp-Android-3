@@ -37,7 +37,7 @@ public class UserAPI {
         webServiceAPI = retrofit.create(WebServiceAPI.class);
         prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
     }
-
+/*
     public boolean ValidateUser(String username, String password) {
         WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(username, password);
         Call<String> call = webServiceAPI.verify(usernamePassword);
@@ -53,12 +53,53 @@ public class UserAPI {
             } else {
                 return false;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Handle the IOException if the execution fails
             return false;
         }
         return false;
     }
+*/
+public boolean ValidateUser(String username, String password) {
+    WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(username, password);
+    Call<String> call = webServiceAPI.verify(usernamePassword);
+    final boolean[] found = new boolean[1];
+//    found[0] = true;
+    call.enqueue(new Callback<String>() {
+        @Override
+        public void onResponse(Call<String> call, Response<String> response) {
+
+            if (response.isSuccessful()) {
+                class ThreadRun extends Thread {
+                    @Override
+                    public void run() {
+                        if (response.body() != null) {
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("JWT", response.body());
+                            editor.apply();
+                            found[0] = true;
+                        }
+                        else {
+                            found[0] = false;
+                        }
+                    }
+                }
+                ThreadRun threadRun = new ThreadRun();
+                threadRun.start();
+                try {
+                    threadRun.join();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        @Override
+        public void onFailure(Call<String> call, Throwable t) {
+            found[0] = false;
+        }
+    });
+    return found[0]; // Return a default value if needed
+}
 
 //    public void getUser(String username) {
 //        String JWT = prefs.getString("JWT", "");

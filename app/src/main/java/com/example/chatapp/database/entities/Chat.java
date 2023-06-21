@@ -18,7 +18,6 @@ public class Chat {
     @NonNull
     private String id;
 
-
     private List<User> users;
 
     private List<Message> messages;
