@@ -3,6 +3,7 @@ package com.example.chatapp.database.api;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.Message;
+import com.example.chatapp.database.subentities.User;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -63,4 +64,10 @@ public interface WebServiceAPI {
 
     @POST("Tokens")
     Call<String> verify(@Body UsernamePassword usernamePassword);
+
+    @GET("Users/{username}")
+    Call<User> getUser(@Header("Authorization") String JWT, @Path("username") String username);
+
+    @POST("Users")
+    Call<User> postUser(@Body User user);
 }
