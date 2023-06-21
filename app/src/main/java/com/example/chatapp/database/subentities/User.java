@@ -4,33 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity
 public class User implements Parcelable {
-    @PrimaryKey
-    @NonNull
     private String username;
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    private String password;
     private String displayName;
     private String profilePic;
 
-
-    public User(@NonNull String username, String password, String displayName, String profilePic) {
+    public User(String username, String displayName, String profilePic) {
         this.username = username;
-        this.password = password;
         this.displayName = displayName;
         this.profilePic = profilePic;
+
     }
 
     public String getDisplayName() {
@@ -44,7 +28,7 @@ public class User implements Parcelable {
         return profilePic;
     }
 
-    public @NonNull String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -58,7 +42,7 @@ public class User implements Parcelable {
 
     }
 
-    public void setUsername(@NonNull String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 

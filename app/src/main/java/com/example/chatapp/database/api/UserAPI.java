@@ -13,6 +13,7 @@ import com.example.chatapp.database.subentities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.sql.Struct;
 
 import retrofit2.Call;
@@ -23,9 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserAPI {
     Retrofit retrofit;
-
     WebServiceAPI webServiceAPI;
-
     SharedPreferences prefs;
 
     public UserAPI(Application application) {
@@ -41,62 +40,48 @@ public class UserAPI {
 
     public boolean ValidateUser(String username, String password) {
         WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(username, password);
-        final boolean[] isFound = new boolean[1];
         Call<String> call = webServiceAPI.verify(usernamePassword);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        isFound[0] = true;
-                    }
-                } else {
-                    isFound[0] = false;
+        try {
+            Response<String> response = call.execute();
+            if (response.isSuccessful()) {
+                if (response.body() != null) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("JWT", response.body());
+                    editor.apply();
+                    return true;
                 }
+            } else {
+                return false;
             }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                isFound[0] = false;
-            }
-        });
-        return isFound[0];
+        } catch (IOException e) {
+            // Handle the IOException if the execution fails
+            return false;
+        }
+        return false;
     }
 
-    public void getUser(String username) {
-        String JWT = prefs.getString("JWT", "");
-        Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                if (response.isSuccessful()) {
-                    // dont know what to do
+//    public void getUser(String username) {
+//        String JWT = prefs.getString("JWT", "");
+//        Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
+//
+//        call.enqueue(new Callback<Chat>() {
+//            @Override
+//            public void onResponse(@NonNull Call<Chat> call, @NonNull Response<Chat> response) {
+//                if (response.isSuccessful()) {
 //                    new Thread(() -> {
-
-//                        // updates the new chat in the dao
-//                        Chat newChat = response.body();
-//                        chatDao.upsert(newChat);
 //
-//                        // updates the chat preview in the dao
-//                        ChatDetails cd = chatDao.getChatDetails(chatId);
-//                        assert newChat != null;
-//                        if (newChat.getMessages().size() > 0) {
-//                            cd.setLastMessage(newChat.getMessages().get(0));
-//                        }
-//                        chatDao.upsert(cd);
 //
-//                        chatData.postValue(newChat);
-
 //                    }).start();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-            }
-        });
-
-    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<Chat> call, @NonNull Throwable t) {
+//
+//            }
+//        });
+//
+//
+//    }
 
 }

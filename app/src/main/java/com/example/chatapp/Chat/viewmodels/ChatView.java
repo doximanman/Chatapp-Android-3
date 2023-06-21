@@ -12,30 +12,32 @@ import com.example.chatapp.database.subentities.Message;
 public class ChatView extends AndroidViewModel {
     ChatRepo repository;
     private LiveData<Chat> chat;
-    String chatId=null;
-    String username=null;
+    String chatId = null;
+    String username = null;
 
-    public ChatView(Application application){
+    public ChatView(Application application) {
         // half a constructor (needs chatID and user)
         super(application);
     }
 
     public void finishConstruction(String chatId, String username) {
         // rest of the constructor
-        this.chatId=chatId;
-        this.username=username;
+        this.chatId = chatId;
+        this.username = username;
 
-        repository=new ChatRepo(getApplication(),chatId,username);
-        chat=repository.get();
+        repository = new ChatRepo(getApplication(), chatId, username);
+        chat = repository.get();
     }
 
-    public LiveData<Chat> get(){return chat;}
+    public LiveData<Chat> get() {
+        return chat;
+    }
 
-    public void add(String message){
+    public void add(String message) {
         repository.addMessage(message);
     }
 
-    public void reload(){
+    public void reload() {
         repository.reload();
     }
 

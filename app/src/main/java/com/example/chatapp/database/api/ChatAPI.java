@@ -29,7 +29,6 @@ public class ChatAPI {
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
     SharedPreferences prefs;
-
     String username;
 
     public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username) {

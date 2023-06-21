@@ -58,7 +58,6 @@ public class ChatListAPI {
 
     public void getToken(String username, String password) {
         WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(username, password);
-
         Call<String> call = webServiceAPI.verify(usernamePassword);
         // we need the token so the request is synchronous!
         call.enqueue(new Callback<String>() {

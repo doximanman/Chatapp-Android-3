@@ -60,4 +60,10 @@
     <string name="login_btn_str">Login</string>
     <string name="logo">Logo</string>
     <string name="username_hint">Username</string>
+    <string name="login_to_chatapp">Login to CHATAPP!</string>
+    <string name="register_to_chatapp">Register to CHATAPP!</string>
+    <string name="repeatpassword">RepeatPassword</string>
+    <string name="displayname">DisplayName</string>
+    <string name="register">Register</string>
+    <string name="upload_prfpic">Uplod Profile Picture</string>
 </resources>

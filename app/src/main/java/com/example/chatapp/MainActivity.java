@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.chatapp.Login.Login;
+import com.example.chatapp.Register.Register;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent login = new Intent(this, Login.class);
+        Intent login = new Intent(this, Register.class);
         startActivity(login);
     }
 

@@ -16,22 +16,22 @@ public class ChatDetails {
     @NonNull
     private String id;
 
-    @Embedded(prefix = "usr_")
+    @Embedded(prefix="usr_")
     private User user;
 
-    @Embedded(prefix = "msg_")
+    @Embedded(prefix="msg_")
     private Message lastMessage;
 
-    public ChatDetails(@NonNull String id, User user, Message lastMessage) {
-        this.id = id;
-        this.user = user;
+    public ChatDetails(@NonNull String id, User user, Message lastMessage){
+        this.id=id;
+        this.user=user;
         this.lastMessage = lastMessage;
     }
 
     @Ignore
-    public ChatDetails(@NonNull String id, User user) {
-        this.id = id;
-        this.user = user;
+    public ChatDetails(@NonNull String id, User user){
+        this.id=id;
+        this.user=user;
         this.lastMessage = null;
     }
 

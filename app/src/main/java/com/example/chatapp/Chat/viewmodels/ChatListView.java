@@ -20,20 +20,21 @@ public class ChatListView extends AndroidViewModel {
 
     private LiveData<List<ChatDetails>> chatList;
 
-    public ChatListView(Application application){
+    public ChatListView(Application application) {
         super(application);
-        repository=new ChatListRepo(application);
-        chatList=repository.getAll();
+        repository = new ChatListRepo(application);
+        chatList = repository.getAll();
     }
 
-    public LiveData<List<ChatDetails>> get(){
+    public LiveData<List<ChatDetails>> get() {
         return chatList;
     }
-    public void add(String username){
+
+    public void add(String username) {
         repository.add(username);
     }
 
-    public void reload(){
+    public void reload() {
         repository.reload();
     }
 
