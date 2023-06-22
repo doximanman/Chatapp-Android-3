@@ -44,30 +44,30 @@ public interface WebServiceAPI {
         }
     }
 
-    @GET("Chats")
+    @GET("/api/Chats")
     Call<List<ChatDetails>> getChats(@Header("Authorization") String JWT);
 
-    @POST("Chats")
+    @POST("/api/Chats")
     Call<ChatDetails> newChat(@Header("Authorization") String JWT, @Body Username username);
 
-    @GET("Chats/{id}")
+    @GET("/api/Chats/{id}")
     Call<Chat> getChat(@Header("Authorization") String JWT, @Path("id") String chatId);
 
-    @DELETE("Chats/{id}")
+    @DELETE("/api/Chats/{id}")
     Call<Void> deleteChat(@Header("Authorization") String JWT, @Path("id") String chatId);
 
-    @GET("Chats/{id}/Messages")
+    @GET("/api/Chats/{id}/Messages")
     Call<List<Message>> getMessages(@Header("Authorization") String JWT, @Path("id") String chatId);
 
-    @POST("Chats/{id}/Messages")
+    @POST("/api/Chats/{id}/Messages")
     Call<Message> postMessage(@Header("Authorization") String JWT, @Body MessageBody msg, @Path("id") String chatId);
 
-    @POST("Tokens")
+    @POST("/api/Tokens")
     Call<String> verify(@Body UsernamePassword usernamePassword);
 
-    @GET("Users/{username}")
+    @GET("/api/Users/{username}")
     Call<User> getUser(@Header("Authorization") String JWT, @Path("username") String username);
 
-    @POST("Users")
+    @POST("/api/Users")
     Call<User> postUser(@Body User user);
 }

@@ -39,7 +39,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         // todo: implement login and provide the real user here,
         //  with the username and JWT in shared storage.
         currentUser = new User("hello", "james bondddddddd", imageToString(R.drawable.doubt));

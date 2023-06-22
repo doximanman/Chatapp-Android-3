@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.chatapp.R;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
@@ -45,7 +46,8 @@ public class ChatListAPI {
         Gson gson = new GsonBuilder().setLenient().create();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.143:5000/api/")
+                .baseUrl("http://" +
+                        R.string.serverip)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);

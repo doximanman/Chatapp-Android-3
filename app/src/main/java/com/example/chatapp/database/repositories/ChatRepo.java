@@ -45,7 +45,6 @@ public class ChatRepo {
         @Override
         protected void onActive() {
             super.onActive();
-
             new Thread(() -> {
                 chatData.postValue(dao.getChat(chatID));
                 reload();

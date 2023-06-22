@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.chatapp.R;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
@@ -37,15 +38,16 @@ public class ChatAPI {
         this.username = username;
 
         // Gson builder
-            Gson gson = new GsonBuilder().setLenient().create();
+        Gson gson = new GsonBuilder().setLenient().create();
 
-            retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.143:5000/api/")
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
-            webServiceAPI = retrofit.create(WebServiceAPI.class);
-            prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
-        }
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://" +
+                        R.string.serverip)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        webServiceAPI = retrofit.create(WebServiceAPI.class);
+        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+    }
 
     public void getChat(String chatId) {
         String JWT = prefs.getString("JWT", "");

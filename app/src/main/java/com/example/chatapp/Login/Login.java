@@ -1,6 +1,9 @@
 package com.example.chatapp.Login;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
@@ -21,6 +24,7 @@ import com.example.chatapp.database.subentities.User;
 import com.google.gson.GsonBuilder;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -31,7 +35,6 @@ import retrofit2.Response;
 public class Login extends AppCompatActivity {
     private UserAPI userAPI;
 
-
     private String imageToString(int source) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), source);
         ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
@@ -40,27 +43,31 @@ public class Login extends AppCompatActivity {
         return Base64.encodeToString(imageInByArray, Base64.DEFAULT);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        userAPI = new UserAPI(getApplication());
+        MutableLiveData<String> jwt = new MutableLiveData<String>("");
+        userAPI = new UserAPI(getApplication(), jwt);
 
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
         Button login_btn = findViewById(R.id.button);
+        Intent chat = new Intent(this, Chat.class);
 
         login_btn.setOnClickListener(view -> {
-            if (userAPI.ValidateUser(userNameEditText.getText().toString(), passwordEditText.getText().toString())) {
-                Intent chat = new Intent(this, Chat.class);
-                startActivity(chat);
-            }
-            else {
-                TextView wrongMsg = findViewById(R.id.textView2);
-                wrongMsg.setText("Wrong username or password, please try again.");
-            }
+            userAPI.ValidateUser(userNameEditText.getText().toString(), passwordEditText.getText().toString());
+            jwt.observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    if (!(Objects.equals(s, "") || Objects.equals(s, "Failed"))) {
+                        startActivity(chat);
+                    } else  if (Objects.equals(s, "Failed")){
+                        TextView wrongMsg = findViewById(R.id.textView2);
+                        wrongMsg.setText(R.string.wrong_credentials);
+                    }
+                }
+            });
         });
 //            db = Room.databaseBuilder(getApplicationContext(),
 //                            UserDB.class, "UserDB")
