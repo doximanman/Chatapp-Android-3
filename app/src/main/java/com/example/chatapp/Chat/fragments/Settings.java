@@ -34,27 +34,7 @@ public class Settings extends DialogFragment {
             throw new ClassCastException(getActivity().toString() + " must implement SettingsListener");
         }
     }
-
-    //    @NonNull
-//    @Override
-//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-//        // builder and inflater from the current activity
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        LayoutInflater inflater = requireActivity().getLayoutInflater();
-//
-//
-//
-//
-//        View view = inflater.inflate(R.layout.settings_layout, null, false);
-//        builder.setView(view)
-//                .setPositiveButton("Settings", ((dialog, which) -> {
-//                    listener.onSettingsClick(this, ((EditText) view.findViewById(R.id.serverIP)).getText().toString(), ((EditText) view.findViewById(R.id.serverPort)).getText().toString(), );
-//                }))
-//                .setNegativeButton(R.string.closeDialog, ((dialog, which) -> {
-//                    listener.onCloseClick(this);
-//                }));
-//        return builder.create();
-//    }
+    
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

@@ -65,7 +65,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             DialogFragment dialog = new AddChat();
             dialog.show(getSupportFragmentManager(), "AddChat");
         });
-        // open dialog for add button
+        // open dialog for setting
         binding.settingsBtn.setOnClickListener(view -> {
             DialogFragment dialog = new Settings();
             dialog.show(getSupportFragmentManager(), "Settings");
@@ -94,7 +94,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         }).start();
 
     }
-
 
     @Override
     protected void onResume() {
@@ -129,7 +128,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
     @Override
     public void onSettingsClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode) {
-
+        if
     }
 
     @Override
