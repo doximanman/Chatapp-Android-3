@@ -65,7 +65,11 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             DialogFragment dialog = new AddChat();
             dialog.show(getSupportFragmentManager(), "AddChat");
         });
-
+        // open dialog for add button
+        binding.settingsBtn.setOnClickListener(view -> {
+            DialogFragment dialog = new Settings();
+            dialog.show(getSupportFragmentManager(), "Settings");
+        });
         // open chat on click
         binding.lvChats.setOnItemClickListener((parent, view, position, id) -> {
             Intent chat = new Intent(this, ChatBody.class);
