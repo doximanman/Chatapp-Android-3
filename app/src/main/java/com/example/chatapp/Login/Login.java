@@ -48,13 +48,13 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         MutableLiveData<String> jwt = new MutableLiveData<String>("");
-        userAPI = new UserAPI(getApplication(), jwt);
+        String serverUrl = getString(R.string.serverip);
+        userAPI = new UserAPI(getApplication(), jwt, serverUrl);
 
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
         Button login_btn = findViewById(R.id.button);
         Intent chat = new Intent(this, Chat.class);
-
         login_btn.setOnClickListener(view -> {
             userAPI.ValidateUser(userNameEditText.getText().toString(), passwordEditText.getText().toString());
             jwt.observe(this, new Observer<String>() {

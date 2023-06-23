@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
     private ChatListView chatListView;
     private ActivityChatBinding binding;
-
     private ChatListAdapter adapter;
     User currentUser;
 
@@ -104,7 +103,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
         // decodes pfp from base64 to bitmap
         byte[] pfpToBytes = Base64.decode(user.getProfilePic(), Base64.DEFAULT);
         binding.userPFP.setImageBitmap(BitmapFactory.decodeByteArray(pfpToBytes, 0, pfpToBytes.length));
-
         binding.userName.setText(user.getDisplayName());
     }
 

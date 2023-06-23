@@ -68,4 +68,8 @@
     <string name="upload_prfpic">Uplod Profile Picture</string>
     <string name="wrong_credentials">Wrong username or password, please try again.</string>
     <string name="serverip">10.100.102.20:5000</string>
+    <string name="app_settings">App Settings</string>
+    <string name="server_ip">Server IP</string>
+    <string name="server_port">Server Port</string>
+    <string name="switch_theme_mode">Switch Theme Mode</string>
 </resources>

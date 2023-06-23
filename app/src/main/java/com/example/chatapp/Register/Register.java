@@ -18,12 +18,6 @@ public class Register extends AppCompatActivity {
     private static final int FILE_UPLOAD_REQUEST_CODE = 1;
     ActivityResultLauncher<Intent> someActivityResultLauncher;
 
-    //    public void onUploadButtonClick(View view) {
-//        // Open a file chooser or gallery intent to let the user select a file
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("image/*");
-//        startActivityForResult(intent, FILE_UPLOAD_REQUEST_CODE);
-//    }
     public void onUploadButtonClick(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");

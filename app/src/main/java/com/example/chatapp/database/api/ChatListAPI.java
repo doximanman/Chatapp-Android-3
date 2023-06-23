@@ -46,8 +46,7 @@ public class ChatListAPI {
         Gson gson = new GsonBuilder().setLenient().create();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://" +
-                        R.string.serverip)
+                .baseUrl("http://" + "10.100.102.20:5000")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
