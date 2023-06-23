@@ -72,4 +72,5 @@
     <string name="server_ip">Server IP</string>
     <string name="server_port">Server Port</string>
     <string name="switch_theme_mode">Switch Theme Mode</string>
+    <string name="todo">TODO</string>
 </resources>

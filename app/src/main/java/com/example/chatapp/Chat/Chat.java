@@ -13,7 +13,9 @@ import android.widget.ListView;
 
 import com.example.chatapp.Chat.adapters.ChatListAdapter;
 import com.example.chatapp.Chat.fragments.AddChat;
+import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
+import com.example.chatapp.Login.Login;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.R;
@@ -25,7 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
+public class Chat extends AppCompatActivity implements AddChat.AddChatListener, Settings.SettingsListener {
     private ChatListView chatListView;
     private ActivityChatBinding binding;
     private ChatListAdapter adapter;
@@ -116,11 +118,22 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener {
 
     @Override
     public void onAddClick(DialogFragment dialog, String name) {
-
         if (name == null || name.equals(""))
             return;
         chatListView.add(name);
     }
+
+    @Override
+    public void onSettingsClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode) {
+
+    }
+
+    @Override
+    public void onSettingsCloseClick(DialogFragment dialog) {
+        Intent login = new Intent(this, Login.class);
+        startActivity(login);
+    }
+
 
     @Override
     public void onCloseClick(DialogFragment dialog) {

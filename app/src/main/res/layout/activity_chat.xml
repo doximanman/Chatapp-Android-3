@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.Chat"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Chat.Chat">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -21,44 +21,42 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            app:srcCompat="@drawable/doubt_background"
             app:shapeAppearanceOverlay="@style/roundCornersImage"
-            />
+            app:srcCompat="@drawable/doubt_background" />
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="@string/username"
-            android:textSize="20sp"
-             android:layout_toEndOf="@+id/userPFP"
             android:layout_centerVertical="true"
-            android:maxLines="1"
+            android:layout_marginStart="5dp"
+            android:layout_toStartOf="@id/logoutBTN"
+            android:layout_toEndOf="@+id/userPFP"
             android:ellipsize="end"
-            android:layout_toStartOf="@id/logoutBTN"/>
+            android:maxLines="1"
+            android:text="@string/username"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/logoutBTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="5dp"
             android:backgroundTint="#FF3E3E"
             android:text="@string/logout"
             android:textColorHighlight="#FF0000"
             android:textColorLink="#FF0000"
-            android:textSize="20sp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <ListView
         android:id="@+id/lvChats"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintBottom_toBottomOf="parent">
-    </ListView>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addChat"
@@ -66,8 +64,21 @@
         android:layout_height="60dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:contentDescription="@string/todo"
         android:foreground="@drawable/ic_add_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settingsBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/todo"
+        android:foreground="@drawable/setting_icom_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
