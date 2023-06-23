@@ -3,5 +3,22 @@
     <style name="Base.Theme.Chatapp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorOnPrimary">@color/error</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/light_brown</item>
+        <item name="colorSecondaryVariant">@color/blue</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+<!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>-->
+        <!-- Customize your theme here. -->
+        <item name="background">@color/dark_background</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/white</item>
+<!--        <style name="Title" parent="TextAppearance.AppCompat">-->
+<!--            <item name="android:textColor">@color/pink</item>-->
+<!--            <item name="android:fontFamily">@font/bowlby_one_sc</item>-->
+<!--        </style>-->
     </style>
 </resources>

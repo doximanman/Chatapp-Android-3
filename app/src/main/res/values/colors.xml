@@ -2,4 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="silver">#CECCCC</color>
+    <color name="gray">#a5a5a5</color>
+    <color name="dark_gray">#595959</color>
+    <color name="login_btn">#07beb8</color>
+    <color name="green2">#3dccc7</color>
+    <color name="green3">#68d8d6</color>
+    <color name="green4">#9ceaef</color>
+    <color name="green5">#c4fff9</color>
+    <color name="login_title">#00AFAA</color>
+    <color name="light_blue">#cae9ff</color>
+    <color name="background">#bee9e8</color>
+    <color name="light_blue2">#bbdefb</color>
+    <color name="blue">#64b5f6</color>
+    <color name="error">#d81159</color>
+
+    <color name="light_brown">#eae4e9</color>
+    <color name="light_yellow">#fff1e6</color>
+    <color name="light_pink">#fde2e4</color>
+    <color name="pink">#fad2e1</color>
+    <color name="light_orange">#f7d1cd</color>
+    <color name="dark_background">#00072d</color>
 </resources>

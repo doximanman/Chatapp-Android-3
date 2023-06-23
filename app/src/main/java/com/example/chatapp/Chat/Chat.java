@@ -1,6 +1,7 @@
 package com.example.chatapp.Chat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -127,14 +128,20 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     }
 
     @Override
-    public void onSettingsClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode) {
-        if
+    public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode) {
+        if (darkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        Intent login = new Intent(this, Login.class);
+        startActivity(login);
     }
 
     @Override
     public void onSettingsCloseClick(DialogFragment dialog) {
-        Intent login = new Intent(this, Login.class);
-        startActivity(login);
+
     }
 
 

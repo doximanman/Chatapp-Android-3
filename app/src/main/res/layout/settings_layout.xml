@@ -29,7 +29,10 @@
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:textSize="20sp"
+        android:autofillHints="127.0.0.1" />
+
 
     <EditText
         android:id="@+id/serverPort"
@@ -41,7 +44,9 @@
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:textSize="20sp"
+        android:autofillHints="5000" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/material_switch"
@@ -51,7 +56,8 @@
         android:text="@string/switch_theme_mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"/>
 
 </LinearLayout>
 

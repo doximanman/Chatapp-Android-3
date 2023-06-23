@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class Settings extends DialogFragment {
     public interface SettingsListener {
-        public void onSettingsClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode);
+        public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode);
 
         public void onSettingsCloseClick(DialogFragment dialog);
     }
@@ -34,7 +33,7 @@ public class Settings extends DialogFragment {
             throw new ClassCastException(getActivity().toString() + " must implement SettingsListener");
         }
     }
-    
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -46,11 +45,11 @@ public class Settings extends DialogFragment {
         SwitchMaterial switchMaterial = view.findViewById(R.id.material_switch);
 
         builder.setView(view)
-                .setPositiveButton("Settings", ((dialog, which) -> {
+                .setPositiveButton("Apply", ((dialog, which) -> {
                     String serverIP = ((EditText) view.findViewById(R.id.serverIP)).getText().toString();
                     String serverPort = ((EditText) view.findViewById(R.id.serverPort)).getText().toString();
                     boolean isSwitchChecked = switchMaterial.isChecked();
-                    listener.onSettingsClick(this, serverIP, serverPort, isSwitchChecked);
+                    listener.onSettingsApplyClick(this, serverIP, serverPort, isSwitchChecked);
                 }))
                 .setNegativeButton(R.string.closeDialog, ((dialog, which) -> {
                     listener.onSettingsCloseClick(this);

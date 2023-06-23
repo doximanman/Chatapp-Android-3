@@ -10,10 +10,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.chatapp.Chat.Chat;
@@ -51,6 +54,16 @@ public class Login extends AppCompatActivity {
         String serverUrl = getString(R.string.serverip);
         userAPI = new UserAPI(getApplication(), jwt, serverUrl);
 
+//        FrameLayout frameLayout = findViewById(R.id.frame);
+//        // Apply background blur settings
+//        // Assuming you have a reference to the current window
+//        // Assuming you have a reference to the current window
+//        Window window = getWindow();
+//        window.setBackgroundDrawableResource(android.R.color.transparent); // Use a transparent color as the window background
+
+
+//        window.setBackgroundDrawableResource(android.R.color.transparent);
+
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
         Button login_btn = findViewById(R.id.button);
@@ -62,7 +75,7 @@ public class Login extends AppCompatActivity {
                 public void onChanged(String s) {
                     if (!(Objects.equals(s, "") || Objects.equals(s, "Failed"))) {
                         startActivity(chat);
-                    } else  if (Objects.equals(s, "Failed")){
+                    } else if (Objects.equals(s, "Failed")) {
                         TextView wrongMsg = findViewById(R.id.textView2);
                         wrongMsg.setText(R.string.wrong_credentials);
                     }
