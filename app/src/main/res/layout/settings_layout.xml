@@ -5,59 +5,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/dialog_background">
 
     <TextView
+        style="@style/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="@string/app_settings"
-        android:textSize="25sp"
         android:gravity="center"
+        android:text="@string/app_settings"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/serverIP"
+        style="@style/dialog_input"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:layout_marginTop="10dp"
+        android:autofillHints="127.0.0.1"
         android:ems="10"
         android:hint="@string/server_ip"
         android:inputType="text"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:textSize="20sp"
-        android:autofillHints="127.0.0.1" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/serverPort"
+        style="@style/dialog_input"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:layout_marginTop="10dp"
+        android:autofillHints="5000"
         android:ems="10"
         android:hint="@string/server_port"
         android:inputType="text"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:textSize="20sp"
-        android:autofillHints="5000" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/material_switch"
-        android:layout_marginTop="10dp"
+        style="@style/dialog_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="@string/switch_theme_mode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </LinearLayout>
 

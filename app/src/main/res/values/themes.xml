@@ -23,6 +23,18 @@
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
         <item name="android:backgroundTint">@color/green2</item>
     </style>
+    <style name="dialog_title">
+        <item name="android:textColor">@color/green2</item>
+        <item name="android:fontFamily">@font/baloo_bhaijaan</item>
+    </style>
+    <style name="dialog_background">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+    <style name="dialog_input" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/green3</item>
+        <item name="android:fontFamily">casual</item>
+        <item name="android:textColorHint">@color/green4</item>
+    </style>
     <style name="Base.Theme.Chatapp" parent="Theme.Material3.DayNight.NoActionBar">
     </style>
     <style name="Theme.Chatapp" parent="Base.Theme.Chatapp" />

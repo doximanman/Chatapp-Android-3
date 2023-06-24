@@ -24,6 +24,7 @@
     <color name="old_pink">#f5cac3</color>
     <color name="light_orange">#f7d1cd</color>
     <color name="dark_pink">#ffafcc</color>
-
-    <color name="dark_background">#00072d</color>
+    <color name="dark_blue">#2b2d42</color>
+    <color name="more_light_pink">#ffe6e8</color>
+    <color name="lighter_dark_blue">#8d99ae</color>
 </resources>
