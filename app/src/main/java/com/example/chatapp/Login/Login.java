@@ -1,6 +1,8 @@
 package com.example.chatapp.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -9,18 +11,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.chatapp.Chat.Chat;
+import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.R;
 import com.example.chatapp.database.api.UserAPI;
+import com.example.chatapp.databinding.ActivityLoginBinding;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements Settings.SettingsListener {
     private UserAPI userAPI;
 
     private String imageToString(int source) {
@@ -34,20 +39,20 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
+        ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // open dialog for setting
+        binding.settingsBtn.setOnClickListener(view -> {
+            DialogFragment dialog = new Settings();
+            dialog.show(getSupportFragmentManager(), "Settings");
+        });
+
+//        setContentView(R.layout.activity_login);
         MutableLiveData<String> jwt = new MutableLiveData<String>("");
         String serverUrl = getString(R.string.serverip);
         userAPI = new UserAPI(getApplication(), jwt, serverUrl);
-
-//        FrameLayout frameLayout = findViewById(R.id.frame);
-//        // Apply background blur settings
-//        // Assuming you have a reference to the current window
-//        // Assuming you have a reference to the current window
-//        Window window = getWindow();
-//        window.setBackgroundDrawableResource(android.R.color.transparent); // Use a transparent color as the window background
-
-
-//        window.setBackgroundDrawableResource(android.R.color.transparent);
 
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
@@ -58,58 +63,36 @@ public class Login extends AppCompatActivity {
             jwt.observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(String s) {
-                    if (!(Objects.equals(s, "") || Objects.equals(s, "Failed"))) {
-                        startActivity(chat);
-                    } else if (Objects.equals(s, "Failed")) {
-                        TextView wrongMsg = findViewById(R.id.textView2);
+                    TextView wrongMsg = findViewById(R.id.error_login);
+                    wrongMsg.setGravity(Gravity.CENTER);
+                    if (Objects.equals(s, "Failed")) {
                         wrongMsg.setText(R.string.wrong_credentials);
+                    } else if (Objects.equals(s, "ErrorServer")) {
+                        wrongMsg.setText(R.string.error_connecting_the_server);
+                    } else if (!Objects.equals(jwt.getValue(), "")){
+                        startActivity(chat);
                     }
                 }
             });
         });
-//            db = Room.databaseBuilder(getApplicationContext(),
-//                            UserDB.class, "UserDB")
-//                    .allowMainThreadQueries()
-//                    .fallbackToDestructiveMigration()
-//                    .build();
-//            userDao = db.userDao();
-//            EditText userNameEditText = findViewById(R.id.userName);
-//            EditText passwordEditText = findViewById(R.id.Password);
-////            userDao.insert(new User("hello1", "world1", "Hello", imageToString(R.drawable.doubt)));
-//            boolean is_user_exist = isUserExist(userNameEditText.getText().toString(), passwordEditText.getText().toString());
-//            if (is_user_exist) {
-//                Intent chat = new Intent(this, Chat.class);
-//                chat.putExtra("username", userNameEditText.getText().toString());
-//
-//                WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(userNameEditText.toString(), passwordEditText.toString());
-//                Call<String> call = new Retrofit.Builder()
-//                        .baseUrl("http://192.168.1.143:5000/api/")
-//                        .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
-//                        .build().create(WebServiceAPI.class).verify(usernamePassword);
-//                call.enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//                        if (response.isSuccessful()) {
-//                            String jwtString = response.body(); // Get the JWT string from the response
-//                            chat.putExtra("JWT", jwtString); // Pass the JWT string to the 'chat' intent
-//                            // Start the 'chat' activity or perform any other desired operations
-//                        } else {
-//                            // Handle unsuccessful response
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<String> call, Throwable t) {
-//                        // Handle failure
-//                    }
-//                });
-//                startActivity(chat);
-//            } else {
-//                TextView wrongMsg = findViewById(R.id.textView2);
-//                wrongMsg.setText("Wrong username or password, please try again.");
-//            }
-//        });
+    }
 
+    @Override
+    public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
+        if (switch_theme) {
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+//        if (!serverIP.equals("") || !serverPort.equals("")) {
+//            Intent login = new Intent(this, Login.class);
+//            startActivity(login);
+//        }
+    }
+
+    @Override
+    public void onSettingsCancelClick(DialogFragment dialog) {
 
     }
 }

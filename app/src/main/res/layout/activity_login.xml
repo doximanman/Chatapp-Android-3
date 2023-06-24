@@ -83,16 +83,14 @@
                 android:minHeight="48dp"
                 android:textSize="25sp" />
 
-
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/error_login"
                 style="@style/inputs_fields"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20sp" />
         </LinearLayout>
 
     </FrameLayout>
@@ -112,5 +110,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frame" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settingsBtn"
+        style="@style/btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/todo"
+        android:foreground="@drawable/setting_icom_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

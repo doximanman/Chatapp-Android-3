@@ -88,12 +88,10 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             chat.putExtra("id", chatListView.get().getValue().get(position).getId());
             startActivity(chat);
         });
-
         // get chat list from room
         new Thread(() -> {
             chatListView.reload();
         }).start();
-
     }
 
     @Override
@@ -128,19 +126,21 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     }
 
     @Override
-    public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode) {
-        if (darkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+    public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
+        if (switch_theme) {
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-        else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        if (!serverIP.equals("") || !serverPort.equals("")) {
+            Intent login = new Intent(this, Login.class);
+            startActivity(login);
         }
-        Intent login = new Intent(this, Login.class);
-        startActivity(login);
     }
 
     @Override
-    public void onSettingsCloseClick(DialogFragment dialog) {
+    public void onSettingsCancelClick(DialogFragment dialog) {
 
     }
 

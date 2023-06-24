@@ -17,9 +17,9 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class Settings extends DialogFragment {
     public interface SettingsListener {
-        public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean darkMode);
+        public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme);
 
-        public void onSettingsCloseClick(DialogFragment dialog);
+        public void onSettingsCancelClick(DialogFragment dialog);
     }
 
     SettingsListener listener;
@@ -51,10 +51,9 @@ public class Settings extends DialogFragment {
                     boolean isSwitchChecked = switchMaterial.isChecked();
                     listener.onSettingsApplyClick(this, serverIP, serverPort, isSwitchChecked);
                 }))
-                .setNegativeButton(R.string.closeDialog, ((dialog, which) -> {
-                    listener.onSettingsCloseClick(this);
+                .setNegativeButton("Cancel", ((dialog, which) -> {
+                    listener.onSettingsCancelClick(this);
                 }));
-
         return builder.create();
     }
 

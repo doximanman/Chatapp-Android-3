@@ -5,6 +5,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,9 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.R;
 
-public class Register extends AppCompatActivity {
+public class Register extends AppCompatActivity implements Settings.SettingsListener{
     private static final int FILE_UPLOAD_REQUEST_CODE = 1;
     ActivityResultLauncher<Intent> someActivityResultLauncher;
 
@@ -54,5 +57,23 @@ public class Register extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+    }
+    @Override
+    public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
+        if (switch_theme) {
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+//        if (!serverIP.equals("") || !serverPort.equals("")) {
+//            Intent login = new Intent(this, Login.class);
+//            startActivity(login);
+//        }
+    }
+
+    @Override
+    public void onSettingsCancelClick(DialogFragment dialog) {
+
     }
 }
