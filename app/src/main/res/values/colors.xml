@@ -19,8 +19,11 @@
 
     <color name="light_brown">#eae4e9</color>
     <color name="light_yellow">#fff1e6</color>
-    <color name="light_pink">#fde2e4</color>
-    <color name="pink">#fad2e1</color>
+    <color name="light_pink">#FFF0EE</color>
+    <color name="pink">#f4acb7</color>
+    <color name="old_pink">#f5cac3</color>
     <color name="light_orange">#f7d1cd</color>
+    <color name="dark_pink">#ffafcc</color>
+
     <color name="dark_background">#00072d</color>
 </resources>

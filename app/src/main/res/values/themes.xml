@@ -1,4 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="logo" parent="TextAppearance.AppCompat">
+        <item name="android:src">@drawable/logo</item>
+    </style>
     <style name="title" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/green2</item>
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
@@ -19,22 +22,7 @@
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
         <item name="android:backgroundTint">@color/green2</item>
     </style>
-    <!-- Base application theme. -->
     <style name="Base.Theme.Chatapp" parent="Theme.Material3.DayNight.NoActionBar">
-<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
-<!--        <item name="colorPrimary">@color/dark_gray</item>-->
-<!--        <item name="colorPrimaryVariant">@color/green2</item>-->
-<!--        <item name="colorOnPrimary">@color/white</item>-->
-<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
-<!--        <item name="colorSecondary">@color/gray</item>-->
-<!--        <item name="colorSecondaryVariant">@color/blue</item>-->
-<!--        <item name="colorOnSecondary">@color/white</item>-->
-<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
-<!--        &lt;!&ndash;        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>&ndash;&gt;-->
-<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-<!--        <item name="background">@color/background</item>-->
-<!--        <item name="colorError">@color/error</item>-->
-<!--        <item name="colorOnError">@color/white</item>-->
     </style>
     <style name="Theme.Chatapp" parent="Base.Theme.Chatapp" />
 </resources>

@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:context=".Register.Register">
+    tools:context=".Register.Register"
+    style="@style/background">
 
     <ImageView
+        style="@style/logo"
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="149dp"
@@ -17,24 +18,13 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+         />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/baloo_bhaijaan"
-        android:gravity="center"
-        android:text="@string/register_to_chatapp"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
 
 
     <LinearLayout
+        style="@style/layout_inputs"
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,8 +38,22 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="1dp">
 
+        <TextView
+            style="@style/title"
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/register_to_chatapp"
+            android:textSize="35sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <EditText
+            style="@style/inputs_fields"
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,6 +66,7 @@
 
 
         <EditText
+            style="@style/inputs_fields"
             android:id="@+id/Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,6 +78,7 @@
             android:textSize="25sp" />
 
         <EditText
+            style="@style/inputs_fields"
             android:id="@+id/RepeatPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,6 +90,7 @@
             android:textSize="25sp" />
 
         <EditText
+            style="@style/inputs_fields"
             android:id="@+id/displayName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,29 +102,29 @@
             android:textSize="25sp" />
 
         <Button
+            style="@style/btn"
             android:id="@+id/btnUpload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF00BCD4"
             android:onClick="onUploadButtonClick"
             android:text="@string/upload_prfpic"
             android:textSize="20sp"
             android:textStyle="bold"
-
             />
 
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        style="@style/btn"
+        android:id="@+id/register_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:backgroundTint="#FF00BCD4"
-        android:minHeight="48dp"
-        android:text="@string/register"
-        android:textSize="20sp"
+        android:height="80dp"
+        android:width="150dp"
+        android:text="@string/login_btn_str"
+        android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -125,13 +132,14 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <TextView
+        style="@style/inputs_fields"
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/register_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

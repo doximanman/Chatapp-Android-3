@@ -1,39 +1,24 @@
 package com.example.chatapp.Login;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.room.Room;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.chatapp.Chat.Chat;
 import com.example.chatapp.R;
 import com.example.chatapp.database.api.UserAPI;
-import com.example.chatapp.database.api.WebServiceAPI;
-import com.example.chatapp.database.subentities.User;
-import com.google.gson.GsonBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
     private UserAPI userAPI;
@@ -66,7 +51,7 @@ public class Login extends AppCompatActivity {
 
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
-        Button login_btn = findViewById(R.id.button);
+        Button login_btn = findViewById(R.id.login_btn);
         Intent chat = new Intent(this, Chat.class);
         login_btn.setOnClickListener(view -> {
             userAPI.ValidateUser(userNameEditText.getText().toString(), passwordEditText.getText().toString());
