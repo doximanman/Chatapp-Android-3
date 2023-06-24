@@ -12,6 +12,7 @@
     <style name="inputs_fields" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/gray</item>
         <item name="android:fontFamily">casual</item>
+        <item name="android:textColorHint">@color/gray</item>
     </style>
     <style name="layout_inputs" parent="TextAppearance.AppCompat">
         <item name="android:background">@color/light_pink</item>

@@ -2,17 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/background"
     android:orientation="vertical"
     tools:context=".Login.Login">
 
     <!--    android:background="@drawable/background"-->
 
     <ImageView
-        style="@style/logo"
         android:id="@+id/imageView"
+        style="@style/logo"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:contentDescription="@string/logo"
@@ -31,11 +31,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <!--            android:backgroundTint="#FFFFFF"-->
-<!--        android:theme="@style/Theme.Chatapp"-->
+        <!--        android:theme="@style/Theme.Chatapp"-->
 
         <LinearLayout
-            style="@style/layout_inputs"
             android:id="@+id/linearLayout2"
+            style="@style/layout_inputs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -43,11 +43,11 @@
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
             tools:layout_editor_absoluteX="1dp">
-<!--            android:textColor="@color/login_btn"-->
-<!--            android:fontFamily="@font/bowlby_one_sc"-->
+            <!--            android:textColor="@color/login_btn"-->
+            <!--            android:fontFamily="@font/bowlby_one_sc"-->
             <TextView
-                style="@style/title"
                 android:id="@+id/textView3"
+                style="@style/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -60,8 +60,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <EditText
-                style="@style/inputs_fields"
                 android:id="@+id/userName"
+                style="@style/inputs_fields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="Username"
@@ -72,8 +72,8 @@
                 android:textSize="25sp" />
 
             <EditText
-                style="@style/inputs_fields"
                 android:id="@+id/Password"
+                style="@style/inputs_fields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="Password"
@@ -84,13 +84,12 @@
                 android:textSize="25sp" />
 
 
-
             <TextView
-                style="@style/inputs_fields"
                 android:id="@+id/textView2"
+                style="@style/inputs_fields"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_btn" />
@@ -104,8 +103,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:height="80dp"
         android:width="150dp"
+        android:height="80dp"
         android:text="@string/login_btn_str"
         android:textSize="35sp"
         android:textStyle="bold"
