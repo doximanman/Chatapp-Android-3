@@ -5,7 +5,7 @@
     android:id="@+id/login_btn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    style="@style/background"
     android:orientation="vertical"
     tools:context=".Login.Login">
 
@@ -27,14 +27,15 @@
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <!--            android:backgroundTint="#FFFFFF"-->
+<!--        android:theme="@style/Theme.Chatapp"-->
+
         <LinearLayout
-            android:theme="@style/Theme.Chatapp"
+            style="@style/layout_inputs"
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,18 +43,17 @@
             android:orientation="vertical"
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
-            tools:layout_editor_absoluteX="1dp"
-            >
+            tools:layout_editor_absoluteX="1dp">
 <!--            android:textColor="@color/login_btn"-->
 <!--            android:fontFamily="@font/bowlby_one_sc"-->
             <TextView
-                style="@style/Title"
+                style="@style/title"
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/login_to_chatapp"
-                android:textSize="30sp"
+                android:textSize="35sp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -61,6 +61,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <EditText
+                style="@style/inputs_fields"
                 android:id="@+id/userName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,8 +72,8 @@
                 android:minHeight="48dp"
                 android:textSize="25sp" />
 
-
             <EditText
+                style="@style/inputs_fields"
                 android:id="@+id/Password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,11 +85,11 @@
                 android:textSize="25sp" />
 
             <Button
+                style="@style/btn"
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="@color/login_btn"
                 android:minHeight="48dp"
                 android:text="@string/login_btn_str"
                 android:textSize="20sp"
