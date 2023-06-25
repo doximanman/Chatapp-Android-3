@@ -6,7 +6,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -39,7 +41,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -51,9 +53,8 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
 
 //        setContentView(R.layout.activity_login);
         MutableLiveData<String> jwt = new MutableLiveData<String>("");
-        String serverUrl = getString(R.string.serverip);
-        userAPI = new UserAPI(getApplication(), jwt, serverUrl);
-
+        userAPI = new UserAPI(getApplication(), jwt, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+        SharedPreferences.Editor editor = prefs.edit();
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
         Button login_btn = findViewById(R.id.login_btn);
@@ -69,7 +70,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                         wrongMsg.setText(R.string.wrong_credentials);
                     } else if (Objects.equals(s, "ErrorServer")) {
                         wrongMsg.setText(R.string.error_connecting_the_server);
-                    } else if (!Objects.equals(jwt.getValue(), "")){
+                    } else if (!Objects.equals(jwt.getValue(), "")) {
                         startActivity(chat);
                     }
                 }
@@ -79,16 +80,23 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
 
     @Override
     public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
+        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        boolean connect_again = false;
         if (switch_theme) {
             if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             else
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-//        if (!serverIP.equals("") || !serverPort.equals("")) {
-//            Intent login = new Intent(this, Login.class);
-//            startActivity(login);
-//        }
+        if (Objects.equals(serverIP, "")) {
+            editor.putString("serverIP", serverIP);
+            editor.apply();
+        }
+        if (Objects.equals(serverPort, "")) {
+            editor.putString("serverPort", serverPort);
+            editor.apply();
+        }
     }
 
     @Override

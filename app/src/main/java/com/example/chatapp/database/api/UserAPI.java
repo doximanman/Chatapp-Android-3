@@ -52,7 +52,6 @@ public class UserAPI {
                     jwt.setValue("Failed");
                 }
             }
-
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 jwt.setValue("ErrorServer");
