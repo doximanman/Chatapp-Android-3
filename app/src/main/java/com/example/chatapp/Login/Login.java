@@ -94,7 +94,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
-//            connect_again = true;
+            connect_again = true;
         }
         if (!Objects.equals(serverPort, "")) {
             editor.putString("serverPort", serverPort);
@@ -102,8 +102,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
             connect_again = true;
         }
         if (connect_again) {
-            userAPI = new UserAPI(getApplication(), jwt, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
-
+            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
         }
     }
 

@@ -27,9 +27,18 @@ public class UserAPI {
     WebServiceAPI webServiceAPI;
     SharedPreferences prefs;
 
+    Gson gson;
+
+    public void setServerUrl(String serverUrl) {
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://" + serverUrl)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+    }
+
     public UserAPI(Application application, MutableLiveData<String> jwt, String serverUrl) {
         this.jwt = jwt;
-        Gson gson = new GsonBuilder().setLenient().create();
+        gson = new GsonBuilder().setLenient().create();
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://" + serverUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -52,6 +61,7 @@ public class UserAPI {
                     jwt.setValue("Failed");
                 }
             }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 jwt.setValue("ErrorServer");
