@@ -76,4 +76,5 @@
     <string name="error_connecting_the_server">Error connecting the server</string>
     <string name="register_title">Register</string>
     <string name="not_registered">Not registered yet?\nclick here!</string>
+    <string name="already_registered">Already registered?\nClicke here!</string>
 </resources>

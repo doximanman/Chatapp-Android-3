@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.chatapp.Chat.Chat;
 import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.R;
+import com.example.chatapp.Register.Register;
 import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.databinding.ActivityLoginBinding;
 
@@ -52,13 +53,17 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
             dialog.show(getSupportFragmentManager(), "Settings");
         });
 
-//        setContentView(R.layout.activity_login);
         jwt = new MutableLiveData<String>("");
-//        userAPI = new UserAPI(getApplication(), jwt, "10.100.102.20:5000");
         userAPI = new UserAPI(getApplication(), jwt, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
         SharedPreferences.Editor editor = prefs.edit();
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
+
+        Button not_register_button = findViewById(R.id.not_registered);
+        not_register_button.setOnClickListener(view -> {
+            startActivity(new Intent(this, Register.class));
+        });
+        
         Button login_btn = findViewById(R.id.login_btn);
         Intent chat = new Intent(this, Chat.class);
         login_btn.setOnClickListener(view -> {
