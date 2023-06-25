@@ -29,6 +29,7 @@ import java.util.Objects;
 
 public class Login extends AppCompatActivity implements Settings.SettingsListener {
     private UserAPI userAPI;
+    private MutableLiveData<String> jwt;
 
     private String imageToString(int source) {
         Bitmap bm = BitmapFactory.decodeResource(getResources(), source);
@@ -52,7 +53,8 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         });
 
 //        setContentView(R.layout.activity_login);
-        MutableLiveData<String> jwt = new MutableLiveData<String>("");
+        jwt = new MutableLiveData<String>("");
+//        userAPI = new UserAPI(getApplication(), jwt, "10.100.102.20:5000");
         userAPI = new UserAPI(getApplication(), jwt, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
         SharedPreferences.Editor editor = prefs.edit();
         EditText userNameEditText = findViewById(R.id.userName);
@@ -89,13 +91,19 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
             else
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-        if (Objects.equals(serverIP, "")) {
+        if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
+//            connect_again = true;
         }
-        if (Objects.equals(serverPort, "")) {
+        if (!Objects.equals(serverPort, "")) {
             editor.putString("serverPort", serverPort);
             editor.apply();
+            connect_again = true;
+        }
+        if (connect_again) {
+            userAPI = new UserAPI(getApplication(), jwt, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+
         }
     }
 

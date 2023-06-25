@@ -1,43 +1,48 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="logo" parent="TextAppearance.AppCompat">
-        <item name="android:src">@drawable/dark_logo</item>
+        <item name="android:src">@drawable/logo</item>
     </style>
     <style name="title" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/pink</item>
+        <item name="android:textColor">@color/green5</item>
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
     </style>
     <style name="background" parent="TextAppearance.AppCompat">
         <item name="android:background">@drawable/dark_background</item>
     </style>
     <style name="inputs_fields" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/silver</item>
         <item name="android:fontFamily">casual</item>
-        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textColorHint">@color/silver</item>
     </style>
     <style name="layout_inputs" parent="TextAppearance.AppCompat">
-        <item name="android:background">@color/light_pink</item>
+        <item name="android:background">@color/light_dark_blue</item>
         <item name="android:alpha">0.8</item>
     </style>
     <style name="btn" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
-        <item name="android:backgroundTint">@color/pink</item>
+        <item name="android:backgroundTint">@color/green3</item>
     </style>
-
     <style name="dialog_title">
-        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:textColor">@color/green5</item>
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
     </style>
     <style name="dialog_background">
-        <item name="android:background">@color/more_light_pink</item>
+        <item name="android:background">@color/light_dark_blue</item>
     </style>
-    <style name="dialog_input" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/dark_blue</item>
+    <style name="dialog_input" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="android:textColor">@color/silver</item>
         <item name="android:fontFamily">casual</item>
-        <item name="android:textColorHint">@color/lighter_dark_blue</item>
+        <item name="android:textColorHint">@color/silver</item>
+        <item name="colorControlNormal">@color/green5</item>
+        <item name="trackTint">@color/green5</item>
     </style>
+    <!-- Base application theme. -->
     <style name="Base.Theme.Chatapp" parent="Theme.Material3.DayNight.NoActionBar">
-
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/login_btn</item>
+        <item name="colorPrimaryVariant">@color/light_dark_blue</item>
+        <item name="colorOnPrimary">@color/login_btn</item>
     </style>
     <style name="Theme.Chatapp" parent="Base.Theme.Chatapp" />
 </resources>
