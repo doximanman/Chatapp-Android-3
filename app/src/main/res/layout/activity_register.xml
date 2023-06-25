@@ -10,12 +10,12 @@
     <ImageView
         android:id="@+id/imageView"
         style="@style/logo"
-        android:layout_width="match_parent"
-        android:layout_height="149dp"
+        android:layout_width="96dp"
+        android:layout_height="133dp"
         android:contentDescription="@string/logo"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/register_to_chatapp"
-            android:textSize="35sp"
+            android:textSize="32sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

@@ -15,7 +15,6 @@
         android:layout_height="166dp"
         android:contentDescription="@string/logo"
         android:orientation="horizontal"
-
         app:layout_constraintBottom_toTopOf="@+id/frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
