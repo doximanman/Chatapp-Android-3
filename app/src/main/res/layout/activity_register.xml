@@ -118,14 +118,13 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/not_registered"
+            android:id="@+id/already_registered"
             style="@style/not_registered"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/already_registered"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textSize="25sp" />
 
 
     </LinearLayout>

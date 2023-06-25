@@ -47,6 +47,17 @@ public class UserAPI {
         prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
     }
 
+    public UserAPI(Application application, String serverUrl) {
+        this.jwt = new MutableLiveData<>();
+        gson = new GsonBuilder().setLenient().create();
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://" + serverUrl)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        webServiceAPI = retrofit.create(WebServiceAPI.class);
+        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+    }
+
     public void ValidateUser(String username, String password) {
         WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(username, password);
         Call<String> call = webServiceAPI.verify(usernamePassword);
@@ -69,18 +80,22 @@ public class UserAPI {
         });
     }
 
-    public void getUser(String username) {
+
+    public User getUser(String username) {
+        final User[] currentUser = new User[1];
         String JWT = prefs.getString("JWT", "");
         Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+                currentUser[0] = response.body();
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
             }
         });
+        return currentUser[0];
     }
 }
 

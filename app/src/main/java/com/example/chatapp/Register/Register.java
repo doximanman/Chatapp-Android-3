@@ -9,13 +9,19 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.chatapp.Chat.fragments.Settings;
+import com.example.chatapp.Login.Login;
 import com.example.chatapp.R;
+
+import java.util.Objects;
 
 public class Register extends AppCompatActivity implements Settings.SettingsListener{
     private static final int FILE_UPLOAD_REQUEST_CODE = 1;
@@ -42,36 +48,53 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        someActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            Uri fileUri = data.getData();
-                        }
-                    }
-                });
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+//        someActivityResultLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                new ActivityResultCallback<ActivityResult>() {
+//                    @Override
+//                    public void onActivityResult(ActivityResult result) {
+//                        if (result.getResultCode() == Activity.RESULT_OK) {
+//                            // There are no request codes
+//                            Intent data = result.getData();
+//                            Uri fileUri = data.getData();
+//                        }
+//                    }
+//                });
+        Button already_registered = findViewById(R.id.already_registered);
+        Intent login = new Intent(this, Login.class);
+        already_registered.setOnClickListener(view -> {
+            startActivity(login);
+        });
+
+
     }
     @Override
     public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
+        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        boolean connect_again = false;
         if (switch_theme) {
             if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             else
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-//        if (!serverIP.equals("") || !serverPort.equals("")) {
-//            Intent login = new Intent(this, Login.class);
-//            startActivity(login);
-//        }
+        if (!Objects.equals(serverIP, "")) {
+            editor.putString("serverIP", serverIP);
+            editor.apply();
+            connect_again = true;
+        }
+        if (!Objects.equals(serverPort, "")) {
+            editor.putString("serverPort", serverPort);
+            editor.apply();
+            connect_again = true;
+        }
+        if (connect_again) {
+//            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+        }
     }
-
     @Override
     public void onSettingsCancelClick(DialogFragment dialog) {
 

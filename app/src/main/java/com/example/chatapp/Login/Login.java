@@ -43,6 +43,8 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -60,10 +62,11 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         EditText passwordEditText = findViewById(R.id.Password);
 
         Button not_register_button = findViewById(R.id.not_registered);
+        Intent register = new Intent(this, Register.class);
         not_register_button.setOnClickListener(view -> {
-            startActivity(new Intent(this, Register.class));
+            startActivity(register);
         });
-        
+
         Button login_btn = findViewById(R.id.login_btn);
         Intent chat = new Intent(this, Chat.class);
         login_btn.setOnClickListener(view -> {
@@ -78,6 +81,8 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                     } else if (Objects.equals(s, "ErrorServer")) {
                         wrongMsg.setText(R.string.error_connecting_the_server);
                     } else if (!Objects.equals(jwt.getValue(), "")) {
+                        editor.putString("username", userNameEditText.getText().toString());
+                        editor.apply();
                         startActivity(chat);
                     }
                 }
