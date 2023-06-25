@@ -20,12 +20,17 @@ import android.widget.Button;
 import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Login.Login;
 import com.example.chatapp.R;
+import com.example.chatapp.database.api.UserAPI;
+import com.example.chatapp.databinding.ActivityLoginBinding;
+import com.example.chatapp.databinding.ActivityRegisterBinding;
 
 import java.util.Objects;
 
-public class Register extends AppCompatActivity implements Settings.SettingsListener{
+public class Register extends AppCompatActivity implements Settings.SettingsListener {
     private static final int FILE_UPLOAD_REQUEST_CODE = 1;
     ActivityResultLauncher<Intent> someActivityResultLauncher;
+
+    UserAPI userAPI;
 
     public void onUploadButtonClick(View view) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -50,6 +55,21 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+
+        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        ActivityRegisterBinding binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+
+        // open dialog for setting
+        binding.settingsBtn.setOnClickListener(view -> {
+            DialogFragment dialog = new Settings();
+            dialog.show(getSupportFragmentManager(), "Settings");
+        });
+
+
 //        someActivityResultLauncher = registerForActivityResult(
 //                new ActivityResultContracts.StartActivityForResult(),
 //                new ActivityResultCallback<ActivityResult>() {
@@ -67,9 +87,8 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         already_registered.setOnClickListener(view -> {
             startActivity(login);
         });
-
-
     }
+
     @Override
     public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
@@ -92,9 +111,10 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
             connect_again = true;
         }
         if (connect_again) {
-//            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
         }
     }
+
     @Override
     public void onSettingsCancelClick(DialogFragment dialog) {
 

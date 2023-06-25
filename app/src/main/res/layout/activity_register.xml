@@ -10,8 +10,8 @@
     <ImageView
         android:id="@+id/imageView"
         style="@style/logo"
-        android:layout_width="96dp"
-        android:layout_height="133dp"
+        android:layout_width="129dp"
+        android:layout_height="169dp"
         android:contentDescription="@string/logo"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
