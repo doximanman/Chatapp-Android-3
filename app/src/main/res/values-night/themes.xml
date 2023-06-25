@@ -23,6 +23,11 @@
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
         <item name="android:backgroundTint">@color/green6</item>
     </style>
+    <style name="not_registered" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/green5</item>
+        <item name="android:fontFamily">@font/baloo_bhaijaan</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+    </style>
     <style name="dialog_title">
         <item name="android:textColor">@color/green5</item>
         <item name="android:fontFamily">@font/baloo_bhaijaan</item>
