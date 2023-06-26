@@ -1,7 +1,6 @@
 package com.example.chatapp.database.repositories;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,12 +10,8 @@ import com.example.chatapp.database.ChatDB;
 import com.example.chatapp.database.api.ChatAPI;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
-import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.subentities.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ChatRepo {
     private ChatDao dao;
@@ -32,7 +27,7 @@ public class ChatRepo {
         dao = db.chatDao();
         chatData = new ChatData();
         this.username = username;
-        api = new ChatAPI(chatData, dao, application, username, serverURL, JWT);
+        api = new ChatAPI(chatData, dao, username, serverURL, JWT);
     }
 
     private class ChatData extends MutableLiveData<Chat> {

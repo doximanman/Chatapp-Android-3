@@ -6,9 +6,12 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,13 +22,14 @@ import android.widget.ListView;
 import com.example.chatapp.Chat.adapters.ChatListAdapter;
 import com.example.chatapp.Chat.fragments.AddChat;
 import com.example.chatapp.Chat.fragments.Settings;
+import com.example.chatapp.Chat.receivers.ChatListReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
-import com.example.chatapp.Login.Login;
 import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.User;
-import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivityChatBinding;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,7 +43,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     private ActivityChatBinding binding;
     private ChatListAdapter adapter;
     User currentUser;
-
+    ChatListReceiver firebaseReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,9 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             user.postValue(newUser);
         }).start();
 
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this,s->{
+            int a=1;
+        });
 
         // open dialog for add button
         binding.addChat.setOnClickListener(view -> {
@@ -110,17 +117,25 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             startActivity(chat);
         });
         // get chat list from room
-        new Thread(() -> {
-            chatListView.reload();
-        }).start();
+        new Thread(() -> chatListView.reload()).start();
+        // start listening to events
+        firebaseReceiver=new ChatListReceiver(chatListView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        new Thread(() -> {
-            chatListView.reload();
-        }).start();
+        // broadcast receiver to get notified by the server to update the chat list
+        LocalBroadcastManager.getInstance(this).registerReceiver(firebaseReceiver,
+                new IntentFilter("RECEIVE_MESSAGE"));
+        new Thread(() -> chatListView.reload()).start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // remove broadcast receiver
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseReceiver);
     }
 
     private void setUser(User user) {
