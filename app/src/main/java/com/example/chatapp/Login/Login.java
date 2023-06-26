@@ -83,7 +83,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                     } else if (!Objects.equals(jwt.getValue(), "")) {
                         editor.putString("jwt", jwt.getValue());
                         editor.putString("username", userNameEditText.getText().toString());
-                        editor.commit();
+                        editor.apply();
                         startActivity(chat);
                     }
                 }

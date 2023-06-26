@@ -27,7 +27,7 @@ public class UserAPI {
     private final MutableLiveData<String> jwt;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
-    SharedPreferences prefs;
+    //SharedPreferences prefs;
 
     Gson gson;
 
@@ -46,26 +46,26 @@ public class UserAPI {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
-        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
     }
 
-    public UserAPI(Application application) {
-        this.jwt = new MutableLiveData<>();
+    public UserAPI(Application application, String serverUrl) {
+        this.jwt = null;
         gson = new GsonBuilder().setLenient().create();
-        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        // .baseUrl("http://" + prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""))
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""))
+                .baseUrl("http://" + serverUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
     public void ValidateUser(String username, String password) {
+        assert jwt != null;
         WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(username, password);
         Call<String> call = webServiceAPI.verify(usernamePassword);
         call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         jwt.setValue(response.body());
@@ -76,7 +76,7 @@ public class UserAPI {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 jwt.setValue("ErrorServer");
             }
         });
@@ -100,9 +100,8 @@ public class UserAPI {
 //        });
 //        return currentUser[0];
 //    }
-    public User getUser(String username) {
+    public User getUser(String JWT, String username) {
         final User[] currentUser = new User[1];
-        String JWT = prefs.getString("jwt", "");
         Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
         try {
             Response<User> response = call.execute();
