@@ -15,6 +15,8 @@ import com.example.chatapp.database.subentities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,22 +83,35 @@ public class UserAPI {
     }
 
 
+    //    public User getUser(String username) {
+//        final User[] currentUser = new User[1];
+//        String JWT = prefs.getString("JWT", "");
+//        Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
+//        call.enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                currentUser[0] = response.body();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                currentUser[0] = new User("HHH","hhh",null);
+//            }
+//        });
+//        return currentUser[0];
+//    }
     public User getUser(String username) {
         final User[] currentUser = new User[1];
-        String JWT = prefs.getString("JWT", "");
+        String JWT = prefs.getString("jwt", "");
         Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                currentUser[0] = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
-            }
-        });
-        return currentUser[0];
+        try {
+            Response<User> response = call.execute();
+            if (response.isSuccessful())
+                return response.body();
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
     }
 }
 

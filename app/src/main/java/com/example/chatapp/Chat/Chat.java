@@ -38,6 +38,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     private ChatListAdapter adapter;
     User currentUser;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +52,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         UserAPI userAPI = new UserAPI(getApplication());
 
 //        currentUser = new User("hello", "james bondddddddd", imageToString(R.drawable.doubt));
-        currentUser = userAPI.getUser(prefs.getString("username",""));
-        setUser(currentUser);
-
         // ViewModel
         chatListView = new ViewModelProvider(this).get(ChatListView.class);
 
@@ -67,6 +65,13 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         chatListView.get().observe(this, newChats -> {
             adapter.setChatList(newChats);
         });
+
+        new Thread(() -> {
+            currentUser = userAPI.getUser(prefs.getString("username", ""));
+            setUser(currentUser);
+            chatListView.reload();
+        }).start();
+
 
         // open dialog for add button
         binding.addChat.setOnClickListener(view -> {

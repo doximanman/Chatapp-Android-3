@@ -81,9 +81,9 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                     } else if (Objects.equals(s, "ErrorServer")) {
                         wrongMsg.setText(R.string.error_connecting_the_server);
                     } else if (!Objects.equals(jwt.getValue(), "")) {
+                        editor.putString("jwt", jwt.getValue());
                         editor.putString("username", userNameEditText.getText().toString());
-                        editor.apply();
-                        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+                        editor.commit();
                         startActivity(chat);
                     }
                 }
