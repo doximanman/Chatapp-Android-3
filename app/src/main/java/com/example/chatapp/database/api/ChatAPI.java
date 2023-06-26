@@ -41,13 +41,12 @@ public class ChatAPI {
 
         // Gson builder
         Gson gson = new GsonBuilder().setLenient().create();
-
+        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + "10.100.102.20:5000")
+                .baseUrl("http://" + prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""))
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
-        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
     }
 
     public void getChat(String chatId) {

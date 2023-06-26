@@ -44,13 +44,13 @@ public class ChatListAPI {
 
         // Gson builder
         Gson gson = new GsonBuilder().setLenient().create();
+        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + "10.100.102.20:5000")
+                .baseUrl("http://" + prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""))
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
-        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         // todo: JWT should already be in shared preferences. After implementing login,
         //  remove this line.

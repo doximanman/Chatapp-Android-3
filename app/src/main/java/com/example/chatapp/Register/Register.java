@@ -61,7 +61,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         ActivityRegisterBinding binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+        userAPI = new UserAPI(getApplication());
 
         // open dialog for setting
         binding.settingsBtn.setOnClickListener(view -> {

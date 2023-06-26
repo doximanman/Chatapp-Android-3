@@ -47,15 +47,15 @@ public class UserAPI {
         prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
     }
 
-    public UserAPI(Application application, String serverUrl) {
+    public UserAPI(Application application) {
         this.jwt = new MutableLiveData<>();
         gson = new GsonBuilder().setLenient().create();
+        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + serverUrl)
+                .baseUrl("http://" + prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""))
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
-        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
     }
 
     public void ValidateUser(String username, String password) {
@@ -93,6 +93,7 @@ public class UserAPI {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
+
             }
         });
         return currentUser[0];

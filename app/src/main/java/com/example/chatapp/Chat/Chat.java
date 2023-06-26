@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import com.example.chatapp.Chat.fragments.AddChat;
 import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
 import com.example.chatapp.Login.Login;
+import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.R;
@@ -27,6 +30,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Chat extends AppCompatActivity implements AddChat.AddChatListener, Settings.SettingsListener {
     private ChatListView chatListView;
@@ -43,8 +47,11 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
         // todo: implement login and provide the real user here,
         //  with the username and JWT in shared storage.
-        currentUser = new User("hello", "james bondddddddd", imageToString(R.drawable.doubt));
+        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        UserAPI userAPI = new UserAPI(getApplication());
 
+//        currentUser = new User("hello", "james bondddddddd", imageToString(R.drawable.doubt));
+        currentUser = userAPI.getUser(prefs.getString("username",""));
         setUser(currentUser);
 
         // ViewModel
@@ -127,15 +134,27 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
     @Override
     public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
+        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        boolean connect_again = false;
         if (switch_theme) {
             if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             else
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-        if (!serverIP.equals("") || !serverPort.equals("")) {
-            Intent login = new Intent(this, Login.class);
-            startActivity(login);
+        if (!Objects.equals(serverIP, "")) {
+            editor.putString("serverIP", serverIP);
+            editor.apply();
+            connect_again = true;
+        }
+        if (!Objects.equals(serverPort, "")) {
+            editor.putString("serverPort", serverPort);
+            editor.apply();
+            connect_again = true;
+        }
+        if (connect_again) {
+            startActivity(new Intent(this, Login.class));
         }
     }
 

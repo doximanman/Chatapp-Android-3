@@ -83,6 +83,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                     } else if (!Objects.equals(jwt.getValue(), "")) {
                         editor.putString("username", userNameEditText.getText().toString());
                         editor.apply();
+                        SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
                         startActivity(chat);
                     }
                 }
