@@ -18,22 +18,21 @@ public class Chat {
     @NonNull
     private String id;
 
-
     private List<User> users;
 
     private List<Message> messages;
 
-    public Chat(@NonNull String id, List<User> users, List<Message> messages){
-        this.id=id;
-        this.users=users;
-        this.messages=messages;
+    public Chat(@NonNull String id, List<User> users, List<Message> messages) {
+        this.id = id;
+        this.users = users;
+        this.messages = messages;
     }
 
     @Ignore
-    public Chat(@NonNull String id, List<User> users){
-        this.id=id;
-        this.users=users;
-        this.messages=new ArrayList<>();
+    public Chat(@NonNull String id, List<User> users) {
+        this.id = id;
+        this.users = users;
+        this.messages = new ArrayList<>();
     }
 
     @NonNull
@@ -53,11 +52,11 @@ public class Chat {
         this.messages = messages;
     }
 
-    public void addMessage(Message msg){
-        messages.add(0,msg);
+    public void addMessage(Message msg) {
+        messages.add(0, msg);
     }
 
-    public void removeMessage(Message msg){
+    public void removeMessage(Message msg) {
         messages.remove(msg);
     }
 

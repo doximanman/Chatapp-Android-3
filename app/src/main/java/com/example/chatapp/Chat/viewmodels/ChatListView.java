@@ -2,6 +2,7 @@ package com.example.chatapp.Chat.viewmodels;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -20,20 +21,22 @@ public class ChatListView extends AndroidViewModel {
 
     private LiveData<List<ChatDetails>> chatList;
 
-    public ChatListView(Application application){
+    public ChatListView(Application application) {
         super(application);
-        repository=new ChatListRepo(application);
-        chatList=repository.getAll();
+        SharedPreferences prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        repository = new ChatListRepo(application, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""), prefs.getString("jwt", ""));
+        chatList = repository.getAll();
     }
 
-    public LiveData<List<ChatDetails>> get(){
+    public LiveData<List<ChatDetails>> get() {
         return chatList;
     }
-    public void add(String username){
+
+    public void add(String username) {
         repository.add(username);
     }
 
-    public void reload(){
+    public void reload() {
         repository.reload();
     }
 

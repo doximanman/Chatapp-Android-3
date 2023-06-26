@@ -41,54 +41,55 @@ public class ChatBody extends AppCompatActivity {
     private ActivityChatBodyBinding binding;
 
     private MessageListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding=ActivityChatBodyBinding.inflate(getLayoutInflater());
+        binding = ActivityChatBodyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // gets intent extras (username of user and chatid)
-        Intent chat=getIntent();
-        String username=chat.getStringExtra("Username");
-        String chatName=chat.getStringExtra("chatName");
+        Intent chat = getIntent();
+        String username = chat.getStringExtra("Username");
+        String chatName = chat.getStringExtra("chatName");
         binding.chatName.setText(chatName);
-        String id=chat.getStringExtra("id");
+        String id = chat.getStringExtra("id");
 
         // chat pic
         // get from file
-        File file=new File(getCacheDir(),"profilePic.txt");
-        String profilePic=null;
-        try(BufferedReader reader=new BufferedReader(new FileReader(file))){
-            profilePic=reader.readLine();
-        }catch(IOException e){
+        File file = new File(getCacheDir(), "profilePic.txt");
+        String profilePic = null;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            profilePic = reader.readLine();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        assert profilePic!=null;
+        assert profilePic != null;
         // decode base64 to bitmap
-        byte[] decodedString=Base64.decode(profilePic,Base64.DEFAULT);
-        Bitmap decoded=BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+        byte[] decodedString = Base64.decode(profilePic, Base64.DEFAULT);
+        Bitmap decoded = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         binding.chatPFP.setImageBitmap(decoded);
 
-        chatView =new ViewModelProvider(this).get(ChatView.class);
-        chatView.finishConstruction(id,username);
+        chatView = new ViewModelProvider(this).get(ChatView.class);
+        chatView.finishConstruction(id, username);
 
         // adapter to display messages properly
-        adapter=new MessageListAdapter(getApplicationContext(),username);
-        RecyclerView rvMessages=binding.rvMessages;
+        adapter = new MessageListAdapter(getApplicationContext(), username);
+        RecyclerView rvMessages = binding.rvMessages;
         rvMessages.setAdapter(adapter);
-        LinearLayoutManager layout=new LinearLayoutManager(this);
+        LinearLayoutManager layout = new LinearLayoutManager(this);
         layout.setReverseLayout(true);
         layout.setStackFromEnd(true);
         rvMessages.setLayoutManager(layout);
 
         rvMessages.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            if(bottom<oldBottom)
+            if (bottom < oldBottom)
                 rvMessages.smoothScrollToPosition(0);
         });
 
         // whenever messages change - notify the adapter.
-        chatView.get().observe(this, newChat->{
+        chatView.get().observe(this, newChat -> {
             // redo adapter - everything needs new view (all the messages were pushed up)
             rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(null);
@@ -99,11 +100,11 @@ public class ChatBody extends AppCompatActivity {
         });
 
         // go back button
-        binding.backBTN.setOnClickListener(view-> finish());
+        binding.backBTN.setOnClickListener(view -> finish());
 
         // send message
-        binding.sendButton.setOnClickListener(view->{
-            if(!binding.messageInput.getText().toString().matches("/\\A\\s*\\z/")){
+        binding.sendButton.setOnClickListener(view -> {
+            if (!binding.messageInput.getText().toString().matches("/\\A\\s*\\z/")) {
 
 
                 // old implementation (before api)
@@ -140,7 +141,7 @@ public class ChatBody extends AppCompatActivity {
                 // clear text
                 binding.messageInput.setText("");
                 // close keyboard
-                InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });

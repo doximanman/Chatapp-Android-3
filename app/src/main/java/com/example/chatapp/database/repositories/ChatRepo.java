@@ -21,48 +21,46 @@ import java.util.List;
 public class ChatRepo {
     private ChatDao dao;
     private ChatData chatData;
-
     private ChatAPI api;
     private String chatID;
 
     private String username;
 
-    public ChatRepo(Application application, String chatID,String username){
-        this.chatID=chatID;
-        ChatDB db= Room.databaseBuilder(application.getApplicationContext(),ChatDB.class,"ChatDB").build();
-        dao=db.chatDao();
-        chatData=new ChatData();
-        this.username=username;
-        api=new ChatAPI(chatData,dao,application,username);
+    public ChatRepo(Application application, String chatID, String JWT, String serverURL, String username) {
+        this.chatID = chatID;
+        ChatDB db = Room.databaseBuilder(application.getApplicationContext(), ChatDB.class, "ChatDB").build();
+        dao = db.chatDao();
+        chatData = new ChatData();
+        this.username = username;
+        api = new ChatAPI(chatData, dao, application, username, serverURL, JWT);
     }
 
-    private class ChatData extends MutableLiveData<Chat>{
-        public ChatData(){
+    private class ChatData extends MutableLiveData<Chat> {
+        public ChatData() {
             super();
             // placeholder chat
-            setValue(new Chat("0",new ArrayList<>(),new ArrayList<>()));
+            setValue(new Chat("0", new ArrayList<>(), new ArrayList<>()));
         }
 
         @Override
         protected void onActive() {
             super.onActive();
-
-            new Thread(()->{
+            new Thread(() -> {
                 chatData.postValue(dao.getChat(chatID));
                 reload();
             }).start();
         }
     }
 
-    public LiveData<Chat> get(){
+    public LiveData<Chat> get() {
         return chatData;
     }
 
-    public void addMessage(String message){
-        api.postMessage(message,chatID);
+    public void addMessage(String message) {
+        api.postMessage(message, chatID);
     }
 
-    public void reload(){
+    public void reload() {
         api.getChat(chatID);
     }
 }

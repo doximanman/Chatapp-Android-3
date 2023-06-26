@@ -32,16 +32,15 @@ public class ChatListRepo {
     private ChatListAPI api;
 
 
-    public ChatListRepo(Application application){
-
-        ChatDB db=Room.databaseBuilder(application.getApplicationContext(), ChatDB.class,"ChatDB").build();
-        dao=db.chatDao();
-        chatListData=new ChatListData();
-        api=new ChatListAPI(chatListData,dao,application);
+    public ChatListRepo(Application application, String serverURL, String JWT) {
+        ChatDB db = Room.databaseBuilder(application.getApplicationContext(), ChatDB.class, "ChatDB").build();
+        dao = db.chatDao();
+        chatListData = new ChatListData();
+        api = new ChatListAPI(chatListData, dao, serverURL, JWT);
     }
 
-    private class ChatListData extends MutableLiveData<List<ChatDetails>>{
-        public ChatListData(){
+    private class ChatListData extends MutableLiveData<List<ChatDetails>> {
+        public ChatListData() {
             super();
             setValue(new ArrayList<>());
         }
@@ -50,20 +49,21 @@ public class ChatListRepo {
         protected void onActive() {
             super.onActive();
 
-            new Thread(()->{
+            new Thread(() -> {
                 chatListData.postValue(dao.getChats());
             }).start();
         }
     }
 
-    public LiveData<List<ChatDetails>> getAll(){
+    public LiveData<List<ChatDetails>> getAll() {
         return chatListData;
     }
-    public void add(String username){
+
+    public void add(String username) {
         api.newChat(username);
     }
 
-    public void reload(){
+    public void reload() {
         api.getChats();
     }
 

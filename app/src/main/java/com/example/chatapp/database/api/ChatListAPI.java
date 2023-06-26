@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.chatapp.R;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
@@ -33,57 +34,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ChatListAPI {
     private MutableLiveData<List<ChatDetails>> chatListData;
     private ChatDao chatDao;
+    String JWT;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
-    SharedPreferences prefs;
 
-    public ChatListAPI(MutableLiveData<List<ChatDetails>> chatListData, ChatDao chatDao, Application application) {
+    public ChatListAPI(MutableLiveData<List<ChatDetails>> chatListData, ChatDao chatDao, String serverURL, String JWT) {
         this.chatListData = chatListData;
         this.chatDao = chatDao;
-
+        this.JWT = JWT;
         // Gson builder
         Gson gson = new GsonBuilder().setLenient().create();
-
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.143:5000/api/")
+                .baseUrl("http://" + serverURL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
-        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         // todo: JWT should already be in shared preferences. After implementing login,
         //  remove this line.
-        getToken("hello", "Helloworld1!");
+//        getToken("hello", "Helloworld1!");
     }
 
-    public void getToken(String username, String password) {
-        WebServiceAPI.UsernamePassword usernamePassword = new WebServiceAPI.UsernamePassword(username, password);
-
-        Call<String> call = webServiceAPI.verify(usernamePassword);
-        // we need the token so the request is synchronous!
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString("JWT", response.body());
-                    editor.apply();
-                    getChats();
-                } else {
-                    // todo user not found
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-
-    }
 
     public void getChats() {
-        String JWT = prefs.getString("JWT", "");
         Call<List<ChatDetails>> call = webServiceAPI.getChats("Bearer " + JWT);
         call.enqueue(new Callback<List<ChatDetails>>() {
             @Override
@@ -120,15 +93,13 @@ public class ChatListAPI {
     }
 
     public void newChat(String username) {
-        WebServiceAPI.Username userName=new WebServiceAPI.Username(username);
-
-        String JWT = prefs.getString("JWT", "");
+        WebServiceAPI.Username userName = new WebServiceAPI.Username(username);
         Call<ChatDetails> call = webServiceAPI.newChat("Bearer " + JWT, userName);
         call.enqueue(new Callback<ChatDetails>() {
             @Override
             public void onResponse(@NonNull Call<ChatDetails> call, @NonNull Response<ChatDetails> response) {
                 if (response.isSuccessful()) {
-                    new Thread(()->{
+                    new Thread(() -> {
                         // creates new chat in the local database
 
                         ChatDetails details = response.body();

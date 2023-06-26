@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.chatapp.R;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
@@ -28,48 +29,45 @@ public class ChatAPI {
     private ChatDao chatDao;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
-    SharedPreferences prefs;
-
     String username;
+    String JWT;
 
-    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username) {
+    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username, String serverURL, String JWT) {
         this.chatData = chatData;
-        this.chatDao=chatDao;
-        this.username=username;
-
+        this.chatDao = chatDao;
+        this.username = username;
+        this.JWT = JWT;
         // Gson builder
-        Gson gson=new GsonBuilder().setLenient().create();
-
-        retrofit=new Retrofit.Builder()
-                .baseUrl("http://192.168.1.143:5000/api/")
+        Gson gson = new GsonBuilder().setLenient().create();
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://" + serverURL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        webServiceAPI=retrofit.create(WebServiceAPI.class);
-        prefs=application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
-    public void getChat(String chatId){
-        String JWT=prefs.getString("JWT","");
-        Call<Chat> call= webServiceAPI.getChat("Bearer "+JWT,chatId);
+    public void getChat(String chatId) {
+        Call<Chat> call = webServiceAPI.getChat("Bearer " + JWT, chatId);
         call.enqueue(new Callback<Chat>() {
             @Override
             public void onResponse(@NonNull Call<Chat> call, @NonNull Response<Chat> response) {
-                if(response.isSuccessful()){new Thread(()-> {
+                if (response.isSuccessful()) {
+                    new Thread(() -> {
 
-                    // updates the new chat in the dao
-                    Chat newChat = response.body();
-                    chatDao.upsert(newChat);
+                        // updates the new chat in the dao
+                        Chat newChat = response.body();
+                        chatDao.upsert(newChat);
 
-                    // updates the chat preview in the dao
-                    ChatDetails cd = chatDao.getChatDetails(chatId);
-                    assert newChat != null;
-                    if(newChat.getMessages().size()>0) {
-                        cd.setLastMessage(newChat.getMessages().get(0));
-                    }
-                    chatDao.upsert(cd);
+                        // updates the chat preview in the dao
+                        ChatDetails cd = chatDao.getChatDetails(chatId);
+                        assert newChat != null;
+                        if (newChat.getMessages().size() > 0) {
+                            cd.setLastMessage(newChat.getMessages().get(0));
+                        }
+                        chatDao.upsert(cd);
 
-                    chatData.postValue(newChat);
-                }).start();
+                        chatData.postValue(newChat);
+                    }).start();
                 }
             }
 
@@ -80,23 +78,22 @@ public class ChatAPI {
         });
     }
 
-    public void postMessage(String message,String chatId){
-        String JWT=prefs.getString("JWT","");
-        WebServiceAPI.MessageBody msg=new WebServiceAPI.MessageBody(message);
-        Call<Message> call=webServiceAPI.postMessage("Bearer "+JWT,msg,chatId);
+    public void postMessage(String message, String chatId) {
+        WebServiceAPI.MessageBody msg = new WebServiceAPI.MessageBody(message);
+        Call<Message> call = webServiceAPI.postMessage("Bearer " + JWT, msg, chatId);
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(@NonNull Call<Message> call, @NonNull Response<Message> response) {
-                if(response.isSuccessful()) {
-                    new Thread(()->{
+                if (response.isSuccessful()) {
+                    new Thread(() -> {
 
-                        Message newMessage=response.body();
+                        Message newMessage = response.body();
 
                         Chat chat = chatDao.getChat(chatId);
                         chat.addMessage(newMessage);
                         chatDao.upsert(chat);
 
-                        ChatDetails cd=chatDao.getChatDetails(chatId);
+                        ChatDetails cd = chatDao.getChatDetails(chatId);
                         cd.setLastMessage(newMessage);
 
                         chatDao.upsert(cd);
@@ -112,5 +109,4 @@ public class ChatAPI {
             }
         });
     }
-
 }
