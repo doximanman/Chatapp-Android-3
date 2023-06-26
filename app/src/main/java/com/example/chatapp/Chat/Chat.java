@@ -50,8 +50,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         //  with the username and JWT in shared storage.
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         String JWT = prefs.getString("jwt", "");
-        String serverURL = prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", "");
-        UserAPI userAPI = new UserAPI(getApplication(), serverURL);
+        UserAPI userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
 
 //        currentUser = new User("hello", "james bondddddddd", imageToString(R.drawable.doubt));
         // ViewModel

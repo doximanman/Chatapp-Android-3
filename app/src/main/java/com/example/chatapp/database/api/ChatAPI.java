@@ -32,18 +32,15 @@ public class ChatAPI {
     SharedPreferences prefs;
     String username;
 
-    String serverUrl;
-
-    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username) {
+    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username, String serverURL) {
         this.chatData = chatData;
         this.chatDao = chatDao;
         this.username = username;
-
         // Gson builder
         Gson gson = new GsonBuilder().setLenient().create();
         prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""))
+                .baseUrl("http://" + serverURL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
@@ -74,6 +71,7 @@ public class ChatAPI {
                     }).start();
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<Chat> call, @NonNull Throwable t) {
 

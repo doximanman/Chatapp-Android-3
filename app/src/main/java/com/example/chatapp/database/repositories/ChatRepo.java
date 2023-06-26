@@ -26,13 +26,13 @@ public class ChatRepo {
 
     private String username;
 
-    public ChatRepo(Application application, String chatID, String username) {
+    public ChatRepo(Application application, String chatID, String JWT, String serverURL, String username) {
         this.chatID = chatID;
         ChatDB db = Room.databaseBuilder(application.getApplicationContext(), ChatDB.class, "ChatDB").build();
         dao = db.chatDao();
         chatData = new ChatData();
         this.username = username;
-        api = new ChatAPI(chatData, dao, application, username);
+        api = new ChatAPI(chatData, dao, application, username, serverURL);
     }
 
     private class ChatData extends MutableLiveData<Chat> {

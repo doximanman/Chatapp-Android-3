@@ -1,6 +1,8 @@
 package com.example.chatapp.Chat.viewmodels;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -15,17 +17,20 @@ public class ChatView extends AndroidViewModel {
     String chatId = null;
     String username = null;
 
+    SharedPreferences prefs;
+
     public ChatView(Application application) {
         // half a constructor (needs chatID and user)
         super(application);
+        prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+
     }
 
     public void finishConstruction(String chatId, String username) {
         // rest of the constructor
         this.chatId = chatId;
         this.username = username;
-
-        repository = new ChatRepo(getApplication(), chatId, username);
+        repository = new ChatRepo(getApplication(), chatId, prefs.getString("jwt", ""), username, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
         chat = repository.get();
     }
 
