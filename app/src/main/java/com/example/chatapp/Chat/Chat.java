@@ -3,6 +3,8 @@ package com.example.chatapp.Chat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -67,10 +69,16 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             adapter.setChatList(newChats);
         });
 
-        new Thread(() -> {
-            currentUser = userAPI.getUser(JWT, prefs.getString("username", ""));
-            setUser(currentUser);
+        MutableLiveData<User> user = new MutableLiveData<>();
+
+        user.observe(this, newUser -> {
+            setUser(newUser);
             chatListView.reload();
+        });
+
+        new Thread(() -> {
+            User newUser = userAPI.getUser(JWT, prefs.getString("username", ""));
+            user.postValue(newUser);
         }).start();
 
 
@@ -117,6 +125,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
     private void setUser(User user) {
 
+
+        currentUser = user;
         // decodes pfp from base64 to bitmap
         byte[] pfpToBytes = Base64.decode(user.getProfilePic(), Base64.DEFAULT);
         binding.userPFP.setImageBitmap(BitmapFactory.decodeByteArray(pfpToBytes, 0, pfpToBytes.length));
@@ -160,7 +170,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             connect_again = true;
         }
         if (connect_again) {
-            startActivity(new Intent(this, Login.class));
+            finish();
         }
     }
 

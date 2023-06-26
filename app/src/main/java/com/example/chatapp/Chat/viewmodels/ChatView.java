@@ -30,7 +30,7 @@ public class ChatView extends AndroidViewModel {
         // rest of the constructor
         this.chatId = chatId;
         this.username = username;
-        repository = new ChatRepo(getApplication(), chatId, prefs.getString("jwt", ""), username, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+        repository = new ChatRepo(getApplication(), chatId, prefs.getString("jwt", ""),  prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""), username);
         chat = repository.get();
     }
 

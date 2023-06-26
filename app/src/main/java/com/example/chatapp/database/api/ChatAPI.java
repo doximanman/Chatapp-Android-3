@@ -29,16 +29,16 @@ public class ChatAPI {
     private ChatDao chatDao;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
-    SharedPreferences prefs;
     String username;
+    String JWT;
 
-    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username, String serverURL) {
+    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username, String serverURL, String JWT) {
         this.chatData = chatData;
         this.chatDao = chatDao;
         this.username = username;
+        this.JWT = JWT;
         // Gson builder
         Gson gson = new GsonBuilder().setLenient().create();
-        prefs = application.getSharedPreferences("preferences", Context.MODE_PRIVATE);
         retrofit = new Retrofit.Builder()
                 .baseUrl("http://" + serverURL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -47,7 +47,6 @@ public class ChatAPI {
     }
 
     public void getChat(String chatId) {
-        String JWT = prefs.getString("JWT", "");
         Call<Chat> call = webServiceAPI.getChat("Bearer " + JWT, chatId);
         call.enqueue(new Callback<Chat>() {
             @Override
@@ -80,7 +79,6 @@ public class ChatAPI {
     }
 
     public void postMessage(String message, String chatId) {
-        String JWT = prefs.getString("JWT", "");
         WebServiceAPI.MessageBody msg = new WebServiceAPI.MessageBody(message);
         Call<Message> call = webServiceAPI.postMessage("Bearer " + JWT, msg, chatId);
         call.enqueue(new Callback<Message>() {

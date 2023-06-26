@@ -32,7 +32,7 @@ public class ChatRepo {
         dao = db.chatDao();
         chatData = new ChatData();
         this.username = username;
-        api = new ChatAPI(chatData, dao, application, username, serverURL);
+        api = new ChatAPI(chatData, dao, application, username, serverURL, JWT);
     }
 
     private class ChatData extends MutableLiveData<Chat> {

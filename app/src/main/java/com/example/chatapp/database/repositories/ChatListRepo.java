@@ -32,11 +32,11 @@ public class ChatListRepo {
     private ChatListAPI api;
 
 
-    public ChatListRepo(Application application) {
+    public ChatListRepo(Application application, String serverURL, String JWT) {
         ChatDB db = Room.databaseBuilder(application.getApplicationContext(), ChatDB.class, "ChatDB").build();
         dao = db.chatDao();
         chatListData = new ChatListData();
-        api = new ChatListAPI(chatListData, dao, application);
+        api = new ChatListAPI(chatListData, dao, serverURL, JWT);
     }
 
     private class ChatListData extends MutableLiveData<List<ChatDetails>> {
