@@ -46,6 +46,7 @@ public class ChatBody extends AppCompatActivity {
 
     private MessageListAdapter adapter;
     ChatReceiver firebaseReceiver;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
