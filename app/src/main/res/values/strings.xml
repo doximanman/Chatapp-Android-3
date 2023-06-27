@@ -43,4 +43,38 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="lastMessagePlaceholder">last messageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee</string>
+    <string name="lastMessageDatePlaceholder">12/5/2023 11:50.75</string>
+    <string name="displayNamePlaceholder">John Wick</string>
+    <string name="newChatTitle">Add a new chat!</string>
+    <string name="namePlaceholder">Name</string>
+    <string name="addNewUser">ADD</string>
+    <string name="closeDialog">CLOSE</string>
+    <string name="logout">Logout</string>
+    <string name="username">USERNAME</string>
+    <string name="messageSenderHint">Type your message here</string>
+    <string name="placeholderMessage">hello</string>
+    <string name="msgTimePlaceholder">00:00</string>
+    <string name="triangle">▼</string>
+    <string name="password">Password</string>
+    <string name="login_btn_str">Login</string>
+    <string name="logo">Logo</string>
+    <string name="username_hint">Username</string>
+    <string name="login_to_chatapp">Login to CHATAPP!</string>
+    <string name="register_to_chatapp">Register to CHATAPP!</string>
+    <string name="repeatpassword">RepeatPassword</string>
+    <string name="displayname">DisplayName</string>
+    <string name="register">Register</string>
+    <string name="upload_prfpic">Uplod Profile Picture</string>
+    <string name="wrong_credentials">Wrong username or password</string>
+    <string name="serverip">10.100.102.20:5000</string>
+    <string name="app_settings">App Settings</string>
+    <string name="server_ip">Server IP</string>
+    <string name="server_port">Server Port</string>
+    <string name="switch_theme_mode">Switch Theme Mode</string>
+    <string name="todo">TODO</string>
+    <string name="error_connecting_the_server">Error connecting the server</string>
+    <string name="register_title">Register</string>
+    <string name="not_registered">Not registered yet?\nclick here!</string>
+    <string name="already_registered">Already registered?\nClicke here!</string>
 </resources>
