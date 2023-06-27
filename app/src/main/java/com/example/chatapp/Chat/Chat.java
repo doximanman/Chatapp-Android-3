@@ -264,7 +264,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
     }
 
-
     @Override
     public void onCloseClick(DialogFragment dialog) {
         // don't care!
