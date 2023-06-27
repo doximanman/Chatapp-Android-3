@@ -188,7 +188,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     }
 
     private void setUser(User user) {
-
         firebaseReceiver.setUsername(user.getUsername());
         currentUser = user;
         // decodes pfp from base64 to bitmap

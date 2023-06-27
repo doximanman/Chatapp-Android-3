@@ -12,10 +12,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Login.Login;
@@ -56,7 +58,6 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         ActivityRegisterBinding binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -69,6 +70,16 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
             dialog.show(getSupportFragmentManager(), "Settings");
         });
 
+        EditText userNameEditText = findViewById(R.id.userName);
+        EditText passwordEditText = findViewById(R.id.Password);
+        EditText displayNameEditText = findViewById(R.id.displayName);
+//        Image profilePic = findViewById(R.id.profilePic);
+
+        Button register_btn = findViewById(R.id.register_btn);
+        register_btn.setOnClickListener(view -> {
+            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+
+        });
 
 //        someActivityResultLauncher = registerForActivityResult(
 //                new ActivityResultContracts.StartActivityForResult(),
@@ -97,7 +108,6 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
     public void onSettingsApplyClick(DialogFragment dialog, String serverIP, String serverPort, boolean switch_theme) {
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        boolean connect_again = false;
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();

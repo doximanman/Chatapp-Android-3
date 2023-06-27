@@ -113,6 +113,20 @@ public class UserAPI {
             return null;
         }
     }
+
+    public String postUser(String username, String password, String displayName,String profilePic) {
+        Call<Object> call = webServiceAPI.postUser(new User(username, displayName, profilePic));
+        try {
+            Response<Object> response = call.execute();
+            if (response.body() instanceof User)
+                return "OK";
+            else {
+                return (String) response.body();
+            }
+        } catch (IOException e) {
+            return "Error";
+        }
+    }
 }
 
 
