@@ -2,8 +2,156 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Register.Register">
 
+    <ImageView
+        android:id="@+id/imageView"
+        style="@style/logo"
+        android:layout_width="129dp"
+        android:layout_height="169dp"
+        android:contentDescription="@string/logo"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        style="@style/layout_inputs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="1dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/register_to_chatapp"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+        <EditText
+            android:id="@+id/userName"
+            style="@style/inputs_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Username"
+            android:ems="10"
+            android:hint="@string/username_hint"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textSize="25sp" />
+
+
+        <EditText
+            android:id="@+id/Password"
+            style="@style/inputs_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Password"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/RepeatPassword"
+            style="@style/inputs_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Password"
+            android:ems="10"
+            android:hint="@string/repeatpassword"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/displayName"
+            style="@style/inputs_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Password"
+            android:ems="10"
+            android:hint="@string/displayname"
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/btnUpload"
+            style="@style/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onUploadButtonClick"
+            android:text="@string/upload_prfpic"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/error_register"
+            style="@style/inputs_fields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/already_registered"
+            style="@style/not_registered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/already_registered"
+            android:textSize="25sp" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/register_btn"
+        style="@style/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:height="80dp"
+        android:text="@string/register_title"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settingsBtn"
+        style="@style/btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/todo"
+        android:foreground="@drawable/setting_icom_foreground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

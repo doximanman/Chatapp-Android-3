@@ -4,8 +4,8 @@ var app = express();
 app.use(express.static('public'));
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
-app.use(express.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json({limit:'50mb'}));
 
 const cors = require('cors');
 app.use(cors());
@@ -29,6 +29,9 @@ app.use('/api/Users', users);
 const tokens = require('./src/routers/Tokens');
 app.use('/api/Tokens', tokens);
 
+const firebase=require('./src/routers/Firebase');
+app.use('/api/Firebase',firebase);
+
 const chats = require('./src/routers/Chats');
 app.use('/api/Chats', chats);
 
@@ -47,6 +50,15 @@ const io = require('socket.io')(server,{
 });
 const sockets = require("./src/routers/Sockets")
 io.on('connection', (socket) => sockets.newSocket(io,socket));
+
+// firebase
+const admin=require('firebase-admin')
+const serviceAccount=require('./config/chatapp-ba0bd-firebase-adminsdk-vzq5s-24a0314578.json')
+admin.initializeApp({
+    credential:admin.credential.cert(serviceAccount)
+})
+
+
 
 
 server.listen(process.env.PORT);
