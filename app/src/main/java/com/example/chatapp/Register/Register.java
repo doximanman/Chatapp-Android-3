@@ -12,9 +12,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +30,8 @@ import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.databinding.ActivityLoginBinding;
 import com.example.chatapp.databinding.ActivityRegisterBinding;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 
 public class Register extends AppCompatActivity implements Settings.SettingsListener {
@@ -34,12 +40,15 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 
     UserAPI userAPI;
 
-    public void onUploadButtonClick(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        someActivityResultLauncher.launch(intent);
-    }
-//    @Override
+    Bitmap profilePicBitmap;
+
+//    public void onUploadButtonClick(View view) {
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//        someActivityResultLauncher.launch(intent);
+//    }
+
+    //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -52,11 +61,51 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 //            // Add your code here to handle the file upload
 //        }
 //    }
+    ActivityResultLauncher<Intent> launchSomeActivity
+            = registerForActivityResult(
+            new ActivityResultContracts
+                    .StartActivityForResult(),
+            result -> {
+                if (result.getResultCode()
+                        == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        try {
+                            profilePicBitmap
+                                    = MediaStore.Images.Media.getBitmap(
+                                    this.getContentResolver(),
+                                    selectedImageUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        ;
+                    }
+                }
+            });
+
+    private String imageToString(Bitmap bm) {
+        ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
+        byte[] imageInByArray = byteArrayStream.toByteArray();
+        return Base64.encodeToString(imageInByArray, Base64.DEFAULT);
+    }
+
+    private void imageChooser () {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        launchSomeActivity.launch(i);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         ActivityRegisterBinding binding = ActivityRegisterBinding.inflate(getLayoutInflater());
@@ -74,12 +123,20 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         EditText passwordEditText = findViewById(R.id.Password);
         EditText displayNameEditText = findViewById(R.id.displayName);
 //        Image profilePic = findViewById(R.id.profilePic);
+        Button upload_btn = findViewById(R.id.btnUpload);
+        upload_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageChooser();
+            }
+        });
 
         Button register_btn = findViewById(R.id.register_btn);
         register_btn.setOnClickListener(view -> {
             userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
 
         });
+
 //        someActivityResultLauncher = registerForActivityResult(
 //                new ActivityResultContracts.StartActivityForResult(),
 //                new ActivityResultCallback<ActivityResult>() {
@@ -97,6 +154,10 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
             finish();
         });
     }
+
+    // this function is triggered when
+    // the Select Image Button is clicked
+
 
     @Override
     protected void onPause() {

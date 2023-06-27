@@ -65,7 +65,7 @@
     <string name="repeatpassword">RepeatPassword</string>
     <string name="displayname">DisplayName</string>
     <string name="register">Register</string>
-    <string name="upload_prfpic">Uplod Profile Picture</string>
+    <string name="upload_prfpic">Upload Profile Picture</string>
     <string name="wrong_credentials">Wrong username or password</string>
     <string name="serverip">10.100.102.20:5000</string>
     <string name="app_settings">App Settings</string>
