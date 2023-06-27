@@ -2,11 +2,13 @@ package com.example.chatapp.Chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.chatapp.Chat.adapters.MessageListAdapter;
+import com.example.chatapp.Chat.receivers.ChatListReceiver;
+import com.example.chatapp.Chat.receivers.ChatReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatView;
 import com.example.chatapp.R;
 import com.example.chatapp.database.subentities.Message;
@@ -41,6 +45,7 @@ public class ChatBody extends AppCompatActivity {
     private ActivityChatBodyBinding binding;
 
     private MessageListAdapter adapter;
+    ChatReceiver firebaseReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +88,10 @@ public class ChatBody extends AppCompatActivity {
         layout.setStackFromEnd(true);
         rvMessages.setLayoutManager(layout);
 
+        // start listening to firebase
+        firebaseReceiver=new ChatReceiver(chatView,id);
+
+        // auto scroll
         rvMessages.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if (bottom < oldBottom)
                 rvMessages.smoothScrollToPosition(0);
@@ -91,10 +100,10 @@ public class ChatBody extends AppCompatActivity {
         // whenever messages change - notify the adapter.
         chatView.get().observe(this, newChat -> {
             // redo adapter - everything needs new view (all the messages were pushed up)
-            rvMessages.setAdapter(null);
+            /*rvMessages.setAdapter(null);
             rvMessages.setLayoutManager(null);
             rvMessages.setAdapter(adapter);
-            rvMessages.setLayoutManager(layout);
+            rvMessages.setLayoutManager(layout);*/
             adapter.setMsgList(newChat.getMessages());
             rvMessages.smoothScrollToPosition(0);
         });
@@ -148,5 +157,21 @@ public class ChatBody extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // broadcast receiver to get notified by the server to update the chat list
+        LocalBroadcastManager.getInstance(this).registerReceiver(firebaseReceiver,
+                new IntentFilter("RECEIVE_MESSAGE"));
+        new Thread(() -> chatView.reload()).start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // remove broadcast receiver
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseReceiver);
+    }
 
 }

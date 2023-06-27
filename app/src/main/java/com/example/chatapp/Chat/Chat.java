@@ -1,45 +1,62 @@
 package com.example.chatapp.Chat;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ListView;
 
 import com.example.chatapp.Chat.adapters.ChatListAdapter;
 import com.example.chatapp.Chat.fragments.AddChat;
 import com.example.chatapp.Chat.fragments.Settings;
+import com.example.chatapp.Chat.receivers.ChatListReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
-import com.example.chatapp.Login.Login;
 import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.User;
-import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivityChatBinding;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Chat extends AppCompatActivity implements AddChat.AddChatListener, Settings.SettingsListener {
     private ChatListView chatListView;
     private ActivityChatBinding binding;
     private ChatListAdapter adapter;
-    User currentUser;
+    private User currentUser = null;
+    private String firebaseToken = null;
+    private ChatListReceiver firebaseReceiver;
 
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +80,37 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         ListView lvChats = binding.lvChats;
         lvChats.setAdapter(adapter);
 
-
         // whenever chats change - notify the adapter.
         chatListView.get().observe(this, newChats -> {
+            // update UI
             adapter.setChatList(newChats);
         });
 
-        MutableLiveData<User> user = new MutableLiveData<>();
+        // start listening to firebase
+        firebaseReceiver = new ChatListReceiver(chatListView, null);
+
+        MutableLiveData<String> firebaseToken = new MutableLiveData<>(null);
+
+        // send token to the server when the user is connected
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(firebaseToken::postValue);
+
+        MutableLiveData<User> user = new MutableLiveData<>(null);
+
+        // the first of the two to be triggered will not register the token
+        // only the second one will (once both the token and the user are defined)
+        firebaseToken.observe(this, newToken -> {
+            this.firebaseToken = newToken;
+            if (user.getValue() != null)
+                chatListView.registerFirebaseToken(user.getValue().getUsername(), firebaseToken.getValue());
+        });
 
         user.observe(this, newUser -> {
+            if (newUser == null)
+                return;
             setUser(newUser);
+            if (firebaseToken.getValue() != null) {
+                chatListView.registerFirebaseToken(newUser.getUsername(), firebaseToken.getValue());
+            }
             chatListView.reload();
         });
 
@@ -80,7 +118,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             User newUser = userAPI.getUser(JWT, prefs.getString("username", ""));
             user.postValue(newUser);
         }).start();
-
 
         // open dialog for add button
         binding.addChat.setOnClickListener(view -> {
@@ -109,23 +146,49 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             chat.putExtra("id", chatListView.get().getValue().get(position).getId());
             startActivity(chat);
         });
-        // get chat list from room
-        new Thread(() -> {
-            chatListView.reload();
-        }).start();
+
+        binding.logoutBTN.setOnClickListener(view -> {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("jwt", "");
+            editor.apply();
+            finish();
+        });
+
+        askNotificationPermission();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        new Thread(() -> {
-            chatListView.reload();
-        }).start();
+        // broadcast receiver to get notified by the server to update the chat list
+        LocalBroadcastManager.getInstance(this).registerReceiver(firebaseReceiver,
+                new IntentFilter("RECEIVE_MESSAGE"));
+
+        // get chat list from room and load from server in the background
+        new Thread(() -> chatListView.reload()).start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // remove broadcast receiver
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        // unregister from server
+        if (currentUser != null && firebaseToken != null) {
+            chatListView.unregisterFirebaseToken(currentUser.getUsername(), firebaseToken);
+        }
+        super.onDestroy();
+
     }
 
     private void setUser(User user) {
 
-
+        firebaseReceiver.setUsername(user.getUsername());
         currentUser = user;
         // decodes pfp from base64 to bitmap
         byte[] pfpToBytes = Base64.decode(user.getProfilePic(), Base64.DEFAULT);
@@ -171,6 +234,19 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         }
         if (connect_again) {
             finish();
+        }
+    }
+
+    private void askNotificationPermission() {
+        // This is only necessary for API Level > 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // FCM SDK (and your app) can post notifications.
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
         }
     }
 

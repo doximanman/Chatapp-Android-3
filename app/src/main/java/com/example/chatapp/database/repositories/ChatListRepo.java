@@ -59,6 +59,23 @@ public class ChatListRepo {
         return chatListData;
     }
 
+    public void update(String chatId,Message lastMessage){
+        new Thread(()->{
+            ChatDetails cd=dao.getChatDetails(chatId);
+            cd.setLastMessage(lastMessage);
+            dao.upsert(cd);
+            chatListData.postValue(dao.getChats());
+        }).start();
+    }
+
+    public void registerFirebaseToken(String username,String token){
+        api.registerFirebaseToken(username,token);
+    }
+
+    public void unregisterFirebaseToken(String username,String token){
+        api.unregisterFirebaseToken(username,token);
+    }
+
     public void add(String username) {
         api.newChat(username);
     }
