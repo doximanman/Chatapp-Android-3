@@ -116,7 +116,6 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
             userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
         }
     }
-
     @Override
     public void onSettingsCancelClick(DialogFragment dialog) {
 

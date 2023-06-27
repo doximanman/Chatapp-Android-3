@@ -15,12 +15,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        setTheme(R.style.Theme_Chatapp);
         setContentView(R.layout.activity_main);
+
+
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("serverIP", "192.168.48.27");
+        editor.putString("serverIP", "10.100.102.20");
         editor.putString("serverPort", "5000");
         editor.apply();
 

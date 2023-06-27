@@ -83,10 +83,14 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 //                    }
 //                });
         Button already_registered = findViewById(R.id.already_registered);
-        Intent login = new Intent(this, Login.class);
         already_registered.setOnClickListener(view -> {
-            startActivity(login);
+            finish();
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -95,11 +99,12 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         SharedPreferences.Editor editor = prefs.edit();
         boolean connect_again = false;
         if (switch_theme) {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            else
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            int currentNightMode = AppCompatDelegate.getDefaultNightMode();
+            int newNightMode = currentNightMode == AppCompatDelegate.MODE_NIGHT_YES ?
+                    AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES;
+            AppCompatDelegate.setDefaultNightMode(newNightMode);
         }
+
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
