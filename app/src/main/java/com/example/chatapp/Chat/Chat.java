@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Chat extends AppCompatActivity implements AddChat.AddChatListener, Settings.SettingsListener {
@@ -44,6 +45,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     private ChatListAdapter adapter;
     User currentUser;
     ChatListReceiver firebaseReceiver;
+
+    List<String> topics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +70,33 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         ListView lvChats = binding.lvChats;
         lvChats.setAdapter(adapter);
 
-
         // whenever chats change - notify the adapter.
         chatListView.get().observe(this, newChats -> {
+            // update UI
             adapter.setChatList(newChats);
         });
 
-        MutableLiveData<User> user = new MutableLiveData<>();
+        MutableLiveData<String> firebaseToken=new MutableLiveData<>(null);
+
+        // send token to the server when the user is connected
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(firebaseToken::postValue);
+
+        MutableLiveData<User> user = new MutableLiveData<>(null);
+
+        // the first of the two to be triggered will not register the token
+        // only the second one will (once both the token and the user are defined)
+        firebaseToken.observe(this,newToken->{
+            if(user.getValue()!=null)
+                chatListView.registerFirebaseToken(user.getValue().getUsername(),firebaseToken.getValue());
+        });
 
         user.observe(this, newUser -> {
+            if(newUser==null)
+                return;
             setUser(newUser);
+            if(firebaseToken.getValue()!=null){
+                chatListView.registerFirebaseToken(newUser.getUsername(),firebaseToken.getValue());
+            }
             chatListView.reload();
         });
 
@@ -84,10 +104,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             User newUser = userAPI.getUser(JWT, prefs.getString("username", ""));
             user.postValue(newUser);
         }).start();
-
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this,s->{
-            int a=1;
-        });
 
         // open dialog for add button
         binding.addChat.setOnClickListener(view -> {
@@ -116,9 +132,10 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             chat.putExtra("id", chatListView.get().getValue().get(position).getId());
             startActivity(chat);
         });
+
         // get chat list from room
         new Thread(() -> chatListView.reload()).start();
-        // start listening to events
+        // start listening to firebase
         firebaseReceiver=new ChatListReceiver(chatListView);
     }
 

@@ -44,6 +44,15 @@ public interface WebServiceAPI {
         }
     }
 
+    class UsernameToken{
+        String username;
+        String token;
+        public UsernameToken(String username,String token){
+            this.username=username;
+            this.token=token;
+        }
+    }
+
     @GET("/api/Chats")
     Call<List<ChatDetails>> getChats(@Header("Authorization") String JWT);
 
@@ -64,6 +73,9 @@ public interface WebServiceAPI {
 
     @POST("/api/Tokens")
     Call<String> verify(@Body UsernamePassword usernamePassword);
+
+    @POST("/api/Firebase")
+    Call<Void> registerFirebaseToken(@Header("Authorization") String JWT,@Body UsernameToken usernameToken);
 
     @GET("/api/Users/{username}")
     Call<User> getUser(@Header("Authorization") String JWT, @Path("username") String username);

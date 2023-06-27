@@ -59,6 +59,14 @@ public class ChatListRepo {
         return chatListData;
     }
 
+    public void update(String chatId,Message lastMessage){
+        api.updatePreview(chatId,lastMessage);
+    }
+
+    public void registerFirebaseToken(String username,String token){
+        api.registerFirebaseToken(username,token);
+    }
+
     public void add(String username) {
         api.newChat(username);
     }

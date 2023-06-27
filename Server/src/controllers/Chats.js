@@ -1,6 +1,7 @@
 const ChatService = require('../services/Chats');
 const UserService = require('../services/Users');
 const Sockets=require("./Sockets");
+const Firebase=require("./Firebase")
 // Use a library to perform the cryptographic operations
 const jwt = require("jsonwebtoken")
 const key = process.env.KEY;
@@ -46,6 +47,7 @@ const createChat = async (req, res) => {
 
     // notify other user
     Sockets.newChat(usernames, jsonChat);
+    Firebase.newChat(usernames)
 
     res.json(jsonChat);
 }
@@ -93,7 +95,7 @@ const addMessageToChat = async (req, res) => {
         return res.status(401).send("Unauthorized");
     }
 
-    // notify other user
+    // notify other user's socket
     const chat = await ChatService.getChatById(res.locals.username, req.params.id);
     const usernames=chat.users.map(user=>user.username);
     Sockets.newMessage(usernames,req.params.id,newMessage);
