@@ -1,20 +1,26 @@
 package com.example.chatapp.Chat;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
@@ -44,9 +50,12 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     private ChatListView chatListView;
     private ActivityChatBinding binding;
     private ChatListAdapter adapter;
-    User currentUser=null;
-    String firebaseToken=null;
-    ChatListReceiver firebaseReceiver;
+    private User currentUser=null;
+    private String firebaseToken=null;
+    private ChatListReceiver firebaseReceiver;
+
+    private final ActivityResultLauncher<String> requestPermissionLauncher=
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(),isGranted->{});
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +153,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             finish();
         });
 
+        askNotificationPermission();
+
     }
 
     @Override
@@ -166,11 +177,12 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         // unregister from server
         if(currentUser!=null&&firebaseToken!=null){
             chatListView.unregisterFirebaseToken(currentUser.getUsername(),firebaseToken);
         }
+        super.onDestroy();
+
     }
 
     private void setUser(User user) {
@@ -221,6 +233,19 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         }
         if (connect_again) {
             finish();
+        }
+    }
+
+    private void askNotificationPermission() {
+        // This is only necessary for API Level > 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // FCM SDK (and your app) can post notifications.
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
         }
     }
 
