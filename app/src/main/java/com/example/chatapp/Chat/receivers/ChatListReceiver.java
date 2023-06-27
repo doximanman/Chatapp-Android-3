@@ -35,11 +35,12 @@ public class ChatListReceiver extends BroadcastReceiver {
             case "NewMessage":
                 // create the new message and update viewmodel
                 String messageBody = intent.getStringExtra("message");
-                String messageId = intent.getStringExtra("id");
+                String messageId = intent.getStringExtra("messageId");
                 String username = intent.getStringExtra("username");
+                String chatId=intent.getStringExtra("chatId");
                 String created = intent.getStringExtra("created");
                 Message newMessage = new Message(messageId, created, new User(username, "", ""), messageBody);
-                chatListView.update(username, newMessage);
+                chatListView.update(chatId, newMessage);
                 break;
             case "NewToken":
                 new Thread(() -> chatListView.registerFirebaseToken(this.username,

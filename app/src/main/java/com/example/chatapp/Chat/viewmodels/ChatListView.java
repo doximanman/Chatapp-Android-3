@@ -34,29 +34,17 @@ public class ChatListView extends AndroidViewModel {
         return chatList;
     }
 
-    public void update(String username, Message lastMessage){
-
-        // find chatId of the given username and update it.
-        List<ChatDetails> currentList=chatList.getValue();
-        String chatId=null;
-        assert currentList != null;
-        for(ChatDetails cd : currentList){
-            if(cd.getUser().getUsername().equals(username)){
-                chatId=cd.getId();
-            }
-        }
-        if(chatId!=null){
-            repository.update(chatId,lastMessage);
-        }
+    public void update(String chatId, Message lastMessage) {
+        repository.update(chatId, lastMessage);
     }
 
     // update chat list automatically when a new message is received or a chat is created
-    public void registerFirebaseToken(String currentUsername,String token){
-        repository.registerFirebaseToken(currentUsername,token);
+    public void registerFirebaseToken(String currentUsername, String token) {
+        repository.registerFirebaseToken(currentUsername, token);
     }
 
-    public void unregisterFirebaseToken(String currentUsername,String token){
-        repository.unregisterFirebaseToken(currentUsername,token);
+    public void unregisterFirebaseToken(String currentUsername, String token) {
+        repository.unregisterFirebaseToken(currentUsername, token);
     }
 
     public void add(String username) {

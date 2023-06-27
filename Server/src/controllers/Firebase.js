@@ -53,7 +53,7 @@ const newChat=(usernames)=>{
     }
 }
 
-const newMessage=(senderUsername,usernames,chatID,msg)=>{
+const newMessage=(senderUsername,senderDisplayName,usernames,chatID,msg)=>{
     const users=tokenUsers.filter(user=>usernames.includes(user.username))
     if(users.length>0){
         users.forEach(user=>{
@@ -61,8 +61,10 @@ const newMessage=(senderUsername,usernames,chatID,msg)=>{
                 data:{
                     type:"NewMessage",
                     message:msg.content,
-                    id:chatID,
+                    messageId:msg.id.toString(),
+                    chatId:chatID,
                     username:senderUsername,
+                    displayName:senderDisplayName,
                     created:msg.created
                 },
                 token:user.token

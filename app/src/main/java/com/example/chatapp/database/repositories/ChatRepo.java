@@ -10,6 +10,7 @@ import com.example.chatapp.database.ChatDB;
 import com.example.chatapp.database.api.ChatAPI;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
+import com.example.chatapp.database.subentities.Message;
 
 import java.util.ArrayList;
 
@@ -51,8 +52,25 @@ public class ChatRepo {
         return chatData;
     }
 
+    /**
+     * Assumes current user is the sender
+     * @param message content of the message
+     */
     public void addMessage(String message) {
         api.postMessage(message, chatID);
+    }
+
+    /**
+     * Adds the message to the local repository
+     * @param message the message to add
+     */
+    public void addMessage(Message message){
+        new Thread(()->{
+            Chat chat = dao.getChat(chatID);
+            chat.addMessage(message);
+            dao.upsert(chat);
+            chatData.postValue(chat);
+        }).start();
     }
 
     public void reload() {

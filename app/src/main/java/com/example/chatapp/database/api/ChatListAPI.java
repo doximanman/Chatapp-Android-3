@@ -158,13 +158,4 @@ public class ChatListAPI {
             }
         });
     }
-
-    public void updatePreview(String chatId,Message lastMessage){
-        new Thread(()->{
-            ChatDetails cd=chatDao.getChatDetails(chatId);
-            cd.setLastMessage(lastMessage);
-            chatDao.upsert(cd);
-            chatListData.postValue(chatDao.getChats());
-        }).start();
-    }
 }

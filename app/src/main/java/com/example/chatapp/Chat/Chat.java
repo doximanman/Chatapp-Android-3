@@ -144,9 +144,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             finish();
         });
 
-        // get chat list from room
-        new Thread(() -> chatListView.reload()).start();
-
     }
 
     @Override
@@ -155,6 +152,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         // broadcast receiver to get notified by the server to update the chat list
         LocalBroadcastManager.getInstance(this).registerReceiver(firebaseReceiver,
                 new IntentFilter("RECEIVE_MESSAGE"));
+
+        // get chat list from room and load from server in the background
         new Thread(() -> chatListView.reload()).start();
     }
 
