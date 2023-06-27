@@ -46,6 +46,12 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         setContentView(R.layout.activity_login);
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
+
+        Intent chat = new Intent(getApplicationContext(), Chat.class);
+//        if (!prefs.getString("jwt", "").equals("")) {
+//            startActivity(chat);
+//        }
+
         ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -68,8 +74,9 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         });
 
         Button login_btn = findViewById(R.id.login_btn);
-        Intent chat = new Intent(this, Chat.class);
         login_btn.setOnClickListener(view -> {
+            jwt.setValue(prefs.getString("jwt", ""));
+            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
             userAPI.ValidateUser(userNameEditText.getText().toString(), passwordEditText.getText().toString());
             jwt.observe(this, new Observer<String>() {
                 @Override
@@ -84,6 +91,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                         editor.putString("jwt", jwt.getValue());
                         editor.putString("username", userNameEditText.getText().toString());
                         editor.apply();
+                        chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(chat);
                     }
                 }
@@ -96,12 +104,6 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         boolean connect_again = false;
-        if (switch_theme) {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            else
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
@@ -113,9 +115,19 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
             connect_again = true;
         }
         if (connect_again) {
-            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+            editor.putString("jwt", "");
+            editor.apply();
+        }
+        if (switch_theme) {
+            editor.putString("jwt", "");
+            editor.apply();
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
+
     @Override
     public void onSettingsCancelClick(DialogFragment dialog) {
 

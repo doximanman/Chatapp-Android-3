@@ -98,26 +98,22 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         boolean connect_again = false;
-        if (switch_theme) {
-            int currentNightMode = AppCompatDelegate.getDefaultNightMode();
-            int newNightMode = currentNightMode == AppCompatDelegate.MODE_NIGHT_YES ?
-                    AppCompatDelegate.MODE_NIGHT_NO : AppCompatDelegate.MODE_NIGHT_YES;
-            AppCompatDelegate.setDefaultNightMode(newNightMode);
-        }
-
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
-            connect_again = true;
         }
         if (!Objects.equals(serverPort, "")) {
             editor.putString("serverPort", serverPort);
             editor.apply();
-            connect_again = true;
         }
-        if (connect_again) {
-            userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+        if (switch_theme) {
+            editor.apply();
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
+
     }
 
     @Override

@@ -31,6 +31,7 @@ import com.example.chatapp.Chat.fragments.AddChat;
 import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Chat.receivers.ChatListReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
+import com.example.chatapp.Login.Login;
 import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.User;
@@ -216,12 +217,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         boolean connect_again = false;
-        if (switch_theme) {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            else
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
@@ -233,7 +228,19 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             connect_again = true;
         }
         if (connect_again) {
-            finish();
+            editor.putString("jwt", "");
+            editor.apply();
+        }
+        if (switch_theme) {
+//            editor.putString("jwt", "");
+//            editor.apply();
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else if (connect_again) {
+            startActivity(new Intent(this, Login.class));
         }
     }
 
