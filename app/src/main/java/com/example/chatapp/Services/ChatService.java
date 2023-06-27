@@ -8,16 +8,23 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class ChatService extends FirebaseMessagingService {
+
+
+
     public ChatService() {
     }
 
     @Override
     public void onNewToken(@NonNull String token) {
-        super.onNewToken(token);
-        int a=1;
+        // new token
+        Intent intent=new Intent("RECEIVE_MESSAGE");
+        intent.putExtra("type","NewToken");
+        intent.putExtra("token",token);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     @Override
@@ -45,7 +52,6 @@ public class ChatService extends FirebaseMessagingService {
             intent.putExtra("type","NewMessage");
             intent.putExtra("id",data.get("id"));
             intent.putExtra("message",data.get("message"));
-            intent.putExtra("displayName",data.get("displayName"));
             intent.putExtra("username",data.get("username"));
             intent.putExtra("created",data.get("created"));
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);

@@ -100,6 +100,9 @@ const addMessageToChat = async (req, res) => {
     const usernames=chat.users.map(user=>user.username);
     Sockets.newMessage(usernames,req.params.id,newMessage);
 
+    // notify other user through firebase
+    Firebase.newMessage(res.locals.username,usernames,req.params.id,newMessage)
+
     res.json(newMessage);
 };
 

@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -76,6 +77,9 @@ public interface WebServiceAPI {
 
     @POST("/api/Firebase")
     Call<Void> registerFirebaseToken(@Header("Authorization") String JWT,@Body UsernameToken usernameToken);
+
+    @HTTP(method = "DELETE", path="/api/Firebase", hasBody=true)
+    Call<Void> unregisterFirebaseToken(@Header("Authorization") String JWT,@Body UsernameToken usernameToken);
 
     @GET("/api/Users/{username}")
     Call<User> getUser(@Header("Authorization") String JWT, @Path("username") String username);

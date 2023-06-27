@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ListView;
 
 import com.example.chatapp.Chat.adapters.ChatListAdapter;
@@ -43,10 +44,9 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     private ChatListView chatListView;
     private ActivityChatBinding binding;
     private ChatListAdapter adapter;
-    User currentUser;
+    User currentUser=null;
+    String firebaseToken=null;
     ChatListReceiver firebaseReceiver;
-
-    List<String> topics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +76,9 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             adapter.setChatList(newChats);
         });
 
+        // start listening to firebase
+        firebaseReceiver=new ChatListReceiver(chatListView,null);
+
         MutableLiveData<String> firebaseToken=new MutableLiveData<>(null);
 
         // send token to the server when the user is connected
@@ -86,6 +89,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         // the first of the two to be triggered will not register the token
         // only the second one will (once both the token and the user are defined)
         firebaseToken.observe(this,newToken->{
+            this.firebaseToken=newToken;
             if(user.getValue()!=null)
                 chatListView.registerFirebaseToken(user.getValue().getUsername(),firebaseToken.getValue());
         });
@@ -133,10 +137,16 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             startActivity(chat);
         });
 
+        binding.logoutBTN.setOnClickListener(view->{
+            SharedPreferences.Editor editor=prefs.edit();
+            editor.putString("jwt","");
+            editor.apply();
+            finish();
+        });
+
         // get chat list from room
         new Thread(() -> chatListView.reload()).start();
-        // start listening to firebase
-        firebaseReceiver=new ChatListReceiver(chatListView);
+
     }
 
     @Override
@@ -155,9 +165,18 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseReceiver);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // unregister from server
+        if(currentUser!=null&&firebaseToken!=null){
+            chatListView.unregisterFirebaseToken(currentUser.getUsername(),firebaseToken);
+        }
+    }
+
     private void setUser(User user) {
 
-
+        firebaseReceiver.setUsername(user.getUsername());
         currentUser = user;
         // decodes pfp from base64 to bitmap
         byte[] pfpToBytes = Base64.decode(user.getProfilePic(), Base64.DEFAULT);

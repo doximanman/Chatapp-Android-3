@@ -14,25 +14,37 @@ import com.example.chatapp.database.subentities.User;
 public class ChatListReceiver extends BroadcastReceiver {
 
     private ChatListView chatListView;
-    public ChatListReceiver(ChatListView chatListView){
-        this.chatListView=chatListView;
+    String username;
+
+    public ChatListReceiver(ChatListView chatListView, String username) {
+        this.chatListView = chatListView;
+        this.username = username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String type=intent.getStringExtra("type");
-        if(type.equals("NewChat")){
-            new Thread(()->chatListView.reload()).start();
-        }
-        else if(type.equals("NewMessage")){
-            // create the new message and update viewmodel
-            String messageBody=intent.getStringExtra("message");
-            String messageId=intent.getStringExtra("id");
-            String username=intent.getStringExtra("username");
-            String displayName=intent.getStringExtra("displayName");
-            String created=intent.getStringExtra("created");
-            Message newMessage=new Message(messageId,created,new User(username,displayName,""),messageBody);
-            chatListView.update(username,newMessage);
+        String type = intent.getStringExtra("type");
+        switch (type) {
+            case "NewChat":
+                new Thread(() -> chatListView.reload()).start();
+                break;
+            case "NewMessage":
+                // create the new message and update viewmodel
+                String messageBody = intent.getStringExtra("message");
+                String messageId = intent.getStringExtra("id");
+                String username = intent.getStringExtra("username");
+                String created = intent.getStringExtra("created");
+                Message newMessage = new Message(messageId, created, new User(username, "", ""), messageBody);
+                chatListView.update(username, newMessage);
+                break;
+            case "NewToken":
+                new Thread(() -> chatListView.registerFirebaseToken(this.username,
+                        intent.getStringExtra("token"))).start();
+                break;
         }
     }
 }

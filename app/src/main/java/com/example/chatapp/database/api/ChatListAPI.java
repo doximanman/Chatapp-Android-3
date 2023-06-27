@@ -108,6 +108,23 @@ public class ChatListAPI {
         });
     }
 
+
+    public void unregisterFirebaseToken(String username,String token){
+        WebServiceAPI.UsernameToken userToken=new WebServiceAPI.UsernameToken(username,token);
+        Call<Void> call=webServiceAPI.unregisterFirebaseToken("Bearer "+JWT,userToken);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
     public void newChat(String username) {
         WebServiceAPI.Username userName = new WebServiceAPI.Username(username);
         Call<ChatDetails> call = webServiceAPI.newChat("Bearer " + JWT, userName);

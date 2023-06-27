@@ -67,6 +67,10 @@ public class ChatListRepo {
         api.registerFirebaseToken(username,token);
     }
 
+    public void unregisterFirebaseToken(String username,String token){
+        api.unregisterFirebaseToken(username,token);
+    }
+
     public void add(String username) {
         api.newChat(username);
     }

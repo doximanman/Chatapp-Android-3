@@ -55,6 +55,10 @@ public class ChatListView extends AndroidViewModel {
         repository.registerFirebaseToken(currentUsername,token);
     }
 
+    public void unregisterFirebaseToken(String currentUsername,String token){
+        repository.unregisterFirebaseToken(currentUsername,token);
+    }
+
     public void add(String username) {
         repository.add(username);
     }
