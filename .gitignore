@@ -10,3 +10,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+/FirebaseCloudFunctions/node_modules/

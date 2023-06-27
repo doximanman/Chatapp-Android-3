@@ -11,6 +11,8 @@ import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.repositories.ChatRepo;
 import com.example.chatapp.database.subentities.Message;
 
+import java.util.stream.Stream;
+
 public class ChatView extends AndroidViewModel {
     ChatRepo repository;
     private LiveData<Chat> chat;
@@ -38,8 +40,28 @@ public class ChatView extends AndroidViewModel {
         return chat;
     }
 
+    /**
+     * Assumes current user is the sender
+     * @param message content of the message
+     */
     public void add(String message) {
         repository.addMessage(message);
+    }
+
+    /**
+     * Adds the message to the local repository
+     * @param message the message to add
+     */
+    public void add(Message message){
+        assert chat.getValue()!=null;
+        // filter messages to see if the message exists already (happens when
+        // this is the sender of the message, for example).
+        boolean messageExists=chat.getValue().getMessages().
+                stream().anyMatch(currentMessage->
+                        currentMessage.getId().equals(message.getId())
+                );
+        if(!messageExists)
+            repository.addMessage(message);
     }
 
     public void reload() {

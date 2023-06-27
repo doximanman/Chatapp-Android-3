@@ -32,7 +32,7 @@ public class ChatAPI {
     String username;
     String JWT;
 
-    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, Application application, String username, String serverURL, String JWT) {
+    public ChatAPI(MutableLiveData<Chat> chatData, ChatDao chatDao, String username, String serverURL, String JWT) {
         this.chatData = chatData;
         this.chatDao = chatDao;
         this.username = username;

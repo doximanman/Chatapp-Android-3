@@ -70,14 +70,20 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (msgList.get(position).isSender(username)) {
+        Message msg = msgList.get(position);
+
+        if (msg.isSender(username)) {
             // change the look of sender messages
             holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#82D0E3")));
             holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#82D0E3")));
         }
+        else{
+            holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_INHERIT);
+            holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#CAE4EF")));
+            holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CAE4EF")));
+        }
 
-        Message msg = msgList.get(position);
         holder.message.setText(msg.getContent());
 
         // convert dateThh:mm:ss.millisecondsS to hh:mm

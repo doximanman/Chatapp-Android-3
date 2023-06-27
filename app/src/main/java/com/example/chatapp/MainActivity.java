@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("serverIP", "192.168.48.27");
+        editor.putString("serverIP", "192.168.1.143");
         editor.putString("serverPort", "5000");
         editor.apply();
 

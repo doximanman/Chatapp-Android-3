@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -15,6 +16,7 @@ import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -54,8 +56,6 @@ public class ChatListAPI {
         //  remove this line.
 //        getToken("hello", "Helloworld1!");
     }
-
-
     public void getChats() {
         Call<List<ChatDetails>> call = webServiceAPI.getChats("Bearer " + JWT);
         call.enqueue(new Callback<List<ChatDetails>>() {
@@ -87,6 +87,39 @@ public class ChatListAPI {
 
             @Override
             public void onFailure(@NonNull Call<List<ChatDetails>> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    public void registerFirebaseToken(String username,String token){
+        WebServiceAPI.UsernameToken userToken=new WebServiceAPI.UsernameToken(username,token);
+        Call<Void> call=webServiceAPI.registerFirebaseToken("Bearer "+JWT,userToken);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+
+    public void unregisterFirebaseToken(String username,String token){
+        WebServiceAPI.UsernameToken userToken=new WebServiceAPI.UsernameToken(username,token);
+        Call<Void> call=webServiceAPI.unregisterFirebaseToken("Bearer "+JWT,userToken);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
             }
         });
@@ -125,5 +158,4 @@ public class ChatListAPI {
             }
         });
     }
-
 }
