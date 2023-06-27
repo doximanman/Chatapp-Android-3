@@ -80,7 +80,6 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
             userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
 
         });
-
 //        someActivityResultLauncher = registerForActivityResult(
 //                new ActivityResultContracts.StartActivityForResult(),
 //                new ActivityResultCallback<ActivityResult>() {
