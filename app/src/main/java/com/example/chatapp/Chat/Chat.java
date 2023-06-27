@@ -150,6 +150,9 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             SharedPreferences.Editor editor=prefs.edit();
             editor.putString("jwt","");
             editor.apply();
+            if(this.currentUser!=null&&this.firebaseToken!=null){
+                chatListView.unregisterFirebaseToken(currentUser.getUsername(),this.firebaseToken);
+            }
             finish();
         });
 
@@ -175,7 +178,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseReceiver);
     }
 
-    @Override
+/*    @Override
     protected void onDestroy() {
         // unregister from server
         if(currentUser!=null&&firebaseToken!=null){
@@ -183,7 +186,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         }
         super.onDestroy();
 
-    }
+    }*/
 
     private void setUser(User user) {
 

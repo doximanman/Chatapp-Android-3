@@ -68,7 +68,7 @@ public class ChatService extends FirebaseMessagingService {
             String displayName = data.get("displayName");
 
 
-            // notification!
+            // notifications!
             if (displayName != null && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                     PackageManager.PERMISSION_GRANTED) {
                 // channel name of notification channel is the display name of the sender.
@@ -84,7 +84,8 @@ public class ChatService extends FirebaseMessagingService {
                 if (!notifIds.containsKey(displayName))
                     notifIds.put(displayName, counter++);
 
-                notificationManager.notify(notifIds.get(displayName), builder.build());
+
+                notificationManager.notify(displayName,0, builder.build());
             }
 
 

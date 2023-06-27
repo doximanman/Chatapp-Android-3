@@ -7,7 +7,12 @@ const getMessageById = async (id) => {
 
 // create message by the sender username and content with the current date time
 const createMessage = async (sender, content) => {
-    const msg = new Message({ created: new Date().toISOString(), sender: sender, content: content });
+
+    // jerusalem timezone (daylight saving => UTC+3)
+    const currentDate=new Date();
+    currentDate.setMinutes(currentDate.getMinutes()+180)
+
+    const msg = new Message({ created: currentDate.toISOString(), sender: sender, content: content });
     return await msg.save();
 };
 
