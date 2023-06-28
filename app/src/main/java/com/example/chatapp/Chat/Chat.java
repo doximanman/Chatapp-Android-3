@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -22,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.chatapp.Chat.adapters.ChatListAdapter;
 import com.example.chatapp.Chat.fragments.AddChat;
@@ -30,12 +28,9 @@ import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Chat.receivers.ChatListReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
 import com.example.chatapp.Login.Login;
-import com.example.chatapp.database.api.ChatAPI;
 import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.entities.ChatDetails;
-import com.example.chatapp.database.entities.User;
-import com.example.chatapp.database.repositories.ChatListRepo;
-import com.example.chatapp.database.repositories.ChatRepo;
+import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.databinding.ActivityChatBinding;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -53,8 +48,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     private String firebaseToken = null;
     private ChatListReceiver firebaseReceiver;
 
-    LiveData<User> user;
-
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             });
@@ -68,7 +61,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         String JWT = prefs.getString("jwt", "");
-        ChatListRepo chatRepo = new ChatListRepo(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""),JWT);
+        UserAPI userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
 
         // ViewModel
         chatListView = new ViewModelProvider(this).get(ChatListView.class);
@@ -92,7 +85,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         // send token to the server when the user is connected
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(firebaseToken::postValue);
 
-        user = chatRepo.getUser();
+        MutableLiveData<User> user = new MutableLiveData<>(null);
 
         // the first of the two to be triggered will not register the token
         // only the second one will (once both the token and the user are defined)
@@ -103,16 +96,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         });
 
         user.observe(this, newUser -> {
-            if(newUser==null){
+            if (newUser == null)
                 return;
-            }
-            if (newUser.getProfilePic().equals("unauthorized")) {
-                Toast.makeText(this,"User credentials invalid",Toast.LENGTH_SHORT).show();
-                Intent login = new Intent(getApplicationContext(), Login.class);
-                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(login);
-                return;
-            }
             setUser(newUser);
             if (firebaseToken.getValue() != null) {
                 chatListView.registerFirebaseToken(newUser.getUsername(), firebaseToken.getValue());
@@ -121,7 +106,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         });
 
         new Thread(() -> {
-            chatRepo.setUser(prefs.getString("username", ""));
+            User newUser = userAPI.getUser(JWT, prefs.getString("username", ""));
+            user.postValue(newUser);
         }).start();
 
         // open dialog for add button
@@ -161,9 +147,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             }
             // clear local DB
             chatListView.clearAll();
-            // remove livedata listeners
-            user.removeObservers(this);
-            chatListView.get().removeObservers(this);
             Intent login = new Intent(getApplicationContext(), Login.class);
             login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(login);

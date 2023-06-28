@@ -7,16 +7,11 @@ import androidx.room.Upsert;
 
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
-import com.example.chatapp.database.entities.User;
 
 import java.util.List;
 
 @Dao
 public interface ChatDao {
-
-    @Query("SELECT * FROM user")
-    User getUser();
-
     @Query("SELECT * FROM chatdetails")
     List<ChatDetails> getChats();
 
@@ -31,14 +26,6 @@ public interface ChatDao {
 
     @Query("DELETE FROM chat")
     void deleteChats();
-
-
-    @Query("DELETE FROM user")
-    void deleteUser();
-
-
-    @Upsert
-    void upsert(User user);
 
     @Upsert
     void upsert(Chat... Chats);

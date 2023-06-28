@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.example.chatapp.Chat.viewmodels.ChatView;
 import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.entities.User;
+import com.example.chatapp.database.subentities.User;
 
 public class ChatReceiver extends BroadcastReceiver {
     private final ChatView chatView;

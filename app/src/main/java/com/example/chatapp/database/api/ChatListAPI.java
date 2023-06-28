@@ -7,12 +7,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
-import com.example.chatapp.database.entities.User;
-import com.example.chatapp.database.subentities.Message;
+import com.example.chatapp.database.subentities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,6 @@ public class ChatListAPI {
     String JWT;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
-    User oldUser;
 
     public ChatListAPI(MutableLiveData<List<ChatDetails>> chatListData, ChatDao chatDao, String serverURL, String JWT) {
         this.chatListData = chatListData;
@@ -41,23 +38,10 @@ public class ChatListAPI {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
-        new Thread(()->oldUser=chatDao.getUser()).start();
-    }
 
-    public User getUser(String username) {
-        Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
-        try {
-            Response<User> response = call.execute();
-            if (response.isSuccessful()) {
-                return response.body();
-            }
-            else if(response.code()==403){
-                return new User("","","unauthorized");
-            }
-            return null;
-        } catch (IOException e) {
-            return null;
-        }
+        // todo: JWT should already be in shared preferences. After implementing login,
+        //  remove this line.
+//        getToken("hello", "Helloworld1!");
     }
 
     public void getChats() {
@@ -68,17 +52,9 @@ public class ChatListAPI {
                 if (response.isSuccessful()) {
                     new Thread(() -> {
 
-                        User currentUser=chatDao.getUser();
-
-                        if(currentUser!=null&&oldUser!=null&&!currentUser.getUsername().equals(oldUser.getUsername())){
-                            // clear database
-                            chatDao.deleteChats();
-                            chatDao.deletePreviews();
-                            oldUser=currentUser;
-                        }
-                        if(oldUser==null&&currentUser!=null){
-                            oldUser=currentUser;
-                        }
+                        // clears database
+                        chatDao.deleteChats();
+                        chatDao.deletePreviews();
 
                         // converts list to array to be able to use insert(ChatDetails... chats)
                         List<ChatDetails> chatList = response.body();
@@ -88,16 +64,9 @@ public class ChatListAPI {
                         // inserts all chats (placeholder chat for the inner chats)
                         chatDao.upsert(chatArray);
                         chatDao.upsert(chatList.stream().map(cd -> {
-                            Chat oldChat=chatDao.getChat(cd.getId());
-                            if(oldChat!=null)
-                                return oldChat;
-
                             List<User> users = new ArrayList<>();
                             users.add(cd.getUser());
-                            List<Message> messageList=new ArrayList<>();
-                            if(cd.getLastMessage()!=null)
-                                messageList.add(cd.getLastMessage());
-                            return new Chat(cd.getId(), users, messageList);
+                            return new Chat(cd.getId(), users, new ArrayList<>());
                         }).toArray(Chat[]::new));
                         chatListData.postValue(chatDao.getChats());
                     }).start();
