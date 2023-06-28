@@ -51,6 +51,10 @@ public class ChatListView extends AndroidViewModel {
         repository.add(username);
     }
 
+    public void clearAll(){
+        repository.clearLocal();
+    }
+
     public void reload() {
         repository.reload();
     }

@@ -8,11 +8,12 @@ import com.example.chatapp.Chat.viewmodels.ChatView;
 import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
 
+import java.util.List;
+
 public class ChatReceiver extends BroadcastReceiver {
     private ChatView chatView;
     String chatId;
-
-    public ChatReceiver(ChatView chatView,String chatId){
+    public ChatReceiver(ChatView chatView, String chatId){
         this.chatView=chatView;
         this.chatId=chatId;
     }

@@ -31,6 +31,7 @@ import com.example.chatapp.Chat.fragments.AddChat;
 import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Chat.receivers.ChatListReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
+import com.example.chatapp.Login.Login;
 import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.User;
@@ -86,7 +87,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         });
 
         // start listening to firebase
-        firebaseReceiver=new ChatListReceiver(chatListView,null);
+        firebaseReceiver=new ChatListReceiver(chatListView,null,getApplication());
 
         MutableLiveData<String> firebaseToken=new MutableLiveData<>(null);
 
@@ -153,32 +154,38 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             if(this.currentUser!=null&&this.firebaseToken!=null){
                 chatListView.unregisterFirebaseToken(currentUser.getUsername(),this.firebaseToken);
             }
-            finish();
+            // clear local DB
+            chatListView.clearAll();
+            Intent login=new Intent(getApplicationContext(),Login.class);
+            login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(login);
         });
 
         askNotificationPermission();
+
+        // broadcast receiver to get notified by the server to update the chat list
+        LocalBroadcastManager.getInstance(this).registerReceiver(firebaseReceiver,
+                new IntentFilter("RECEIVE_MESSAGE"));
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // broadcast receiver to get notified by the server to update the chat list
-        LocalBroadcastManager.getInstance(this).registerReceiver(firebaseReceiver,
-                new IntentFilter("RECEIVE_MESSAGE"));
+
 
         // get chat list from room and load from server in the background
         new Thread(() -> chatListView.reload()).start();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
         // remove broadcast receiver
         LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseReceiver);
+        super.onDestroy();
     }
 
-/*    @Override
+    /*    @Override
     protected void onDestroy() {
         // unregister from server
         if(currentUser!=null&&firebaseToken!=null){

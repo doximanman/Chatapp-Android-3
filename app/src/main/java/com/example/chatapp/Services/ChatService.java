@@ -69,29 +69,35 @@ public class ChatService extends FirebaseMessagingService {
 
 
             // notifications!
-            if (displayName != null && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                    PackageManager.PERMISSION_GRANTED) {
-                // channel name of notification channel is the display name of the sender.
+            // send notification if the message contains a notification field
+            // used to not send a notification to the sender
+            if(message.getNotification()!=null) {
                 createNotificationChannel(displayName);
+                if (displayName != null && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // channel name of notification channel is the display name of the sender.
+                    createNotificationChannel(displayName);
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, displayName)
-                        .setSmallIcon(R.drawable.logo)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo))
-                        .setContentTitle(displayName)
-                        .setContentText(messageBody)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                if (!notifIds.containsKey(displayName))
-                    notifIds.put(displayName, counter++);
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, displayName)
+                            .setSmallIcon(R.drawable.logo)
+                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo))
+                            .setContentTitle(displayName)
+                            .setContentText(messageBody)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                    if (!notifIds.containsKey(displayName))
+                        notifIds.put(displayName, counter++);
 
 
-                notificationManager.notify(displayName,0, builder.build());
+                    notificationManager.notify(displayName, 0, builder.build());
+                }
             }
 
 
             Intent intent = new Intent("RECEIVE_MESSAGE");
             intent.putExtra("type", "NewMessage");
             intent.putExtra("messageId", data.get("messageId"));
+            intent.putExtra("displayName",data.get("displayName"));
             intent.putExtra("chatId", data.get("chatId"));
             intent.putExtra("message", data.get("message"));
             intent.putExtra("username", data.get("username"));

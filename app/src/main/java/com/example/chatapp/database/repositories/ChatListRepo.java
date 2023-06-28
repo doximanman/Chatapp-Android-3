@@ -80,6 +80,21 @@ public class ChatListRepo {
         api.newChat(username);
     }
 
+    public void clearLocal(){
+        Thread tr=new Thread(()->{
+            dao.deletePreviews();
+            dao.deleteChats();
+        });
+        tr.start();
+        try {
+            tr.join();
+        }catch (InterruptedException ignored){
+
+        }
+
+
+    }
+
     public void reload() {
         api.getChats();
     }
