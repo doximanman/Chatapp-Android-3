@@ -90,9 +90,11 @@
     <style name="chat_preview_name">
         <item name="android:textColor">@color/green6</item>
     </style>
+
     <style name="Base.Theme.Chatapp" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/green6</item>
         <item name="colorPrimaryVariant">@color/light_dark_blue</item>
+        <item name="colorOnSurface">@color/green4</item>
     </style>
 
     <style name="Theme.Chatapp" parent="Base.Theme.Chatapp" />

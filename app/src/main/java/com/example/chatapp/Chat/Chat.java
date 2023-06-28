@@ -233,8 +233,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             editor.apply();
         }
         if (switch_theme) {
-//            editor.putString("jwt", "");
-//            editor.apply();
             if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             else

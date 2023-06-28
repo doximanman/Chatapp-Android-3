@@ -1,7 +1,6 @@
 package com.example.chatapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 
 import com.example.chatapp.Chat.Chat;
 import com.example.chatapp.Login.Login;
-import com.example.chatapp.Register.Register;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,11 +33,10 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("jwt", "");
         }
         editor.apply();
-        if (prefs.getString("jwt","").equals("")) {
+        if (prefs.getString("jwt", "").equals("")) {
             Intent login = new Intent(this, Login.class);
             startActivity(login);
-        }
-        else {
+        } else {
             Intent chat = new Intent(this, Chat.class);
             startActivity(chat);
         }
