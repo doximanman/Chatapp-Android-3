@@ -48,9 +48,9 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         Intent chat = new Intent(getApplicationContext(), Chat.class);
-//        if (!prefs.getString("jwt", "").equals("")) {
-//            startActivity(chat);
-//        }
+        if (!prefs.getString("jwt", "").equals("")) {
+            startActivity(chat);
+        }
 
         ActivityLoginBinding binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Chat.Chat">
+    tools:context=".Chat.Chat"
+    android:layoutDirection="ltr">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -25,29 +26,28 @@
             app:srcCompat="@drawable/doubt_background" />
 
         <TextView
+            style="@style/my_username"
             android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
+            android:layout_margin="15dp"
             android:layout_toStartOf="@id/logoutBTN"
             android:layout_toEndOf="@+id/userPFP"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/username"
-            android:textSize="20sp" />
+            android:text=""
+            android:textSize="40sp" />
 
         <Button
+            style="@style/logout_btn"
             android:id="@+id/logoutBTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="5dp"
-            android:backgroundTint="#FF3E3E"
             android:text="@string/logout"
-            android:textColorHighlight="#FF0000"
-            android:textColorLink="#FF0000"
             android:textSize="20sp" />
     </RelativeLayout>
 
@@ -59,21 +59,22 @@
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="@style/btn"
         android:id="@+id/addChat"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/todo"
-        android:foreground="@drawable/ic_add_icon"
+        android:foreground="@drawable/light_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/settingsBtn"
+        style="@style/btn"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/todo"
         android:foreground="@drawable/setting_icom_foreground"

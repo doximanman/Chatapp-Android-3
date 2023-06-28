@@ -19,8 +19,8 @@
         app:shapeAppearanceOverlay="@style/roundCornersImage" />
 
     <TextView
-        style="@style/title"
         android:id="@+id/displayName"
+        style="@style/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -31,6 +31,7 @@
         android:layout_toStartOf="@+id/lastMessageDate"
         android:layout_toEndOf="@+id/profilePic"
         android:ellipsize="end"
+        android:fontFamily="@font/baloo_bhaijaan"
         android:maxLines="1"
         android:text="@string/displayNamePlaceholder"
         android:textSize="20sp" />
