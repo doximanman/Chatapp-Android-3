@@ -82,7 +82,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                 @Override
                 public void onChanged(String s) {
                     TextView wrongMsg = findViewById(R.id.error_login);
-                    wrongMsg.setGravity(Gravity.CENTER);
+//                    wrongMsg.setGravity(Gravity.CENTER);
                     if (Objects.equals(s, "Failed")) {
                         wrongMsg.setText(R.string.wrong_credentials);
                     } else if (Objects.equals(s, "ErrorServer")) {

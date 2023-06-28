@@ -7,6 +7,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
+import java.util.regex.*;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,11 +26,13 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.chatapp.Chat.fragments.Settings;
 import com.example.chatapp.Login.Login;
 import com.example.chatapp.R;
 import com.example.chatapp.database.api.UserAPI;
+import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.databinding.ActivityLoginBinding;
 import com.example.chatapp.databinding.ActivityRegisterBinding;
 
@@ -35,13 +41,14 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Register extends AppCompatActivity implements Settings.SettingsListener {
-    private static final int FILE_UPLOAD_REQUEST_CODE = 1;
-    ActivityResultLauncher<Intent> someActivityResultLauncher;
-
-    UserAPI userAPI;
-
-    Bitmap profilePicBitmap;
-
+    private UserAPI userAPI;
+    private Bitmap profilePicBitmap;
+    private MutableLiveData<String>  postUserRes;
+    private final String passwordRegExp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$";
+    private final String usernameRegExp = "^[a-zA-Z0-9-_!.]{4,20}$";
+    private final Pattern usernamePattern = Pattern.compile(usernameRegExp);
+    private final Pattern passwordPattern = Pattern.compile(passwordRegExp);
+    private Matcher matcher;
 //    public void onUploadButtonClick(View view) {
 //        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 //        intent.setType("image/*");
@@ -61,6 +68,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 //            // Add your code here to handle the file upload
 //        }
 //    }
+
     ActivityResultLauncher<Intent> launchSomeActivity
             = registerForActivityResult(
             new ActivityResultContracts
@@ -93,7 +101,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         return Base64.encodeToString(imageInByArray, Base64.DEFAULT);
     }
 
-    private void imageChooser () {
+    private void imageChooser() {
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -105,13 +113,14 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
+        profilePicBitmap = null;
+        postUserRes = new MutableLiveData<String>("");
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         ActivityRegisterBinding binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+        userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""), postUserRes);
 
         // open dialog for setting
         binding.settingsBtn.setOnClickListener(view -> {
@@ -121,8 +130,10 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);
+        EditText repeatPasswordEditText = findViewById(R.id.RepeatPassword);
         EditText displayNameEditText = findViewById(R.id.displayName);
-//        Image profilePic = findViewById(R.id.profilePic);
+        TextView wrongMsg = findViewById(R.id.error_register);
+
         Button upload_btn = findViewById(R.id.btnUpload);
         upload_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +144,61 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 
         Button register_btn = findViewById(R.id.register_btn);
         register_btn.setOnClickListener(view -> {
+            matcher = usernamePattern.matcher(userNameEditText.getText().toString());
+            if (!matcher.matches()) {
+                wrongMsg.setText(R.string.wrong_username);
+                return;
+            }
+            if (!passwordEditText.getText().toString().equals(repeatPasswordEditText.getText().toString())) {
+                wrongMsg.setText(R.string.wrong_repeat);
+                return;
+            }
+            matcher = passwordPattern.matcher(passwordEditText.getText().toString());
+            if (!matcher.matches()) {
+                wrongMsg.setText(R.string.wrong_password);
+                return;
+            }
+            if (displayNameEditText.getText().toString().equals("")) {
+                wrongMsg.setText(R.string.wrong_displayName);
+                return;
+            }
+            if (displayNameEditText.getText().toString().equals(userNameEditText.getText().toString())) {
+                wrongMsg.setText(R.string.similar_display_name);
+                return;
+            }
+            if (profilePicBitmap == null) {
+                wrongMsg.setText(R.string.wrong_profilePic);
+                return;
+            }
+
+            // Check image size
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            profilePicBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            int imageSize = outputStream.toByteArray().length / 1024; // Image size in KB
+            if (imageSize > 50) {
+                wrongMsg.setText(R.string.big_profile_pic);
+                return;
+            }
             userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+            userAPI.postUser(userNameEditText.getText().toString(), passwordEditText.getText().toString(), displayNameEditText.getText().toString(), imageToString(profilePicBitmap));
+            postUserRes.observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    if (Objects.equals(s, "ErrorServer")) {
+                        wrongMsg.setText(R.string.error_connecting_the_server);
+                    }
+//                    else if (Objects.equals(s, "Failed")) {
+//                        wrongMsg.setText(R.string.error_occurred);
+//                    }
+                    else if (Objects.equals(postUserRes.getValue(), "OK")) {
+                        finish();
+                    }
+                    else {
+                        wrongMsg.setText(postUserRes.getValue());
+                    }
+                }
+            });
+
 
         });
 
