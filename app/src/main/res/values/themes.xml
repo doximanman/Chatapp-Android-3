@@ -95,6 +95,9 @@
         <item name="colorPrimary">@color/green2</item>
         <item name="colorPrimaryVariant">@color/light_dark_blue</item>
         <item name="colorOnPrimary">@color/green2</item>
+        <item name="colorOnSecondary">@color/error</item>
+        <item name="colorOnBackground">@color/dark_pink</item>
+        <item name="colorOnSurface">@color/green4</item>
     </style>
 
     <style name="Theme.Chatapp" parent="Base.Theme.Chatapp" />

@@ -118,7 +118,6 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
             editor.apply();
         }
         if (switch_theme) {
-            editor.putString("jwt", "");
             editor.apply();
             if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

@@ -28,17 +28,22 @@ public class MainActivity extends AppCompatActivity {
         if (!prefs.contains("serverIP")) {
             editor.putString("serverIP", "10.100.102.20");
         }
-        if (!prefs.contains("serverIP")) {
+        if (!prefs.contains("serverPort")) {
             editor.putString("serverPort", "5000");
         }
-//        if (!prefs.contains("jwt")) {
+        if (!prefs.contains("jwt")) {
             editor.putString("jwt", "");
-//        }
-
+        }
         editor.apply();
+        if (prefs.getString("jwt","").equals("")) {
+            Intent login = new Intent(this, Login.class);
+            startActivity(login);
+        }
+        else {
+            Intent chat = new Intent(this, Chat.class);
+            startActivity(chat);
+        }
 
-        Intent login = new Intent(this, Login.class);
-        startActivity(login);
     }
 
 }

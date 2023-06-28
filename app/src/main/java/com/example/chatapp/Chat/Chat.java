@@ -85,7 +85,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         });
 
         // start listening to firebase
-        firebaseReceiver=new ChatListReceiver(chatListView,null,getApplication());
+        firebaseReceiver = new ChatListReceiver(chatListView, null, getApplication());
 
         MutableLiveData<String> firebaseToken = new MutableLiveData<>(null);
 
@@ -134,7 +134,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
             // pass profile pic in a file (too large to pass in intent)
             File file = new File(getCacheDir(), "profilePic.txt");
-            try (FileWriter writer = new FileWriter(file)) {
+            try (FileWriter writer = new FileWriter(file, false)) {
                 writer.write(clickedChat.getUser().getProfilePic());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -149,12 +149,12 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("jwt", "");
             editor.apply();
-            if(this.currentUser!=null&&this.firebaseToken!=null){
-                chatListView.unregisterFirebaseToken(currentUser.getUsername(),this.firebaseToken);
+            if (this.currentUser != null && this.firebaseToken != null) {
+                chatListView.unregisterFirebaseToken(currentUser.getUsername(), this.firebaseToken);
             }
             // clear local DB
             chatListView.clearAll();
-            Intent login=new Intent(getApplicationContext(),Login.class);
+            Intent login = new Intent(getApplicationContext(), Login.class);
             login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(login);
         });
@@ -182,15 +182,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseReceiver);
         super.onDestroy();
     }
-
-    protected void onDestroy() {
-        // unregister from server
-        if (currentUser != null && firebaseToken != null) {
-            chatListView.unregisterFirebaseToken(currentUser.getUsername(), firebaseToken);
-        }
-        super.onDestroy();
-
-    }*/
 
     private void setUser(User user) {
         firebaseReceiver.setUsername(user.getUsername());
@@ -224,11 +215,17 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
+            if (this.currentUser != null && this.firebaseToken != null) {
+                chatListView.unregisterFirebaseToken(currentUser.getUsername(), this.firebaseToken);
+            }
             connect_again = true;
         }
         if (!Objects.equals(serverPort, "")) {
             editor.putString("serverPort", serverPort);
             editor.apply();
+            if (this.currentUser != null && this.firebaseToken != null) {
+                chatListView.unregisterFirebaseToken(currentUser.getUsername(), this.firebaseToken);
+            }
             connect_again = true;
         }
         if (connect_again) {

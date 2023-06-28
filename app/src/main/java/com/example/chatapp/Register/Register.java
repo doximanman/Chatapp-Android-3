@@ -43,7 +43,7 @@ import java.util.Objects;
 public class Register extends AppCompatActivity implements Settings.SettingsListener {
     private UserAPI userAPI;
     private Bitmap profilePicBitmap;
-    private MutableLiveData<String>  postUserRes;
+    private MutableLiveData<String> postUserRes;
     private final String passwordRegExp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$";
     private final String usernameRegExp = "^[a-zA-Z0-9-_!.]{4,20}$";
     private final Pattern usernamePattern = Pattern.compile(usernameRegExp);
@@ -98,7 +98,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
         byte[] imageInByArray = byteArrayStream.toByteArray();
-        return Base64.encodeToString(imageInByArray, Base64.DEFAULT);
+        return "data:image/png;base64," + Base64.encodeToString(imageInByArray, Base64.DEFAULT);
     }
 
     private void imageChooser() {
@@ -173,7 +173,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 
             // Check image size
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            profilePicBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            profilePicBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             int imageSize = outputStream.toByteArray().length / 1024; // Image size in KB
             if (imageSize > 995) {
                 wrongMsg.setText(R.string.big_profile_pic);
@@ -192,8 +192,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
 //                    }
                     else if (Objects.equals(postUserRes.getValue(), "OK")) {
                         finish();
-                    }
-                    else {
+                    } else {
                         wrongMsg.setText(postUserRes.getValue());
                     }
                 }

@@ -20,6 +20,7 @@ import com.example.chatapp.Chat.adapters.MessageListAdapter;
 import com.example.chatapp.Chat.receivers.ChatListReceiver;
 import com.example.chatapp.Chat.receivers.ChatReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatView;
+import com.example.chatapp.Login.Login;
 import com.example.chatapp.R;
 import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
@@ -36,6 +37,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 
 public class ChatBody extends AppCompatActivity {
@@ -67,7 +69,7 @@ public class ChatBody extends AppCompatActivity {
         File file = new File(getCacheDir(), "profilePic.txt");
         String profilePic = null;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            profilePic = reader.readLine();
+            profilePic = reader.lines().collect(Collectors.joining());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,17 +103,13 @@ public class ChatBody extends AppCompatActivity {
         // whenever messages change - notify the adapter.
         chatView.get().observe(this, newChat -> {
             // redo adapter - everything needs new view (all the messages were pushed up)
-            /*rvMessages.setAdapter(null);
-            rvMessages.setLayoutManager(null);
-            rvMessages.setAdapter(adapter);
-            rvMessages.setLayoutManager(layout);*/
             adapter.setMsgList(newChat.getMessages());
             rvMessages.smoothScrollToPosition(0);
         });
 
         // go back button
         binding.backBTN.setOnClickListener(view -> {
-
+                    finish();
                 }
         );
 
