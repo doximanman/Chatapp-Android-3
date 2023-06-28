@@ -175,7 +175,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             profilePicBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             int imageSize = outputStream.toByteArray().length / 1024; // Image size in KB
-            if (imageSize > 50) {
+            if (imageSize > 995) {
                 wrongMsg.setText(R.string.big_profile_pic);
                 return;
             }

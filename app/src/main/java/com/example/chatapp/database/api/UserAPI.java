@@ -164,7 +164,6 @@ public class UserAPI {
                     postUserRes.setValue(displayApiResponseErrorBody(response));
                 }
             }
-
             @Override
             public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
                 assert postUserRes != null;

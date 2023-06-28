@@ -82,7 +82,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#82D0E3")));
         }
         else{
-            holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_INHERIT);
+            holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
             holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#CAE4EF")));
             holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#CAE4EF")));
         }
