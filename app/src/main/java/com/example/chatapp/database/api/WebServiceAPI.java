@@ -85,5 +85,5 @@ public interface WebServiceAPI {
     Call<User> getUser(@Header("Authorization") String JWT, @Path("username") String username);
 
     @POST("/api/Users")
-    Call<User> postUser(@Body User user);
+    Call<Object> postUser(@Body User user);
 }

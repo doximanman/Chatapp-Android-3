@@ -15,20 +15,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        setTheme(R.style.Theme_Chatapp);
         setContentView(R.layout.activity_main);
+
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("serverIP", "192.168.1.143");
-        editor.putString("serverPort", "5000");
+        // set the serverIP and port only if they don't exist yet
+        if (!prefs.contains("serverIP")) {
+            editor.putString("serverIP", "10.100.102.20");
+        }
+        if (!prefs.contains("serverIP")) {
+            editor.putString("serverPort", "5000");
+        }
+        editor.putString("jwt", "");
+
         editor.apply();
 
         Intent login = new Intent(this, Login.class);
         startActivity(login);
-
-//        Intent chat = new Intent(this, Chat.class);
-//        startActivity(chat);
     }
 
 }

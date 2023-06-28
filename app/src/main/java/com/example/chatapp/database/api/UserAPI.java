@@ -28,7 +28,6 @@ public class UserAPI {
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
     //SharedPreferences prefs;
-
     Gson gson;
 
     public void setServerUrl(String serverUrl) {
@@ -36,7 +35,10 @@ public class UserAPI {
                 .baseUrl("http://" + serverUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+        webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
+
+//    public void setJwt()
 
     public UserAPI(Application application, MutableLiveData<String> jwt, String serverUrl) {
         this.jwt = jwt;
@@ -101,7 +103,6 @@ public class UserAPI {
 //        return currentUser[0];
 //    }
     public User getUser(String JWT, String username) {
-        final User[] currentUser = new User[1];
         Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
         try {
             Response<User> response = call.execute();
@@ -110,6 +111,20 @@ public class UserAPI {
             return null;
         } catch (IOException e) {
             return null;
+        }
+    }
+
+    public String postUser(String username, String password, String displayName,String profilePic) {
+        Call<Object> call = webServiceAPI.postUser(new User(username, displayName, profilePic));
+        try {
+            Response<Object> response = call.execute();
+            if (response.body() instanceof User)
+                return "OK";
+            else {
+                return (String) response.body();
+            }
+        } catch (IOException e) {
+            return "Error";
         }
     }
 }

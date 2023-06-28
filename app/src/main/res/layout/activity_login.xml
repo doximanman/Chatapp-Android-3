@@ -28,9 +28,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--            android:backgroundTint="#FFFFFF"-->
-        <!--        android:theme="@style/Theme.Chatapp"-->
-
         <LinearLayout
             android:id="@+id/linearLayout2"
             style="@style/layout_inputs"
@@ -89,6 +86,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textSize="20sp" />
+
             <Button
                 android:id="@+id/not_registered"
                 style="@style/not_registered"
@@ -96,8 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/not_registered"
-                android:textSize="25sp"
-                />
+                android:textSize="25sp" />
         </LinearLayout>
 
     </FrameLayout>
@@ -117,7 +114,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frame" />
-
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

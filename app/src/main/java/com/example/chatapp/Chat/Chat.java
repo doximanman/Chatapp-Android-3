@@ -51,12 +51,13 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     private ChatListView chatListView;
     private ActivityChatBinding binding;
     private ChatListAdapter adapter;
-    private User currentUser=null;
-    private String firebaseToken=null;
+    private User currentUser = null;
+    private String firebaseToken = null;
     private ChatListReceiver firebaseReceiver;
 
-    private final ActivityResultLauncher<String> requestPermissionLauncher=
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(),isGranted->{});
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         // start listening to firebase
         firebaseReceiver=new ChatListReceiver(chatListView,null,getApplication());
 
-        MutableLiveData<String> firebaseToken=new MutableLiveData<>(null);
+        MutableLiveData<String> firebaseToken = new MutableLiveData<>(null);
 
         // send token to the server when the user is connected
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(firebaseToken::postValue);
@@ -98,18 +99,18 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
 
         // the first of the two to be triggered will not register the token
         // only the second one will (once both the token and the user are defined)
-        firebaseToken.observe(this,newToken->{
-            this.firebaseToken=newToken;
-            if(user.getValue()!=null)
-                chatListView.registerFirebaseToken(user.getValue().getUsername(),firebaseToken.getValue());
+        firebaseToken.observe(this, newToken -> {
+            this.firebaseToken = newToken;
+            if (user.getValue() != null)
+                chatListView.registerFirebaseToken(user.getValue().getUsername(), firebaseToken.getValue());
         });
 
         user.observe(this, newUser -> {
-            if(newUser==null)
+            if (newUser == null)
                 return;
             setUser(newUser);
-            if(firebaseToken.getValue()!=null){
-                chatListView.registerFirebaseToken(newUser.getUsername(),firebaseToken.getValue());
+            if (firebaseToken.getValue() != null) {
+                chatListView.registerFirebaseToken(newUser.getUsername(), firebaseToken.getValue());
             }
             chatListView.reload();
         });
@@ -147,9 +148,9 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             startActivity(chat);
         });
 
-        binding.logoutBTN.setOnClickListener(view->{
-            SharedPreferences.Editor editor=prefs.edit();
-            editor.putString("jwt","");
+        binding.logoutBTN.setOnClickListener(view -> {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("jwt", "");
             editor.apply();
             if(this.currentUser!=null&&this.firebaseToken!=null){
                 chatListView.unregisterFirebaseToken(currentUser.getUsername(),this.firebaseToken);
@@ -188,15 +189,14 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     /*    @Override
     protected void onDestroy() {
         // unregister from server
-        if(currentUser!=null&&firebaseToken!=null){
-            chatListView.unregisterFirebaseToken(currentUser.getUsername(),firebaseToken);
+        if (currentUser != null && firebaseToken != null) {
+            chatListView.unregisterFirebaseToken(currentUser.getUsername(), firebaseToken);
         }
         super.onDestroy();
 
     }*/
 
     private void setUser(User user) {
-
         firebaseReceiver.setUsername(user.getUsername());
         currentUser = user;
         // decodes pfp from base64 to bitmap
@@ -225,12 +225,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         boolean connect_again = false;
-        if (switch_theme) {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            else
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
         if (!Objects.equals(serverIP, "")) {
             editor.putString("serverIP", serverIP);
             editor.apply();
@@ -242,7 +236,19 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             connect_again = true;
         }
         if (connect_again) {
-            finish();
+            editor.putString("jwt", "");
+            editor.apply();
+        }
+        if (switch_theme) {
+//            editor.putString("jwt", "");
+//            editor.apply();
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            else
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else if (connect_again) {
+            startActivity(new Intent(this, Login.class));
         }
     }
 
