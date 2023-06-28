@@ -10,7 +10,6 @@ import com.example.chatapp.database.ChatDB;
 import com.example.chatapp.database.api.ChatListAPI;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.ChatDetails;
-import com.example.chatapp.database.entities.User;
 import com.example.chatapp.database.subentities.Message;
 
 import java.util.ArrayList;
@@ -20,29 +19,13 @@ public class ChatListRepo {
     private final ChatDao dao;
     private final ChatListData chatListData;
     private final ChatListAPI api;
-    private final UserData userData;
 
 
     public ChatListRepo(Application application, String serverURL, String JWT) {
         ChatDB db = Room.databaseBuilder(application.getApplicationContext(), ChatDB.class, "ChatDB").build();
         dao = db.chatDao();
         chatListData = new ChatListData();
-        userData=new UserData();
         api = new ChatListAPI(chatListData, dao, serverURL, JWT);
-    }
-
-    private class UserData extends MutableLiveData<User>{
-        public UserData() {
-            super();
-            setValue(null);
-        }
-
-        @Override
-        protected void onActive() {
-            super.onActive();
-
-            new Thread(() -> userData.postValue(dao.getUser())).start();
-        }
     }
 
     private class ChatListData extends MutableLiveData<List<ChatDetails>> {
@@ -62,8 +45,6 @@ public class ChatListRepo {
     public LiveData<List<ChatDetails>> getAll() {
         return chatListData;
     }
-
-    public LiveData<User> getUser(){ return userData;}
 
     public void update(String chatId,Message lastMessage){
         new Thread(()->{
@@ -86,25 +67,10 @@ public class ChatListRepo {
         api.newChat(username);
     }
 
-    public void setUser(String username) {
-        new Thread(()->{
-            User newUser = api.getUser(username);
-            if(newUser!=null) {
-                dao.deleteUser();
-                dao.upsert(newUser);
-                userData.postValue(newUser);
-            }
-            else{
-                userData.postValue(null);
-            }
-        }).start();
-    }
-
     public void clearLocal(){
         Thread tr=new Thread(()->{
             dao.deletePreviews();
             dao.deleteChats();
-            dao.deleteUser();
         });
         tr.start();
         try {

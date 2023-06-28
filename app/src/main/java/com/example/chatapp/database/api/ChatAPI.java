@@ -7,12 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
-import com.example.chatapp.database.entities.User;
 import com.example.chatapp.database.subentities.Message;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +38,6 @@ public class ChatAPI {
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
-
 
     public void getChat(String chatId) {
         Call<Chat> call = webServiceAPI.getChat("Bearer " + JWT, chatId);

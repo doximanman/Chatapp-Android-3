@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.example.chatapp.Chat.viewmodels.ChatListView;
 import com.example.chatapp.R;
 import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.entities.User;
+import com.example.chatapp.database.subentities.User;
 
 public class ChatListReceiver extends BroadcastReceiver {
     private final ChatListView chatListView;

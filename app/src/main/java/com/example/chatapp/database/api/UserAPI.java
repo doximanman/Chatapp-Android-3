@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chatapp.database.entities.User;
+import com.example.chatapp.database.subentities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -97,7 +97,17 @@ public class UserAPI {
         });
     }
 
-
+    public User getUser(String JWT, String username) {
+        Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
+        try {
+            Response<User> response = call.execute();
+            if (response.isSuccessful())
+                return response.body();
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
     public static String displayApiResponseErrorBody(Response<?> response) {
         InputStream i = response.errorBody().byteStream();

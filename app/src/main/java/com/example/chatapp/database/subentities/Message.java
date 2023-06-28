@@ -2,8 +2,6 @@ package com.example.chatapp.database.subentities;
 
 import androidx.room.Embedded;
 
-import com.example.chatapp.database.entities.User;
-
 public class Message {
     private String id;
     private final String created;
@@ -46,8 +44,6 @@ public class Message {
 
 
     public boolean isSender(String username) {
-        if(sender==null)
-            return false;
         return sender.getUsername().equals(username);
     }
 }
