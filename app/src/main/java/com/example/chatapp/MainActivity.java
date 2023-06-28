@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         if (!prefs.contains("serverIP")) {
             editor.putString("serverPort", "5000");
         }
-        editor.putString("jwt", "");
+//        if (!prefs.contains("jwt")) {
+            editor.putString("jwt", "");
+//        }
 
         editor.apply();
 

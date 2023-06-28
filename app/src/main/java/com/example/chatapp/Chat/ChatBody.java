@@ -90,7 +90,7 @@ public class ChatBody extends AppCompatActivity {
         rvMessages.setLayoutManager(layout);
 
         // start listening to firebase
-        firebaseReceiver=new ChatReceiver(chatView,id);
+        firebaseReceiver = new ChatReceiver(chatView, id);
 
         // auto scroll
         rvMessages.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
@@ -110,7 +110,10 @@ public class ChatBody extends AppCompatActivity {
         });
 
         // go back button
-        binding.backBTN.setOnClickListener(view -> finish());
+        binding.backBTN.setOnClickListener(view -> {
+
+                }
+        );
 
         // send message
         binding.sendButton.setOnClickListener(view -> {
@@ -155,9 +158,7 @@ public class ChatBody extends AppCompatActivity {
                 inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
-
     }
-
 
     @Override
     protected void onResume() {

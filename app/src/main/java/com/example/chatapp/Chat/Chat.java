@@ -66,13 +66,10 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // todo: implement login and provide the real user here,
-        //  with the username and JWT in shared storage.
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         String JWT = prefs.getString("jwt", "");
         UserAPI userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
 
-//        currentUser = new User("hello", "james bondddddddd", imageToString(R.drawable.doubt));
         // ViewModel
         chatListView = new ViewModelProvider(this).get(ChatListView.class);
 
@@ -152,8 +149,8 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("jwt", "");
             editor.apply();
-            if(this.currentUser!=null&&this.firebaseToken!=null){
-                chatListView.unregisterFirebaseToken(currentUser.getUsername(),this.firebaseToken);
+            if (this.currentUser != null && this.firebaseToken != null) {
+                chatListView.unregisterFirebaseToken(currentUser.getUsername(), this.firebaseToken);
             }
             finish();
         });
@@ -240,8 +237,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             else
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else if (connect_again) {
+        } else if (connect_again) {
             startActivity(new Intent(this, Login.class));
         }
     }
