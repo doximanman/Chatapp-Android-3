@@ -3,7 +3,7 @@ package com.example.chatapp.database.api;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.subentities.User;
+import com.example.chatapp.database.entities.User;
 
 import java.util.List;
 

@@ -10,6 +10,7 @@ import com.example.chatapp.database.ChatDB;
 import com.example.chatapp.database.api.ChatAPI;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
+import com.example.chatapp.database.entities.User;
 import com.example.chatapp.database.subentities.Message;
 
 import java.util.ArrayList;
