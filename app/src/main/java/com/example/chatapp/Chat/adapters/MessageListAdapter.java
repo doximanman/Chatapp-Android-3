@@ -87,12 +87,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             if (msg.isSender(username)) {
                 // change the look of sender messages
                 holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#8ecae6")));
-                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#8ecae6")));
+                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#c1e7f1")));
+                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#c1e7f1")));
             } else {
                 holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#219ebc")));
-                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#219ebc")));
+                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#82d0e3")));
+                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#82d0e3")));
             }
         }
 

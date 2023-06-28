@@ -250,7 +250,7 @@ body {
     margin-left:15px;
     margin-right:auto;
     top:calc(var(--mainHeight) - 200px);
-    background-color: #c1e7f1;
+    background-color: #82d0e3;
 }
 
 .message-received:after {
@@ -258,7 +258,7 @@ body {
     position: relative;
     border-style: solid;
     border-width: 15px 15px 0;
-    border-color: #c1e7f1 transparent;
+    border-color: #82d0e3 transparent;
     display: block;
     width: 0;
     bottom: -14px;
@@ -269,7 +269,7 @@ body {
     margin-left:auto;
     margin-right:15px;
     /*margin-right:15px;*/
-    background-color: #82d0e3;
+    background-color: #c1e7f1 ;
 }
 
 .message-sent:after {
@@ -277,12 +277,11 @@ body {
     position: relative;
     border-style: solid;
     border-width: 15px 15px 0;
-    border-color: #82d0e3 transparent;
+    border-color: #c1e7f1 transparent;
     display: block;
     width: 0;
     bottom: -14px;
     left: 10px;
-
 }
 
 .message-time {
