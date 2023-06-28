@@ -14,14 +14,13 @@
     <color name="green5">#c4fff9</color>
     <color name="green7">#00AFAA</color>
     <color name="light_blue">#cae9ff</color>
-    <color name="background">#bee9e8</color>
+    <color name="background">#E6FFF7</color>
     <color name="light_blue2">#bbdefb</color>
     <color name="blue">#64b5f6</color>
-    <color name="error">#d81159</color>
+    <color name="error">#EB6383</color>
+    <color name="dark_error">#D61355</color>
     <color name="light_send">#B9EDDD</color>
     <color name="light_receive">#87CBB9</color>
-
-
     <color name="light_brown">#eae4e9</color>
     <color name="light_yellow">#fff1e6</color>
     <color name="light_pink">#FFF0EE</color>

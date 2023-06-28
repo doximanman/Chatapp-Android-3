@@ -52,11 +52,16 @@
         <item name="android:fontFamily">casual</item>
         <item name="android:textColorHint">@color/gray</item>
     </style>
-    <style name="arrow">
-        <item name="android:tint">@color/green7</item>
-        <item name="android:backgroundTint">@color/white</item>
+    <style name="messages" >
+        <item name="android:textColor">@color/dark_gray</item>
     </style>
-
+    <style name="chat_preview_background">
+        <item name="android:background">@color/background</item>
+    </style>
+    <style name="arrow">
+        <item name="android:foregroundTint">@color/green7</item>
+        <item name="android:background">#00FFFFFF</item>
+    </style>
     <style name="chat_preview_details">
         <item name="android:textColor">@color/gray</item>
     </style>

@@ -25,6 +25,7 @@
             >
 
             <TextView
+                style="@style/messages"
                 android:id="@+id/messageTXT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
 
 
             <TextView
+                style="@style/messages"
                 android:id="@+id/messageTime"
                 android:fontFamily="@font/chilanka"
                 android:layout_width="wrap_content"

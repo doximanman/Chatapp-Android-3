@@ -1,6 +1,7 @@
 package com.example.chatapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
         setTheme(R.style.Theme_Chatapp);
         setContentView(R.layout.activity_main);
-
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

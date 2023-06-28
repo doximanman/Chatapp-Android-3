@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,7 +82,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Message msg = msgList.get(position);
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_UNSPECIFIED || AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
             if (msg.isSender(username)) {
                 // change the look of sender messages
                 holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
@@ -96,12 +97,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             if (msg.isSender(username)) {
                 // change the look of sender messages
                 holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#B9EDDD")));
-                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#B9EDDD")));
+                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#8ecae6")));
+                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#8ecae6")));
             } else {
                 holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#87CBB9")));
-                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#87CBB9")));
+                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#219ebc")));
+                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#219ebc")));
             }
         }
 
