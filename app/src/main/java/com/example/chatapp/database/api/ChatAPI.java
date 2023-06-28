@@ -56,11 +56,15 @@ public class ChatAPI {
 
                         // updates the new chat in the dao
                         Chat newChat = response.body();
+
+                        // no need to save the pfp of the sender for every message
+                        assert newChat != null;
+                        newChat.getMessages().forEach(message->message.getSender().setProfilePic(""));
                         chatDao.upsert(newChat);
 
                         // updates the chat preview in the dao
                         ChatDetails cd = chatDao.getChatDetails(chatId);
-                        assert newChat != null;
+
                         if (newChat.getMessages().size() > 0) {
                             cd.setLastMessage(newChat.getMessages().get(0));
                         }
@@ -88,6 +92,9 @@ public class ChatAPI {
                     new Thread(() -> {
 
                         Message newMessage = response.body();
+                        // no need to save pfp
+                        assert newMessage != null;
+                        newMessage.getSender().setProfilePic("");
 
                         Chat chat = chatDao.getChat(chatId);
                         chat.addMessage(newMessage);
