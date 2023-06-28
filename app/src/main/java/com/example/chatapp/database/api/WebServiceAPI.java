@@ -29,6 +29,20 @@ public interface WebServiceAPI {
         }
     }
 
+    class FullUser {
+        String username;
+        String password;
+        String displayName;
+        String profilePic;
+
+        public FullUser(String username, String password, String displayName, String profilePic) {
+            this.username = username;
+            this.password = password;
+            this.displayName = displayName;
+            this.profilePic = profilePic;
+        }
+    }
+
     class Username {
         String username;
 
@@ -85,5 +99,5 @@ public interface WebServiceAPI {
     Call<User> getUser(@Header("Authorization") String JWT, @Path("username") String username);
 
     @POST("/api/Users")
-    Call<Object> postUser(@Body User user);
+    Call<Object> postUser(@Body FullUser fullUser);
 }

@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -82,7 +81,6 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                 @Override
                 public void onChanged(String s) {
                     TextView wrongMsg = findViewById(R.id.error_login);
-                    wrongMsg.setGravity(Gravity.CENTER);
                     if (Objects.equals(s, "Failed")) {
                         wrongMsg.setText(R.string.wrong_credentials);
                     } else if (Objects.equals(s, "ErrorServer")) {
@@ -92,6 +90,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                         editor.putString("username", userNameEditText.getText().toString());
                         editor.apply();
                         chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        wrongMsg.setText("");
                         startActivity(chat);
                     }
                 }
@@ -130,6 +129,5 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
 
     @Override
     public void onSettingsCancelClick(DialogFragment dialog) {
-
     }
 }

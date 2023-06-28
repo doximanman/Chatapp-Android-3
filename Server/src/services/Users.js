@@ -19,7 +19,7 @@ const createUser = async (username, password, displayName, profilePic) => {
     // check for user with the same username to prevent duplicates
     const userWithUsername = await getUserByUsername(username);
     if (userWithUsername !== null) {
-        return "Username already exist, please choose another one.";
+        return "Username already exist, please choose another one";
     }
 
     // ensure the username fulfills the regex conditions
@@ -28,18 +28,18 @@ const createUser = async (username, password, displayName, profilePic) => {
     }
     // ensure the password fulfills the regex conditions
     if (!passwordRegExp.test(password)) {
-        return "The passwors must contain 8-20 characters, at least one uppercase and lowercase leters, special character and digit.";
+        return "The passwors must contain 8-20 characters, at least one uppercase and lowercase leters, special character and digit";
     }
     // ensure the displayName isn't empty
     if (displayName === "") {
-        return "Please enter display name.";
+        return "Please enter display name";
     // ensure the displayName isn't identical to the username
     } else if (displayName === username) {
-        return "Please don't use your real name for the displayed name.";
+        return "Please don't use your real name for the displayed name";
     }
     // ensure the profilePic isn't empty
     if (profilePic === "") {
-        return "Please upload profile picture.";
+        return "Please upload profile picture";
     }
     // if all the validation checks passed successfully - create the user
     const user = new User({ username: username, password: password, displayName: displayName, profilePic: profilePic });

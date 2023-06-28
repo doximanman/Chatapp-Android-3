@@ -1,6 +1,7 @@
 package com.example.chatapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.Theme_Chatapp);
         setContentView(R.layout.activity_main);
 
-
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         // set the serverIP and port only if they don't exist yet
@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         if (!prefs.contains("serverIP")) {
             editor.putString("serverPort", "5000");
         }
-        editor.putString("jwt", "");
+//        if (!prefs.contains("jwt")) {
+            editor.putString("jwt", "");
+//        }
 
         editor.apply();
 

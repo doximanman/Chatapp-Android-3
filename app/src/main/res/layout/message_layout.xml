@@ -16,36 +16,41 @@
         android:layout_weight="1.5">
 
         <RelativeLayout
-            android:layoutDirection="ltr"
             android:id="@+id/mainMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners"
-            android:backgroundTint="#CAE4EF">
+            android:backgroundTint="#CAE4EF"
+            android:layoutDirection="ltr"
+            >
 
             <TextView
+                style="@style/messages"
                 android:id="@+id/messageTXT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/chilanka"
                 android:paddingStart="10dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="15dp"
                 android:text="@string/placeholderMessage"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
 
             <TextView
+                style="@style/messages"
                 android:id="@+id/messageTime"
+                android:fontFamily="@font/chilanka"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/messageTXT"
+                android:layout_alignBottom="@+id/messageTXT"
                 android:layout_alignParentEnd="true"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 android:text="@string/msgTimePlaceholder"
-                android:textSize="14sp"
-                android:layout_alignRight="@id/messageTXT"
-                android:layout_alignBottom="@+id/messageTXT"/>
+                android:textSize="14sp" />
 
         </RelativeLayout>
 

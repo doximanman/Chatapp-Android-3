@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/color"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="70dp"
+    android:layoutDirection="ltr"
+    >
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profilePic"
@@ -18,39 +20,49 @@
 
     <TextView
         android:id="@+id/displayName"
+        style="@style/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_toStartOf="@+id/lastMessageDate"
         android:layout_toEndOf="@+id/profilePic"
         android:ellipsize="end"
+        android:fontFamily="@font/baloo_bhaijaan"
         android:maxLines="1"
         android:text="@string/displayNamePlaceholder"
-        android:textSize="20sp"
-        android:layout_centerVertical="true"/>
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/lastMessage"
+        style="@style/chat_preview_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_toEndOf="@+id/profilePic"
         android:ellipsize="end"
+        android:fontFamily="@font/chilanka"
         android:maxLines="1"
-
         android:text="@string/lastMessagePlaceholder"
         android:textColor="#969696"
         android:textSize="16sp" />
 
     <TextView
+        style="@style/chat_preview_details"
         android:id="@+id/lastMessageDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
+        android:fontFamily="@font/chilanka"
         android:text="@string/lastMessageDatePlaceholder"
         android:textSize="16sp" />
 </RelativeLayout>

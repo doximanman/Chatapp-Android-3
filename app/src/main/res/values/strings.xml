@@ -65,7 +65,7 @@
     <string name="repeatpassword">RepeatPassword</string>
     <string name="displayname">DisplayName</string>
     <string name="register">Register</string>
-    <string name="upload_prfpic">Uplod Profile Picture</string>
+    <string name="upload_prfpic">Upload Profile Picture</string>
     <string name="wrong_credentials">Wrong username or password</string>
     <string name="serverip">10.100.102.20:5000</string>
     <string name="app_settings">App Settings</string>
@@ -77,4 +77,14 @@
     <string name="register_title">Register</string>
     <string name="not_registered">Not registered yet?\nclick here!</string>
     <string name="already_registered">Already registered?\nClicke here!</string>
+    <string name="please_repeat_the_password_again">Please repeat the password again</string>
+    <string name="wrong_username">Username must contain 4–20 characters, can include letters, digits and _-!.</string>
+    <string name="wrong_password">The password must contain 8–20 characters, at least one uppercase and lowercase leters, special character and digit</string>
+    <string name="wrong_repeat">Password and repeated Password does not match</string>
+    <string name="wrong_displayName">Please enter display name</string>
+    <string name="similar_display_name">Please don\'t use your real name for the displayed name</string>
+    <string name="wrong_profilePic">Please choose a valid profile picture</string>
+    <string name="error_occurred">Error occurred</string>
+    <string name="big_profile_pic">Selected image exceeds the maximum allowed size of 1MB</string>
+
 </resources>

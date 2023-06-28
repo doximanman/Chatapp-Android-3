@@ -21,7 +21,6 @@ public class Settings extends DialogFragment {
 
         public void onSettingsCancelClick(DialogFragment dialog);
     }
-
     SettingsListener listener;
 
     @Override
@@ -56,6 +55,4 @@ public class Settings extends DialogFragment {
                 }));
         return builder.create();
     }
-
-
 }

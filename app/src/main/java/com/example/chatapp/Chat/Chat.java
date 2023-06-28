@@ -66,13 +66,10 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // todo: implement login and provide the real user here,
-        //  with the username and JWT in shared storage.
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         String JWT = prefs.getString("jwt", "");
         UserAPI userAPI = new UserAPI(getApplication(), prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
 
-//        currentUser = new User("hello", "james bondddddddd", imageToString(R.drawable.doubt));
         // ViewModel
         chatListView = new ViewModelProvider(this).get(ChatListView.class);
 
@@ -186,7 +183,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         super.onDestroy();
     }
 
-    /*    @Override
     protected void onDestroy() {
         // unregister from server
         if (currentUser != null && firebaseToken != null) {
@@ -246,8 +242,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             else
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else if (connect_again) {
+        } else if (connect_again) {
             startActivity(new Intent(this, Login.class));
         }
     }
@@ -269,7 +264,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
     public void onSettingsCancelClick(DialogFragment dialog) {
 
     }
-
 
     @Override
     public void onCloseClick(DialogFragment dialog) {
