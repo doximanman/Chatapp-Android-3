@@ -15,19 +15,16 @@ import com.example.chatapp.database.subentities.Message;
 import java.util.ArrayList;
 
 public class ChatRepo {
-    private ChatDao dao;
-    private ChatData chatData;
-    private ChatAPI api;
-    private String chatID;
-
-    private String username;
+    private final ChatDao dao;
+    private final ChatData chatData;
+    private final ChatAPI api;
+    private final String chatID;
 
     public ChatRepo(Application application, String chatID, String JWT, String serverURL, String username) {
         this.chatID = chatID;
         ChatDB db = Room.databaseBuilder(application.getApplicationContext(), ChatDB.class, "ChatDB").build();
         dao = db.chatDao();
         chatData = new ChatData();
-        this.username = username;
         api = new ChatAPI(chatData, dao, username, serverURL, JWT);
     }
 
@@ -54,6 +51,7 @@ public class ChatRepo {
 
     /**
      * Assumes current user is the sender
+     *
      * @param message content of the message
      */
     public void addMessage(String message) {
@@ -62,10 +60,11 @@ public class ChatRepo {
 
     /**
      * Adds the message to the local repository
+     *
      * @param message the message to add
      */
-    public void addMessage(Message message){
-        new Thread(()->{
+    public void addMessage(Message message) {
+        new Thread(() -> {
             Chat chat = dao.getChat(chatID);
             chat.addMessage(message);
             dao.upsert(chat);

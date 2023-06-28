@@ -1,14 +1,11 @@
 package com.example.chatapp.Register;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import java.util.regex.*;
 
@@ -17,23 +14,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.chatapp.Chat.fragments.Settings;
-import com.example.chatapp.Login.Login;
 import com.example.chatapp.R;
 import com.example.chatapp.database.api.UserAPI;
-import com.example.chatapp.database.subentities.User;
-import com.example.chatapp.databinding.ActivityLoginBinding;
 import com.example.chatapp.databinding.ActivityRegisterBinding;
 
 import java.io.ByteArrayOutputStream;
@@ -49,25 +40,6 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
     private final Pattern usernamePattern = Pattern.compile(usernameRegExp);
     private final Pattern passwordPattern = Pattern.compile(passwordRegExp);
     private Matcher matcher;
-//    public void onUploadButtonClick(View view) {
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("image/*");
-//        someActivityResultLauncher.launch(intent);
-//    }
-
-    //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == FILE_UPLOAD_REQUEST_CODE && resultCode == RESULT_OK) {
-//            // Retrieve the selected file URI
-//            Uri fileUri = data.getData();
-//
-//            // Perform file upload operation using the selected file URI
-//            // Add your code here to handle the file upload
-//        }
-//    }
 
     ActivityResultLauncher<Intent> launchSomeActivity
             = registerForActivityResult(
@@ -89,7 +61,6 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        ;
                     }
                 }
             });
@@ -114,7 +85,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         setContentView(R.layout.activity_register);
 
         profilePicBitmap = null;
-        postUserRes = new MutableLiveData<String>("");
+        postUserRes = new MutableLiveData<>("");
 
         SharedPreferences prefs = getApplication().getSharedPreferences("preferences", Context.MODE_PRIVATE);
         ActivityRegisterBinding binding = ActivityRegisterBinding.inflate(getLayoutInflater());
@@ -135,12 +106,7 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
         TextView wrongMsg = findViewById(R.id.error_register);
 
         Button upload_btn = findViewById(R.id.btnUpload);
-        upload_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooser();
-            }
-        });
+        upload_btn.setOnClickListener(v -> imageChooser());
 
         Button register_btn = findViewById(R.id.register_btn);
         register_btn.setOnClickListener(view -> {
@@ -175,53 +141,27 @@ public class Register extends AppCompatActivity implements Settings.SettingsList
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             profilePicBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             int imageSize = outputStream.toByteArray().length / 1024; // Image size in KB
-            if (imageSize > 995) {
+            if (imageSize > 990) {
                 wrongMsg.setText(R.string.big_profile_pic);
                 return;
             }
             userAPI.setServerUrl(prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
             userAPI.postUser(userNameEditText.getText().toString(), passwordEditText.getText().toString(), displayNameEditText.getText().toString(), imageToString(profilePicBitmap));
-            postUserRes.observe(this, new Observer<String>() {
-                @Override
-                public void onChanged(String s) {
-                    if (Objects.equals(s, "ErrorServer")) {
-                        wrongMsg.setText(R.string.error_connecting_the_server);
-                    }
-//                    else if (Objects.equals(s, "Failed")) {
-//                        wrongMsg.setText(R.string.error_occurred);
-//                    }
-                    else if (Objects.equals(postUserRes.getValue(), "OK")) {
-                        finish();
-                    } else {
-                        wrongMsg.setText(postUserRes.getValue());
-                    }
+            postUserRes.observe(this, s -> {
+                if (Objects.equals(s, "ErrorServer")) {
+                    wrongMsg.setText(R.string.error_connecting_the_server);
+                } else if (Objects.equals(postUserRes.getValue(), "OK")) {
+                    finish();
+                } else {
+                    wrongMsg.setText(postUserRes.getValue());
                 }
             });
 
 
         });
-
-//        someActivityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK) {
-//                            // There are no request codes
-//                            Intent data = result.getData();
-//                            Uri fileUri = data.getData();
-//                        }
-//                    }
-//                });
         Button already_registered = findViewById(R.id.already_registered);
-        already_registered.setOnClickListener(view -> {
-            finish();
-        });
+        already_registered.setOnClickListener(view -> finish());
     }
-
-    // this function is triggered when
-    // the Select Image Button is clicked
-
 
     @Override
     protected void onPause() {

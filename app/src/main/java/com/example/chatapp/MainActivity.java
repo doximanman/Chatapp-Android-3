@@ -11,7 +11,6 @@ import com.example.chatapp.Chat.Chat;
 import com.example.chatapp.Login.Login;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,7 +39,5 @@ public class MainActivity extends AppCompatActivity {
             Intent chat = new Intent(this, Chat.class);
             startActivity(chat);
         }
-
     }
-
 }

@@ -1,22 +1,15 @@
 package com.example.chatapp.database.api;
 
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chatapp.R;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.subentities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,8 +18,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChatAPI {
-    private MutableLiveData<Chat> chatData;
-    private ChatDao chatDao;
+    private final MutableLiveData<Chat> chatData;
+    private final ChatDao chatDao;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
     String username;
@@ -59,7 +52,7 @@ public class ChatAPI {
 
                         // no need to save the pfp of the sender for every message
                         assert newChat != null;
-                        newChat.getMessages().forEach(message->message.getSender().setProfilePic(""));
+                        newChat.getMessages().forEach(message -> message.getSender().setProfilePic(""));
                         chatDao.upsert(newChat);
 
                         // updates the chat preview in the dao

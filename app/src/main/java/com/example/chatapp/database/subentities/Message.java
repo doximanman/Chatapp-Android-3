@@ -3,12 +3,11 @@ package com.example.chatapp.database.subentities;
 import androidx.room.Embedded;
 
 public class Message {
-
     private String id;
-    private String created;
+    private final String created;
 
     @Embedded
-    private User sender;
+    private final User sender;
     private String content;
 
     public Message(String id, String created, User sender, String content) {
@@ -43,17 +42,6 @@ public class Message {
         this.content = content;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public boolean isSender(User user2) {
-        return sender.getUsername().equals(user2.getUsername());
-    }
 
     public boolean isSender(String username) {
         return sender.getUsername().equals(username);

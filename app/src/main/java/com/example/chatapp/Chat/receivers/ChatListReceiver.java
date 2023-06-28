@@ -2,32 +2,25 @@ package com.example.chatapp.Chat.receivers;
 
 import android.Manifest;
 import android.app.Application;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModel;
 
 import com.example.chatapp.Chat.viewmodels.ChatListView;
 import com.example.chatapp.R;
-import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
 
 public class ChatListReceiver extends BroadcastReceiver {
-
-    private ChatListView chatListView;
+    private final ChatListView chatListView;
     String username;
     Application application;
-
 
     public ChatListReceiver(ChatListView chatListView, String username, Application application) {
         this.chatListView = chatListView;

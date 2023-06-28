@@ -2,9 +2,7 @@ package com.example.chatapp.database.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
-import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 import androidx.room.Upsert;
 
 import com.example.chatapp.database.entities.Chat;
@@ -14,9 +12,6 @@ import java.util.List;
 
 @Dao
 public interface ChatDao {
-
-
-
     @Query("SELECT * FROM chatdetails")
     List<ChatDetails> getChats();
 
@@ -36,7 +31,7 @@ public interface ChatDao {
     void upsert(Chat... Chats);
 
     @Upsert
-    void upsert(ChatDetails...chatDetails);
+    void upsert(ChatDetails... chatDetails);
 
     @Delete
     void delete(Chat... Chats);

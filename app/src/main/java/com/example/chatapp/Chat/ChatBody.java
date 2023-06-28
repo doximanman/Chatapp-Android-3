@@ -13,30 +13,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.chatapp.Chat.adapters.MessageListAdapter;
-import com.example.chatapp.Chat.receivers.ChatListReceiver;
 import com.example.chatapp.Chat.receivers.ChatReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatView;
-import com.example.chatapp.Login.Login;
-import com.example.chatapp.R;
-import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.databinding.ActivityChatBodyBinding;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -108,44 +96,12 @@ public class ChatBody extends AppCompatActivity {
         });
 
         // go back button
-        binding.backBTN.setOnClickListener(view -> {
-                    finish();
-                }
+        binding.backBTN.setOnClickListener(view -> finish()
         );
 
         // send message
         binding.sendButton.setOnClickListener(view -> {
             if (!binding.messageInput.getText().toString().matches("/\\A\\s*\\z/")) {
-
-
-                // old implementation (before api)
-
-                /*// content
-                String message=binding.messageInput.getText().toString();
-
-                // created
-                StringBuilder dateFormat=new StringBuilder();
-                SimpleDateFormat date=new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                dateFormat.append(date.format(new Date()));
-                dateFormat.append("T");
-                SimpleDateFormat time=new SimpleDateFormat("HH:mm:ss.SSSSSSS",Locale.getDefault());
-                dateFormat.append(time.format(new Date()));
-                String created=dateFormat.toString();
-
-                // sender
-                User currentUser=new User("hello","james bondddddddd","");
-                Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.doubt);
-                ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
-                byte[] imageInByArray = byteArrayStream.toByteArray();
-                currentUser.setProfilePic(Base64.encodeToString(imageInByArray, Base64.DEFAULT));
-                Message newMessage=new Message("test",dateFormat.toString(),currentUser,message);
-
-                // clear text
-                binding.messageInput.setText("");
-                // close keyboard
-                InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);*/
 
                 chatView.add(binding.messageInput.getText().toString());
 

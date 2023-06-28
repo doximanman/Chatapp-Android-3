@@ -21,6 +21,7 @@ public class Settings extends DialogFragment {
 
         public void onSettingsCancelClick(DialogFragment dialog);
     }
+
     SettingsListener listener;
 
     @Override
@@ -50,9 +51,7 @@ public class Settings extends DialogFragment {
                     boolean isSwitchChecked = switchMaterial.isChecked();
                     listener.onSettingsApplyClick(this, serverIP, serverPort, isSwitchChecked);
                 }))
-                .setNegativeButton("Cancel", ((dialog, which) -> {
-                    listener.onSettingsCancelClick(this);
-                }));
+                .setNegativeButton("Cancel", ((dialog, which) -> listener.onSettingsCancelClick(this)));
         return builder.create();
     }
 }

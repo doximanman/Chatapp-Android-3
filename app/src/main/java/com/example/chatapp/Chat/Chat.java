@@ -7,23 +7,19 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.View;
 import android.widget.ListView;
 
 import com.example.chatapp.Chat.adapters.ChatListAdapter;
@@ -36,15 +32,12 @@ import com.example.chatapp.database.api.UserAPI;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.databinding.ActivityChatBinding;
-import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Chat extends AppCompatActivity implements AddChat.AddChatListener, Settings.SettingsListener {
@@ -190,14 +183,6 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         byte[] pfpToBytes = Base64.decode(user.getProfilePic(), Base64.DEFAULT);
         binding.userPFP.setImageBitmap(BitmapFactory.decodeByteArray(pfpToBytes, 0, pfpToBytes.length));
         binding.userName.setText(user.getDisplayName());
-    }
-
-    private String imageToString(int source) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), source);
-        ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayStream);
-        byte[] imageInByArray = byteArrayStream.toByteArray();
-        return Base64.encodeToString(imageInByArray, Base64.DEFAULT);
     }
 
     @Override

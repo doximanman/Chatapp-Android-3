@@ -26,6 +26,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     List<Message> msgList;
     private final LayoutInflater inflater;
     private final String username;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView message;
         TextView time;

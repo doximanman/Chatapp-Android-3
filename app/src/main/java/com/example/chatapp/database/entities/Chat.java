@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 public class Chat {
-
     @PrimaryKey
     @NonNull
     private String id;
@@ -63,9 +62,4 @@ public class Chat {
     public void setId(String id) {
         this.id = id;
     }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
 }
