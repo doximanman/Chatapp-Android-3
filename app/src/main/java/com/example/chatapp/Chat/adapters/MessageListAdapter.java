@@ -21,6 +21,9 @@ import com.example.chatapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
     List<Message> msgList;
@@ -99,8 +102,11 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     }
 
     public void setMsgList(List<Message> msgList) {
-        this.msgList = msgList;
-
-        notifyDataSetChanged();
+        List<String> mapping=this.msgList.stream().map(Message::getId).collect(Collectors.toList());
+        msgList.removeIf(message->mapping.stream().anyMatch(id->message.getId().equals(id)));
+        for(int i=msgList.size()-1;i>=0;i--){
+            this.msgList.add(0,msgList.get(i));
+            notifyItemInserted(0);
+        }
     }
 }
