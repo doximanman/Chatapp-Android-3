@@ -169,6 +169,7 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         new Thread(() -> chatListView.reload()).start();
     }
 
+
     @Override
     protected void onDestroy() {
         // remove broadcast receiver
