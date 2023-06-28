@@ -6,35 +6,26 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.subentities.User;
 import com.example.chatapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
     List<Message> msgList;
-    private LayoutInflater inflater;
+    private final LayoutInflater inflater;
     private final String username;
-
-    private Context context;
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView message;
@@ -56,7 +47,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
 
     public MessageListAdapter(Context context, String username) {
-        this.context = context;
         inflater = LayoutInflater.from(context);
         this.msgList = new ArrayList<>();
         this.username = username;
@@ -97,12 +87,12 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             if (msg.isSender(username)) {
                 // change the look of sender messages
                 holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#8ecae6")));
-                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#8ecae6")));
+                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#c1e7f1")));
+                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#c1e7f1")));
             } else {
                 holder.messageRoot.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#219ebc")));
-                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#219ebc")));
+                holder.messageBubble.setTextColor(ColorStateList.valueOf(Color.parseColor("#82d0e3")));
+                holder.messageBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#82d0e3")));
             }
         }
 

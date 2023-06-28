@@ -44,12 +44,8 @@ public class AddChat extends DialogFragment {
         View view = inflater.inflate(R.layout.add_chat_layout, null, false);
 
         builder.setView(view)
-                .setPositiveButton(R.string.addNewUser, ((dialog, which) -> {
-                    listener.onAddClick(this, ((EditText) view.findViewById(R.id.addName)).getText().toString());
-                }))
-                .setNegativeButton(R.string.closeDialog, ((dialog, which) -> {
-                    listener.onCloseClick(this);
-                }));
+                .setPositiveButton(R.string.addNewUser, ((dialog, which) -> listener.onAddClick(this, ((EditText) view.findViewById(R.id.addName)).getText().toString())))
+                .setNegativeButton(R.string.closeDialog, ((dialog, which) -> listener.onCloseClick(this)));
         return builder.create();
     }
 }

@@ -1,17 +1,11 @@
 package com.example.chatapp.database.api;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chatapp.R;
-import com.example.chatapp.database.entities.Chat;
-import com.example.chatapp.database.entities.ChatDetails;
-import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,10 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -105,24 +97,6 @@ public class UserAPI {
         });
     }
 
-
-    //    public User getUser(String username) {
-//        final User[] currentUser = new User[1];
-//        String JWT = prefs.getString("JWT", "");
-//        Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                currentUser[0] = response.body();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                currentUser[0] = new User("HHH","hhh",null);
-//            }
-//        });
-//        return currentUser[0];
-//    }
     public User getUser(String JWT, String username) {
         Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
         try {
@@ -164,6 +138,7 @@ public class UserAPI {
                     postUserRes.setValue(displayApiResponseErrorBody(response));
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
                 assert postUserRes != null;

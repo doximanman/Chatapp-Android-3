@@ -1,7 +1,6 @@
 package com.example.chatapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +9,8 @@ import android.os.Bundle;
 
 import com.example.chatapp.Chat.Chat;
 import com.example.chatapp.Login.Login;
-import com.example.chatapp.Register.Register;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -28,17 +25,19 @@ public class MainActivity extends AppCompatActivity {
         if (!prefs.contains("serverIP")) {
             editor.putString("serverIP", "10.100.102.20");
         }
-        if (!prefs.contains("serverIP")) {
+        if (!prefs.contains("serverPort")) {
             editor.putString("serverPort", "5000");
         }
-//        if (!prefs.contains("jwt")) {
+        if (!prefs.contains("jwt")) {
             editor.putString("jwt", "");
-//        }
-
+        }
         editor.apply();
-
-        Intent login = new Intent(this, Login.class);
-        startActivity(login);
+        if (prefs.getString("jwt", "").equals("")) {
+            Intent login = new Intent(this, Login.class);
+            startActivity(login);
+        } else {
+            Intent chat = new Intent(this, Chat.class);
+            startActivity(chat);
+        }
     }
-
 }

@@ -45,7 +45,6 @@ public class ChatListAdapter extends BaseAdapter {
     }
 
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -68,7 +67,6 @@ public class ChatListAdapter extends BaseAdapter {
             viewHolder.lastMessageDate.setText("");
         } else {
             viewHolder.lastMessage.setText(cd.getLastMessage().getContent());
-
             // date is in the format: "dateTtime.millisecondsS". converts it to "date time"
             String fullDate = cd.getLastMessage().getCreated();
             StringBuilder readableDate = new StringBuilder();
@@ -76,7 +74,6 @@ public class ChatListAdapter extends BaseAdapter {
             readableDate.append(splitDate[0]);
             readableDate.append(" ");
             readableDate.append(splitDate[1].split("\\.")[0]);
-
             viewHolder.lastMessageDate.setText(readableDate.toString());
         }
 

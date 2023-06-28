@@ -1,31 +1,18 @@
 package com.example.chatapp.database.api;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chatapp.R;
 import com.example.chatapp.database.dao.ChatDao;
 import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
-import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,8 +21,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChatListAPI {
-    private MutableLiveData<List<ChatDetails>> chatListData;
-    private ChatDao chatDao;
+    private final MutableLiveData<List<ChatDetails>> chatListData;
+    private final ChatDao chatDao;
     String JWT;
     Retrofit retrofit;
     WebServiceAPI webServiceAPI;
@@ -56,6 +43,7 @@ public class ChatListAPI {
         //  remove this line.
 //        getToken("hello", "Helloworld1!");
     }
+
     public void getChats() {
         Call<List<ChatDetails>> call = webServiceAPI.getChats("Bearer " + JWT);
         call.enqueue(new Callback<List<ChatDetails>>() {
@@ -92,9 +80,9 @@ public class ChatListAPI {
         });
     }
 
-    public void registerFirebaseToken(String username,String token){
-        WebServiceAPI.UsernameToken userToken=new WebServiceAPI.UsernameToken(username,token);
-        Call<Void> call=webServiceAPI.registerFirebaseToken("Bearer "+JWT,userToken);
+    public void registerFirebaseToken(String username, String token) {
+        WebServiceAPI.UsernameToken userToken = new WebServiceAPI.UsernameToken(username, token);
+        Call<Void> call = webServiceAPI.registerFirebaseToken("Bearer " + JWT, userToken);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
@@ -109,9 +97,9 @@ public class ChatListAPI {
     }
 
 
-    public void unregisterFirebaseToken(String username,String token){
-        WebServiceAPI.UsernameToken userToken=new WebServiceAPI.UsernameToken(username,token);
-        Call<Void> call=webServiceAPI.unregisterFirebaseToken("Bearer "+JWT,userToken);
+    public void unregisterFirebaseToken(String username, String token) {
+        WebServiceAPI.UsernameToken userToken = new WebServiceAPI.UsernameToken(username, token);
+        Call<Void> call = webServiceAPI.unregisterFirebaseToken("Bearer " + JWT, userToken);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {

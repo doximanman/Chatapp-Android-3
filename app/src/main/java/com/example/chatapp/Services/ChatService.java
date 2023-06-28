@@ -5,12 +5,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -21,11 +19,9 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class ChatService extends FirebaseMessagingService {
-
     Map<String, Integer> notifIds;
     int counter;
 
@@ -71,7 +67,7 @@ public class ChatService extends FirebaseMessagingService {
             // notifications!
             // send notification if the message contains a notification field
             // used to not send a notification to the sender
-            if(message.getNotification()!=null) {
+            if (message.getNotification() != null) {
                 createNotificationChannel(displayName);
                 if (displayName != null && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                         PackageManager.PERMISSION_GRANTED) {
@@ -97,7 +93,7 @@ public class ChatService extends FirebaseMessagingService {
             Intent intent = new Intent("RECEIVE_MESSAGE");
             intent.putExtra("type", "NewMessage");
             intent.putExtra("messageId", data.get("messageId"));
-            intent.putExtra("displayName",data.get("displayName"));
+            intent.putExtra("displayName", data.get("displayName"));
             intent.putExtra("chatId", data.get("chatId"));
             intent.putExtra("message", data.get("message"));
             intent.putExtra("username", data.get("username"));

@@ -9,9 +9,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class TypeConverters {
-
     public static class UsersConverter {
-
         @TypeConverter
         public String fromUsersList(List<User> users) {
             if (users == null)

@@ -4,7 +4,6 @@ import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.subentities.Message;
 import com.example.chatapp.database.subentities.User;
-import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -59,12 +58,13 @@ public interface WebServiceAPI {
         }
     }
 
-    class UsernameToken{
+    class UsernameToken {
         String username;
         String token;
-        public UsernameToken(String username,String token){
-            this.username=username;
-            this.token=token;
+
+        public UsernameToken(String username, String token) {
+            this.username = username;
+            this.token = token;
         }
     }
 
@@ -90,10 +90,10 @@ public interface WebServiceAPI {
     Call<String> verify(@Body UsernamePassword usernamePassword);
 
     @POST("/api/Firebase")
-    Call<Void> registerFirebaseToken(@Header("Authorization") String JWT,@Body UsernameToken usernameToken);
+    Call<Void> registerFirebaseToken(@Header("Authorization") String JWT, @Body UsernameToken usernameToken);
 
-    @HTTP(method = "DELETE", path="/api/Firebase", hasBody=true)
-    Call<Void> unregisterFirebaseToken(@Header("Authorization") String JWT,@Body UsernameToken usernameToken);
+    @HTTP(method = "DELETE", path = "/api/Firebase", hasBody = true)
+    Call<Void> unregisterFirebaseToken(@Header("Authorization") String JWT, @Body UsernameToken usernameToken);
 
     @GET("/api/Users/{username}")
     Call<User> getUser(@Header("Authorization") String JWT, @Path("username") String username);

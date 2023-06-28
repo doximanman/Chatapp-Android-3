@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 public class User implements Parcelable {
     private String username;
-    private String displayName;
+    private final String displayName;
     private String profilePic;
 
     public User(String username, String displayName, String profilePic) {
@@ -30,10 +30,6 @@ public class User implements Parcelable {
 
     public String getUsername() {
         return username;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
     }
 
     public void setProfilePic(String profilePic) {
