@@ -21,22 +21,25 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#CAE4EF"
-            android:layoutDirection="ltr">
+            android:layoutDirection="ltr"
+            >
 
             <TextView
                 android:id="@+id/messageTXT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/architects_daughter"
                 android:paddingStart="10dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="15dp"
                 android:text="@string/placeholderMessage"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
 
             <TextView
                 android:id="@+id/messageTime"
+                android:fontFamily="@font/architects_daughter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@id/messageTXT"

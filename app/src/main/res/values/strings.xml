@@ -85,6 +85,6 @@
     <string name="similar_display_name">Please don\'t use your real name for the displayed name</string>
     <string name="wrong_profilePic">Please choose a valid profile picture</string>
     <string name="error_occurred">Error occurred</string>
-    <string name="big_profile_pic">Selected image exceeds the maximum allowed size of 50KB</string>
+    <string name="big_profile_pic">Selected image exceeds the maximum allowed size of 1MB</string>
 
 </resources>

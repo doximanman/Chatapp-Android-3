@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <TextView
+        style="@style/dialog_title"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,11 +16,13 @@
         android:layout_marginRight="10dp"
         android:text="@string/newChatTitle"
         android:textSize="40sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        style="@style/dialog_input"
         android:id="@+id/addName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,6 +30,7 @@
         android:ems="10"
         android:hint="@string/namePlaceholder"
         android:inputType="text"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />

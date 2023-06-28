@@ -92,6 +92,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
                         editor.putString("username", userNameEditText.getText().toString());
                         editor.apply();
                         chat.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        wrongMsg.setText("");
                         startActivity(chat);
                     }
                 }
