@@ -6,14 +6,10 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.example.chatapp.database.entities.Chat;
 import com.example.chatapp.database.entities.ChatDetails;
 import com.example.chatapp.database.repositories.ChatListRepo;
 import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.subentities.User;
 
 import java.util.List;
 

@@ -1,16 +1,21 @@
-package com.example.chatapp.database.subentities;
+package com.example.chatapp.database.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class User implements Parcelable {
+    @NonNull
+    @PrimaryKey
     private String username;
     private final String displayName;
     private String profilePic;
 
-    public User(String username, String displayName, String profilePic) {
+    public User(@NonNull String username, String displayName, String profilePic) {
         this.username = username;
         this.displayName = displayName;
         this.profilePic = profilePic;
