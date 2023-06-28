@@ -56,20 +56,8 @@ const newMessage = (senderUsername, senderDisplayName, usernames, chatID, msg) =
     const users = tokenUsers.filter(user => usernames.includes(user.username))
     if (users.length > 0) {
         users.forEach(user => {
-            const message = {
-                notification:{
-                    title: senderDisplayName,
-                    body: msg.content,
-                },
-                android:{
-                    collapse_key:senderDisplayName,
-                    notification: {
-                        tag:senderDisplayName,
-                        title: senderDisplayName,
-                        body: msg.content,
-                        icon: 'logo',
-                    }
-                },
+            let message
+            message = {
                 data: {
                     type: "NewMessage",
                     message: msg.content,
@@ -80,6 +68,24 @@ const newMessage = (senderUsername, senderDisplayName, usernames, chatID, msg) =
                     created: msg.created
                 },
                 token: user.token
+            }
+            if(user.username!==senderUsername) {
+                const notification={
+                    notification:{
+                        title: senderDisplayName,
+                        body: msg.content,
+                    },
+                    android:{
+                        collapse_key:senderDisplayName,
+                        notification: {
+                            tag:senderDisplayName,
+                            title: senderDisplayName,
+                            body: msg.content,
+                            icon: 'logo',
+                        }
+                    },
+                }
+                message=Object.assign(message,notification)
             }
             getMessaging().send(message).then(response => {
                 console.log("sending a new message to " + user.username)
