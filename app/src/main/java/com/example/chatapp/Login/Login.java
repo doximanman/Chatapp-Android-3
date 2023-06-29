@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity implements Settings.SettingsListene
         });
 
         jwt = new MutableLiveData<>("");
-        userAPI = new UserAPI(getApplication(), jwt, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
+        userAPI = new UserAPI(jwt, prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""));
         SharedPreferences.Editor editor = prefs.edit();
         EditText userNameEditText = findViewById(R.id.userName);
         EditText passwordEditText = findViewById(R.id.Password);

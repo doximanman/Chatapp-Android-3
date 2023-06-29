@@ -46,7 +46,7 @@ const createChat = async (req, res) => {
     const jsonChat={ id: newChat._id, user: { username: user.username, displayName: user.displayName, profilePic: user.profilePic } };
 
     // notify other user
-    Sockets.newChat(usernames, jsonChat);
+    await Sockets.newChat(usernames, jsonChat);
     Firebase.newChat(usernames)
 
     res.json(jsonChat);

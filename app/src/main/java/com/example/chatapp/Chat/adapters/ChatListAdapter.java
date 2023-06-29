@@ -59,6 +59,8 @@ public class ChatListAdapter extends BaseAdapter {
         }
 
         ChatDetails cd = chatList.get(position);
+        if(cd==null||cd.getUser()==null)
+            return convertView;
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
         viewHolder.name.setText(cd.getUser().getDisplayName());
 
