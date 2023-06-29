@@ -18,7 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.example.chatapp.Chat.adapters.MessageListAdapter;
 import com.example.chatapp.Chat.receivers.ChatReceiver;
 import com.example.chatapp.Chat.viewmodels.ChatView;
-import com.example.chatapp.database.subentities.User;
+import com.example.chatapp.database.entities.User;
 import com.example.chatapp.databinding.ActivityChatBodyBinding;
 
 import java.io.BufferedReader;

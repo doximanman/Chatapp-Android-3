@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.chatapp.database.subentities.User;
+import com.example.chatapp.database.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -39,7 +39,7 @@ public class UserAPI {
 
 //    public void setJwt()
 
-    public UserAPI(Application application, MutableLiveData<String> jwt, String serverUrl) {
+    public UserAPI(MutableLiveData<String> jwt, String serverUrl) {
         this.jwt = jwt;
         this.postUserRes = null;
         gson = new GsonBuilder().setLenient().create();
@@ -50,19 +50,7 @@ public class UserAPI {
         webServiceAPI = retrofit.create(WebServiceAPI.class);
     }
 
-    public UserAPI(Application application, String serverUrl) {
-        this.jwt = null;
-        this.postUserRes = null;
-        gson = new GsonBuilder().setLenient().create();
-        // .baseUrl("http://" + prefs.getString("serverIP", "") + ":" + prefs.getString("serverPort", ""))
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://" + serverUrl)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        webServiceAPI = retrofit.create(WebServiceAPI.class);
-    }
-
-    public UserAPI(Application application, String serverUrl, MutableLiveData<String> postUserRes) {
+    public UserAPI(String serverUrl, MutableLiveData<String> postUserRes) {
         this.jwt = null;
         this.postUserRes = postUserRes;
         gson = new GsonBuilder().setLenient().create();
@@ -97,17 +85,7 @@ public class UserAPI {
         });
     }
 
-    public User getUser(String JWT, String username) {
-        Call<User> call = webServiceAPI.getUser("Bearer " + JWT, username);
-        try {
-            Response<User> response = call.execute();
-            if (response.isSuccessful())
-                return response.body();
-            return null;
-        } catch (IOException e) {
-            return null;
-        }
-    }
+
 
     public static String displayApiResponseErrorBody(Response<?> response) {
         InputStream i = response.errorBody().byteStream();

@@ -6,7 +6,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.chatapp.database.subentities.Message;
-import com.example.chatapp.database.subentities.User;
 
 import java.util.ArrayList;
 import java.util.List;
