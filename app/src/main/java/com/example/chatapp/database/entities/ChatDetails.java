@@ -21,7 +21,7 @@ public class ChatDetails {
     @Embedded(prefix = "msg_")
     private Message lastMessage;
 
-    public ChatDetails(@NonNull String id, User user, Message lastMessage) {
+    public ChatDetails(@NonNull String id,@NonNull User user, Message lastMessage) {
         this.id = id;
         this.user = user;
         this.lastMessage = lastMessage;

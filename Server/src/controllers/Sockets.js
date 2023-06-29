@@ -1,4 +1,6 @@
 
+const UsersService=require("../services/Users")
+
 // list of {name,socket} jsons for each user that logs in.
 let socketUsers= [];
 
@@ -59,7 +61,7 @@ const newMessage=(usernames,chatID,msg)=>{
     }
 }
 
-const newChat=(usernames,chat)=>{
+const newChat=async (usernames,chat)=>{
     // find relevant users
     let users=[];
     socketUsers.forEach((item)=>{
@@ -68,15 +70,15 @@ const newChat=(usernames,chat)=>{
     })
     if(users.length>0){
         // tell the new users of the new chat
-        users.forEach(item=>{
+        for (const item of users) {
             if(item.user.username===chat.user.username) {
                 // chat user has to change for the user that didn't make the chat ('tho shall not talk with thy self')
                 const otherUsername = usernames.filter(username => username !== item.user.username)[0]
-                chat.user=getUser(otherUsername)
+                chat.user=await UsersService.getUserByUsername(otherUsername)
             }
             item.socket.emit("newChat",chat)
             console.log("new chat created with ",item.user.username)
-        })
+        }
     }
 }
 

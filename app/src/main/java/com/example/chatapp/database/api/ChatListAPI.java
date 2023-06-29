@@ -41,7 +41,7 @@ public class ChatListAPI {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         webServiceAPI = retrofit.create(WebServiceAPI.class);
-        new Thread(()->oldUser=chatDao.getUser()).start();
+        new Thread(() -> oldUser = chatDao.getUser()).start();
     }
 
     public User getUser(String username) {
@@ -50,10 +50,10 @@ public class ChatListAPI {
             Response<User> response = call.execute();
             if (response.isSuccessful()) {
                 return response.body();
-            }
-            else if(response.code()==403){
-                return new User("","","unauthorized");
-            }
+            } else if (response.code() == 403) {
+                return new User("", "", "unauthorized");
+            } else if (response.code() == 404)
+                return new User("", "", "User doesn't exist");
             return null;
         } catch (IOException e) {
             return null;
@@ -68,16 +68,18 @@ public class ChatListAPI {
                 if (response.isSuccessful()) {
                     new Thread(() -> {
 
-                        User currentUser=chatDao.getUser();
+                        User currentUser = chatDao.getUser();
 
-                        if(currentUser!=null&&oldUser!=null&&!currentUser.getUsername().equals(oldUser.getUsername())){
+                        chatDao.deletePreviews();
+
+                        if (currentUser != null && oldUser != null && !currentUser.getUsername().equals(oldUser.getUsername())) {
                             // clear database
                             chatDao.deleteChats();
-                            chatDao.deletePreviews();
-                            oldUser=currentUser;
+
+                            oldUser = currentUser;
                         }
-                        if(oldUser==null&&currentUser!=null){
-                            oldUser=currentUser;
+                        if (oldUser == null && currentUser != null) {
+                            oldUser = currentUser;
                         }
 
                         // converts list to array to be able to use insert(ChatDetails... chats)
@@ -88,14 +90,14 @@ public class ChatListAPI {
                         // inserts all chats (placeholder chat for the inner chats)
                         chatDao.upsert(chatArray);
                         chatDao.upsert(chatList.stream().map(cd -> {
-                            Chat oldChat=chatDao.getChat(cd.getId());
-                            if(oldChat!=null)
+                            Chat oldChat = chatDao.getChat(cd.getId());
+                            if (oldChat != null)
                                 return oldChat;
 
                             List<User> users = new ArrayList<>();
                             users.add(cd.getUser());
-                            List<Message> messageList=new ArrayList<>();
-                            if(cd.getLastMessage()!=null)
+                            List<Message> messageList = new ArrayList<>();
+                            if (cd.getLastMessage() != null)
                                 messageList.add(cd.getLastMessage());
                             return new Chat(cd.getId(), users, messageList);
                         }).toArray(Chat[]::new));

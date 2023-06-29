@@ -92,14 +92,21 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
         // send token to the server when the user is connected
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(firebaseToken::postValue);
 
+        MutableLiveData<Boolean> isNewUser=new MutableLiveData<>(false);
         user = chatRepo.getUser();
 
         // the first of the two to be triggered will not register the token
         // only the second one will (once both the token and the user are defined)
         firebaseToken.observe(this, newToken -> {
             this.firebaseToken = newToken;
-            if (user.getValue() != null)
+            if (Boolean.TRUE.equals(isNewUser.getValue()))
                 chatListView.registerFirebaseToken(user.getValue().getUsername(), firebaseToken.getValue());
+        });
+
+        isNewUser.observe(this,newValue->{
+            if(newValue&&firebaseToken.getValue()!=null){
+                chatListView.registerFirebaseToken(user.getValue().getUsername(), firebaseToken.getValue());
+            }
         });
 
         user.observe(this, newUser -> {
@@ -108,20 +115,33 @@ public class Chat extends AppCompatActivity implements AddChat.AddChatListener, 
             }
             if (newUser.getProfilePic().equals("unauthorized")) {
                 Toast.makeText(this,"User credentials invalid",Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("jwt", "");
+                editor.apply();
                 Intent login = new Intent(getApplicationContext(), Login.class);
                 login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(login);
                 return;
             }
-            setUser(newUser);
-            if (firebaseToken.getValue() != null) {
-                chatListView.registerFirebaseToken(newUser.getUsername(), firebaseToken.getValue());
+            if (newUser.getProfilePic().equals("User doesn't exist")) {
+                Toast.makeText(this,"User doesn't exist",Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("jwt", "");
+                editor.apply();
+                Intent login = new Intent(getApplicationContext(), Login.class);
+                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(login);
+                return;
             }
+
+            setUser(newUser);
+
             chatListView.reload();
         });
 
         new Thread(() -> {
-            chatRepo.setUser(prefs.getString("username", ""));
+            boolean isNew=chatRepo.setUser(prefs.getString("username", ""));
+            isNewUser.postValue(isNew);
         }).start();
 
         // open dialog for add button

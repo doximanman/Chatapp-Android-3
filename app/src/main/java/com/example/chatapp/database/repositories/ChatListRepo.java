@@ -27,11 +27,11 @@ public class ChatListRepo {
         ChatDB db = Room.databaseBuilder(application.getApplicationContext(), ChatDB.class, "ChatDB").build();
         dao = db.chatDao();
         chatListData = new ChatListData();
-        userData=new UserData();
+        userData = new UserData();
         api = new ChatListAPI(chatListData, dao, serverURL, JWT);
     }
 
-    private class UserData extends MutableLiveData<User>{
+    private class UserData extends MutableLiveData<User> {
         public UserData() {
             super();
             setValue(null);
@@ -63,45 +63,46 @@ public class ChatListRepo {
         return chatListData;
     }
 
-    public LiveData<User> getUser(){ return userData;}
+    public LiveData<User> getUser() {
+        return userData;
+    }
 
-    public void update(String chatId,Message lastMessage){
-        new Thread(()->{
-            ChatDetails cd=dao.getChatDetails(chatId);
+    public void update(String chatId, Message lastMessage) {
+        new Thread(() -> {
+            ChatDetails cd = dao.getChatDetails(chatId);
             cd.setLastMessage(lastMessage);
             dao.upsert(cd);
             chatListData.postValue(dao.getChats());
         }).start();
     }
 
-    public void registerFirebaseToken(String username,String token){
-        api.registerFirebaseToken(username,token);
+    public void registerFirebaseToken(String username, String token) {
+        api.registerFirebaseToken(username, token);
     }
 
-    public void unregisterFirebaseToken(String username,String token){
-        api.unregisterFirebaseToken(username,token);
+    public void unregisterFirebaseToken(String username, String token) {
+        api.unregisterFirebaseToken(username, token);
     }
 
     public void add(String username) {
         api.newChat(username);
     }
 
-    public void setUser(String username) {
-        new Thread(()->{
-            User newUser = api.getUser(username);
-            if(newUser!=null) {
-                dao.deleteUser();
-                dao.upsert(newUser);
-                userData.postValue(newUser);
-            }
-            else{
-                userData.postValue(null);
-            }
-        }).start();
+    public boolean setUser(String username) {
+        User newUser = api.getUser(username);
+        if (newUser != null) {
+            dao.deleteUser();
+            dao.upsert(newUser);
+            userData.postValue(newUser);
+            return true;
+        } else {
+            userData.postValue(null);
+            return false;
+        }
     }
 
-    public void clearLocal(){
-        Thread tr=new Thread(()->{
+    public void clearLocal() {
+        Thread tr = new Thread(() -> {
             dao.deletePreviews();
             dao.deleteChats();
             dao.deleteUser();
@@ -109,7 +110,7 @@ public class ChatListRepo {
         tr.start();
         try {
             tr.join();
-        }catch (InterruptedException ignored){
+        } catch (InterruptedException ignored) {
 
         }
 
