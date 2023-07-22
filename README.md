@@ -52,6 +52,12 @@
   
   Notice that on the web page you cannot browse to the chat page unless you are logged in. After logging in once, you stay logged in until
   you explicitly log out.
+
+  ##### Dark and Light mode
+  Our app offers a visually customizable experience, allowing you to switch between Dark and Light mode themes. Choose the mode that best suits your preferences and          environment by accessing the settings button available on the login, register, and chat pages.
+
+  ##### Server Address and Port
+  Flexibility is important to us, which is why we provide the option to modify the server address and port settings. You can easily set these parameters to match your        specific server configuration via the settings button located on the login, register, and chat pages.
   
 ## Server functionality (back-end)
   The server of the app is designed using the MVC (Model-View-Controller) pattern. This architectural pattern helps organize the codebase into distinct components, making it easier to maintain and extend the application in the future.
@@ -95,7 +101,7 @@
   NOTE: The developer version of the web client will not be able to connect to the server if it is run from a different machine than the server. To fix that:
         Open the file in Client->src->ServerQuery->ServerInfo.js and change the serverAddress variable to the IPv4 of the server.
 
-  #### or the app client:
+  #### Or the app client:
   
   2. open the project in android studio
   3. connect a phone to your computer (optional, but connecting a phone is much faster than the built in emulator)
