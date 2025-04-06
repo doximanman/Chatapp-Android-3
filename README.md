@@ -70,7 +70,9 @@
   Until a user logs out explicitly they will continue receiving notifications, even when the app is closed! (if notifications permission was given)
   
 ## How to launch Chatapp
-  To run Chatapp you'll need to have NodeJS installed (preferably version 18 and above), then you can run the server
+  To run Chatapp you'll need to have NodeJS installed (preferably version 18 and above), and MongoDB
+  running on the default address (the MongoDB connection string can be changed in Server->config->.env.local),
+  then you can run the server!
   and/or the client:
   1. save the files in a folder (unzipped)
   ### To run the server:
